@@ -10,8 +10,8 @@
         <input type="password">
       </div>
       <div class="flex items-center justify-between">
+        <a class="btn btn-link pl-0" href="#">Forgot Password?</a>
         <button class="btn btn-teal">Login</button>
-        <a class="btn btn-link" href="#">Forgot Password?</a>
       </div>
     </div>
   </div>
