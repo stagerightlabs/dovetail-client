@@ -1,0 +1,19 @@
+.btn {
+  @apply font-bold py-2 px-4 rounded
+}
+
+.btn-teal {
+  @apply bg-teal-dark text-white
+}
+
+.btn-teal:hover {
+  @apply bg-teal
+}
+
+.btn-link {
+  @apply no-underline inline-block align-baseline font-bold text-sm text-black text-center
+}
+
+.btn-link:hover {
+  @apply .text-grey-dark
+}
