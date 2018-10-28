@@ -4,19 +4,9 @@ import { AuthState, User, AuthToken } from './types';
 import { RootState } from '../types';
 
 export const actions: ActionTree<AuthState, RootState> = {
-  // fetchData({ commit }): any {
-  //   axios.get('/user')
-  //     .then((response) => {
-  //       const payload: User = response && response.data
-  //       commit('profileLoaded', payload)
-  //     })
-  //     .catch((error) => {
-  //       console.log('error')
-  //       commit('profileError')
-  //     })
-  // },
+
   login({ commit, dispatch}, credentials) {
-    console.log(credentials)
+    // Request an auth token from the api
     axios.post('/login', credentials)
       .then((response) => {
         const authToken: AuthToken = response && response.data;
@@ -27,31 +17,49 @@ export const actions: ActionTree<AuthState, RootState> = {
         console.log('error', error);
       });
   },
+
   tryAutoLogin({ commit }) {
-    const jwt = localStorage.getItem('access_token');
-    if (!jwt) {
+
+    // Read the tokens from local storage
+    const accessToken = localStorage.getItem('access_token');
+    const refreshToken = localStorage.getItem('refresh_token');
+
+    // If no value was found in local storage, abort
+    if (!accessToken) {
       return;
     }
+    // Convert the expiration date into a Date object
     const expirationDate = localStorage.getItem('access_expiration')
       ? new Date(localStorage.getItem('access_expiration') || '')
       : undefined;
+
+    // Check to see if the access token has expired
     const now = new Date();
     if (! expirationDate || now >= expirationDate) {
       commit('removeAuthTokenFromLocalStorage');
       commit('clearSessionAuthToken');
       return;
     }
+
+    // Create a new AuthToken from our local data
     const authToken: AuthToken = {
-      access_token: jwt,
+      access_token: accessToken,
+      refresh_token: refreshToken || '',
       token_type: 'Bearer',
       expiration_date: expirationDate,
-      expires_in: (expirationDate.getTime() - now.getTime()) / 1000,
-    }
+      expires_in: Math.floor((expirationDate.getTime() - now.getTime()) / 1000),
+    };
+
+    // Store the new auth token in state
     commit('setAuthTokenForSession', authToken);
   },
+
   logout({ commit }) {
+    // Remove auth token from state
     commit('clearSessionAuthToken');
+    // Remove auth token from local storage
     commit('removeAuthTokenFromLocalStorage');
+    // Redirect the user to the login page
     // router.push({ name: 'Login' });
   },
-}
+};

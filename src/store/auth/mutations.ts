@@ -22,4 +22,4 @@ export const mutations: MutationTree<AuthState> = {
     clearSessionAuthToken(state) {
         state.authToken = undefined;
     },
-}
+};
