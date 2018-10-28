@@ -7,5 +7,10 @@ input:focus {
 }
 
 label {
-  @apply font-bold block mb-2;
+  @apply font-bold block mb-1;
+}
+
+
+.input-group {
+  @apply mb-4;
 }

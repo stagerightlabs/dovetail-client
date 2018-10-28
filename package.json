@@ -12,6 +12,7 @@
     "axios": "^0.18.0",
     "register-service-worker": "^1.0.0",
     "vue": "^2.5.17",
+    "vue-class-component": "^6.3.2",
     "vue-router": "^3.0.1",
     "vuex": "^3.0.1"
   },
@@ -23,7 +24,7 @@
     "@vue/cli-plugin-unit-jest": "^3.0.5",
     "@vue/cli-service": "^3.0.5",
     "@vue/test-utils": "^1.0.0-beta.20",
-    "babel-core": "7.0.0-bridge.0",
+    "babel-core": "7.!0.0-bridge.0",
     "moxios": "^0.4.0",
     "node-sass": "^4.9.4",
     "purgecss-webpack-plugin": "^1.3.1",
@@ -32,6 +33,7 @@
     "tailwindcss": "^0.6.6",
     "ts-jest": "^23.0.0",
     "typescript": "^3.0.0",
-    "vue-template-compiler": "^2.5.17"
+    "vue-template-compiler": "^2.5.17",
+    "vuex-class": "^0.3.1"
   }
 }

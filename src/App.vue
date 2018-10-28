@@ -2,33 +2,30 @@
   <div id="app">
     <div id="nav">
       <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+      <router-link to="/about">About</router-link> |
+      <a @click="terminateSession">Logout</a>
     </div>
     <router-view/>
   </div>
 </template>
 
+<script lang="ts">
+import Vue from 'vue'
+import { Action } from 'vuex-class'
+import Component from 'vue-class-component';
+
+@Component({})
+export default class App extends Vue {
+  @Action('logout', {namespace: 'auth'}) logout :any;
+
+  terminateSession() {
+    this.logout()
+  }
+}
+</script>
+
+
+
 <style lang="scss">
 @import './assets/styles.scss';
-
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  @apply h-screen;
-}
-#nav {
-  padding: 30px;
-}
-
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
-}
 </style>
