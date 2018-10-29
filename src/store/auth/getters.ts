@@ -3,5 +3,7 @@ import { AuthState } from './types';
 import { RootState } from '../types';
 
 export const getters: GetterTree<AuthState, RootState> = {
-
+    isAuthenticated(state): boolean {
+        return state.authToken ? true : false;
+    }
 }
