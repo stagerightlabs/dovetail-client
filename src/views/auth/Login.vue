@@ -1,5 +1,5 @@
 <template>
-  <div class="absolute pin mx-auto h-full flex justify-center items-center">
+  <div class="absolute pin mx-auto h-full flex flex-col justify-center items-center">
     <div class="card">
       <div class="mb-4">
         <label>Email:</label>
@@ -7,12 +7,15 @@
       </div>
       <div class="mb-4">
         <label>Password:</label>
-        <input type="password" v-model="password">
+        <input type="password" v-model="password" @keyup.enter="attemptLogin">
       </div>
       <div class="flex items-center justify-between">
         <a class="btn btn-link pl-0" href="#">Forgot Password?</a>
         <button class="btn btn-teal" @click="attemptLogin">Login</button>
       </div>
+    </div>
+    <div class="mt-4">
+      <router-link class="text-grey-dark font-bold no-underline" :to="{ name: 'register'}">Create a New Account</router-link>
     </div>
   </div>
 </template>

@@ -1,12 +1,12 @@
 <template>
-  <div class="absolute pin mx-auto h-full flex justify-center items-center">
+  <div class="absolute pin mx-auto h-full flex flex-col justify-center items-center">
     <div class="card">
       <div class="input-group">
         <label>Organization:</label>
         <input type="text" v-model="organization">
       </div>
       <div class="input-group">
-        <label>Your Name:</label>
+        <label>Your Full Name:</label>
         <input type="text" v-model="name">
       </div>
       <div class="input-group">
@@ -19,11 +19,14 @@
       </div>
       <div class="input-group">
         <label>Confirm Password:</label>
-        <input type="password" v-model="password_confirmation">
+        <input type="password" v-model="password_confirmation" @keyup.enter="register">
       </div>
       <div class="flex items-center justify-end text-right">
         <button class="btn btn-teal" @click="register">Register</button>
       </div>
+    </div>
+    <div class="mt-4">
+      <router-link class="text-grey-dark font-bold no-underline" :to="{ name: 'login'}">Already Have an Account?</router-link>
     </div>
   </div>
 </template>
@@ -31,15 +34,16 @@
 <script lang="ts">
 import Vue from 'vue';
 import axios from '@/axios';
+import { Mutation } from 'vuex-class';
 import Component from 'vue-class-component';
 import { AuthState, AuthToken, User } from '@/store/auth/types';
-import { Mutation } from 'vuex-class';
 const namespace: string = 'auth';
 
 @Component({})
 export default class RegisterView extends Vue {
 
-  @Mutation('setAuthCredentials', {namespace: 'auth'}) setAuthCredentials : any
+  @Mutation('storeAuthTokenInLocalStorage', {namespace: 'auth'}) storeAuthTokenInLocalStorage : any
+  @Mutation('setAuthTokenForSession', {namespace: 'auth'}) setAuthTokenForSession : any
 
   name : string = '';
   organization : string = '';
@@ -62,7 +66,8 @@ export default class RegisterView extends Vue {
       localStorage.setItem('access_token', authToken.access_token);
       localStorage.setItem('access_expiration', authToken.expiration_date.toDateString());
 
-      this.setAuthCredentials(authToken);
+      this.storeAuthTokenInLocalStorage(authToken);
+      this.setAuthTokenForSession(authToken);
     }).catch((error) => {
       console.log('error', error);
     })
