@@ -55,6 +55,7 @@
 #nav a {
   font-weight: bold;
   color: #2c3e50;
+  @apply text-grey-dark;
 }
 
 #nav a.router-link-exact-active {

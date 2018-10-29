@@ -1,13 +1,20 @@
 import Vue from 'vue';
 import Router from 'vue-router';
+import store from './store/index';
 import Home from '@/views/Home.vue';
-import Login from '@/views/auth/Login.vue';
-import Register from '@/views/auth/Register.vue';
 
 Vue.use(Router);
 
-export default new Router({
+const scrollBehavior = (to: any, from: any, savedPosition: any) => {
+  if (savedPosition) {
+    return savedPosition;
+  }
+  return { x: 0, y: 0 };
+};
+
+const router =  new Router({
   mode: 'history',
+  scrollBehavior,
   base: process.env.BASE_URL,
   routes: [
     {
@@ -18,12 +25,21 @@ export default new Router({
     {
       path: '/login',
       name: 'login',
-      component: Login,
+      component: () => import(/* webpackChunkName: "login" */ './views/auth/Login.vue'),
+    },
+    {
+      path: '/logout',
+      beforeEnter: (to, from, next) => {
+        store.dispatch('auth/logout');
+        next({
+          path: '/login'
+        });
+      }
     },
     {
       path: '/register',
       name: 'register',
-      component: Register,
+      component: () => import(/* webpackChunkName: "register" */ './views/auth/Register.vue'),
     },
     {
       path: '/about',
@@ -35,3 +51,23 @@ export default new Router({
     },
   ],
 });
+
+// Set up global navigation guard
+router.beforeEach((to, from, next) => {
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
+    // this route requires auth, check if logged in
+    // if not, redirect to login page.
+    if (!store.getters.isAuthenticated) {
+      next({
+        path: '/login',
+        query: { redirect: to.fullPath },
+      });
+    } else {
+      next();
+    }
+  } else {
+    next(); // make sure to always call next()!
+  }
+});
+
+export default router;
