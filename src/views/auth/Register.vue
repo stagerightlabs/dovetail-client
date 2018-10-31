@@ -1,5 +1,5 @@
 <template>
-  <div class="absolute pin mx-auto h-full flex flex-col justify-center items-center">
+  <div class="pin mx-auto h-full flex flex-col justify-center items-center">
     <div class="card">
       <div class="input-group">
         <label>Organization:</label>

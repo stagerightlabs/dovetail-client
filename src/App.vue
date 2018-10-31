@@ -3,7 +3,7 @@
     <div id="nav">
       <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link> |
-      <a @click="terminateSession">Logout</a>
+      <router-link to="/logout">Logout</router-link>
     </div>
     <div>
       <p v-if="isAuthenticated">There is an active session</p>

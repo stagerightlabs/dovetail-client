@@ -3,13 +3,18 @@ import App from './App.vue';
 import router from './router';
 import store from './store/index';
 import './registerServiceWorker';
+import VeeValidate from 'vee-validate';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faCoffee } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
 library.add(faCoffee);
 
+// Register the FA icon plugin
 Vue.component('fa-icon', FontAwesomeIcon);
+
+// Register the VeeValidate plugin
+Vue.use(VeeValidate, { inject: false, delay: 1 });
 
 Vue.config.productionTip = false;
 

@@ -1,22 +1,9 @@
-import { ActionTree } from 'vuex';
 import axios from '@/axios';
-import { AuthState, User, AuthToken } from './types';
+import { ActionTree } from 'vuex';
 import { RootState } from '../types';
+import { AuthState, AuthToken } from './types';
 
 export const actions: ActionTree<AuthState, RootState> = {
-
-  login({ commit, dispatch}, credentials) {
-    // Request an auth token from the api
-    axios.post('/login', credentials)
-      .then((response) => {
-        const authToken: AuthToken = response && response.data;
-        commit('storeAuthTokenInLocalStorage', authToken);
-        commit('setAuthTokenForSession', authToken);
-      })
-      .catch((error) => {
-        console.log('error', error);
-      });
-  },
 
   tryAutoLogin({ commit }) {
 
