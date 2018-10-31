@@ -1,0 +1,77 @@
+#alert-stack {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  text-align: left;
+
+  @screen md {
+    width: 32rem;
+    position: fixed;
+    right: 1rem;
+    bottom: 1rem;
+    left: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+  }
+
+}
+
+.alert {
+  @apply .w-full .block .p-2 .mt-2;
+
+  @screen md {
+    @apply .rounded .text-lg .p-4 .mt-4;
+    position: relative;
+  }
+
+  &.success {
+    @apply .bg-green-lightest .text-green-dark .border-2 .border-green-light;
+
+    a {
+      @apply .text-green-dark;
+    }
+
+    a:hover {
+      @apply .text-green-darker;
+    }
+  }
+
+  &.info {
+    @apply .bg-blue-lightest .text-blue-dark .border-2 .border-blue-light;
+
+    a {
+      @apply .text-blue-dark;
+    }
+
+    a:hover {
+      @apply .text-blue-darker;
+    }
+  }
+
+  &.warning {
+    @apply .bg-yellow-lightest .text-yellow-dark .border-2 .border-yellow-light;
+
+    a {
+      @apply .text-yellow-dark;
+    }
+
+    a:hover {
+      @apply .text-yellow-darker;
+    }
+  }
+
+  &.danger {
+    @apply .bg-red-lightest .text-red-dark .border-2 .border-red-light;
+
+    a {
+      @apply .text-red-dark;
+    }
+
+    a:hover {
+      @apply .text-red-darker;
+    }
+  }
+
+}

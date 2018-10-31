@@ -5,10 +5,10 @@ import store from './store/index';
 import './registerServiceWorker';
 import VeeValidate from 'vee-validate';
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faCoffee } from '@fortawesome/free-solid-svg-icons';
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
-library.add(faCoffee);
+library.add(faTimes);
 
 // Register the FA icon plugin
 Vue.component('fa-icon', FontAwesomeIcon);

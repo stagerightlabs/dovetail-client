@@ -35,7 +35,6 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
 import axios from '@/axios';
 import store from '@/store/index';
 import { State } from 'vuex-class';

@@ -1,8 +1,17 @@
 import Vue from 'vue';
+import EventBus from '@/bus';
+import { Alert } from '@/types';
 import Component from 'vue-class-component';
 
 @Component
 export default class HandleResponseErrors extends Vue {
+
+    //public $bus = EventBus;
+
+    public toast(alert: Alert) {
+        EventBus.$emit('toast', alert);
+    }
+
     public handleResponseErrors(error: any) {
 
         // Ensure we have a valid error object
