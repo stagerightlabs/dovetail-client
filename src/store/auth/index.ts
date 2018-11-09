@@ -1,6 +1,6 @@
 import { Module } from 'vuex';
 import { RootState } from '../types';
-import { AuthState } from './types';
+import { AuthState } from '../types';
 import { actions } from './actions';
 import { mutations } from './mutations';
 import { getters } from './getters';

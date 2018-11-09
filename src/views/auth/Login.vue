@@ -35,11 +35,11 @@
 </template>
 
 <script lang="ts">
-import axios from '@/axios';
 import store from '@/store/index';
 import { State } from 'vuex-class';
-import { AuthToken } from '@/store/auth/types';
-import { AuthState, User } from '@/store/auth/types';
+import repository from '@/repository';
+import { AuthToken, User } from '@/types';
+import { AuthState } from '@/store/types';
 import BaseComponent from '@/mixins/BaseComponent.ts';
 import Component, { mixins } from 'vue-class-component';
 const namespace: string = 'auth';
@@ -59,9 +59,10 @@ const namespace: string = 'auth';
 
   login() {
     // Request an auth token from the api
-    axios.post('/login', {email: this.email, password: this.password})
+    repository.httpPostLogin({email: this.email, password: this.password})
       .then((response) => {
         const authToken: AuthToken = response && response.data;
+        console.log('hello world', authToken)
         store.commit('auth/storeAuthTokenInLocalStorage', authToken);
         store.commit('auth/setAuthTokenForSession', authToken);
       })

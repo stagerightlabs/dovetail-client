@@ -1,5 +1,6 @@
 import { MutationTree } from 'vuex';
-import { AuthState, User, AuthToken } from './types';
+import { AuthState } from '../types';
+import { AuthToken } from '../../types';
 
 export const mutations: MutationTree<AuthState> = {
     storeAuthTokenInLocalStorage(state, authToken: AuthToken) {

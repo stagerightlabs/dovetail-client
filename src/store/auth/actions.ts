@@ -1,7 +1,8 @@
-import axios from '@/axios';
+
 import { ActionTree } from 'vuex';
 import { RootState } from '../types';
-import { AuthState, AuthToken } from './types';
+import { AuthState } from '../types';
+import { AuthToken } from '../../types';
 
 export const actions: ActionTree<AuthState, RootState> = {
 

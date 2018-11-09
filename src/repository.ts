@@ -2,6 +2,7 @@ import axios from 'axios';
 import router from '@/router';
 import store from '@/store/index';
 import { ErrorBag } from 'vee-validate';
+import { AxiosPromise } from 'axios';
 
 // Configure Defaults
 axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
@@ -20,4 +21,10 @@ axios.interceptors.response.use((response) => response, (error) => {
     return Promise.reject(error);
 });
 
-export default axios;
+// export default axios;
+
+export default {
+    httpPostLogin(credentials: any): AxiosPromise<any> {
+        return axios.post('/login', credentials);
+    }
+}
