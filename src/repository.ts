@@ -26,5 +26,9 @@ axios.interceptors.response.use((response) => response, (error) => {
 export default {
     httpPostLogin(credentials: any): AxiosPromise<any> {
         return axios.post('/login', credentials);
+    },
+
+    httpPostRegister(registration: any): AxiosPromise<any> {
+        return axios.post('/register', registration);
     }
 }

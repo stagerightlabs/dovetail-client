@@ -33,10 +33,11 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import axios from '@/axios';
+import repository from '@/repository';
 import { Mutation } from 'vuex-class';
 import Component from 'vue-class-component';
-import { AuthState, AuthToken, User } from '@/store/auth/types';
+import { AuthState } from '@/store/types';
+import { AuthToken, User } from '@/types';
 const namespace: string = 'auth';
 
 @Component({})
@@ -52,7 +53,7 @@ export default class RegisterView extends Vue {
   password_confirmation : string = '';
 
   register() {
-    axios.post('/register', {
+    repository.httpPostRegister({
       name: this.name,
       organization: this.organization,
       email: this.email,
