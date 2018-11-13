@@ -36,7 +36,7 @@
 
 <script lang="ts">
 import store from '@/store/index';
-import { State } from 'vuex-class';
+import { State, Mutation } from 'vuex-class';
 import repository from '@/repository';
 import { AuthToken, User } from '@/types';
 import { AuthState } from '@/store/types';
@@ -49,6 +49,8 @@ const namespace: string = 'auth';
 })
   export default class LoginView extends mixins(BaseComponent) {
   @State('profile') profile!: AuthState;
+  @Mutation('auth/storeAuthTokenInLocalStorage') storeAuthTokenInLocalStorage! : (authToken: AuthToken) => void
+  @Mutation('auth/setAuthTokenForSession') setAuthTokenForSession! : (authToken: AuthToken) => void
 
   email : string = '';
   password : string = '';
@@ -62,9 +64,9 @@ const namespace: string = 'auth';
     repository.httpPostLogin({email: this.email, password: this.password})
       .then((response) => {
         const authToken: AuthToken = response && response.data;
-        console.log('hello world', authToken)
-        store.commit('auth/storeAuthTokenInLocalStorage', authToken);
-        store.commit('auth/setAuthTokenForSession', authToken);
+        //console.log('hello world', authToken)
+        this.storeAuthTokenInLocalStorage(authToken);
+        this.setAuthTokenForSession(authToken);
       })
       .catch((error) => {
         this.handleResponseErrors(error);
