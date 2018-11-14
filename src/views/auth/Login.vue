@@ -40,14 +40,14 @@ import { State, Mutation } from 'vuex-class';
 import repository from '@/repository';
 import { AuthToken, User } from '@/types';
 import { AuthState } from '@/store/types';
-import BaseComponent from '@/mixins/BaseComponent.ts';
+import BaseView from '@/mixins/BaseView.ts';
 import Component, { mixins } from 'vue-class-component';
 const namespace: string = 'auth';
 
 @Component({
   $_veeValidate: { validator: "new" }
 })
-  export default class LoginView extends mixins(BaseComponent) {
+  export default class LoginView extends mixins(BaseView) {
   @State('profile') profile!: AuthState;
   @Mutation('auth/storeAuthTokenInLocalStorage') storeAuthTokenInLocalStorage! : (authToken: AuthToken) => void
   @Mutation('auth/setAuthTokenForSession') setAuthTokenForSession! : (authToken: AuthToken) => void
@@ -62,8 +62,6 @@ const namespace: string = 'auth';
         if (valid) {
           this.submitCredentials()
         }
-      }).catch((response) => {
-        console.log('caught error')
       })
   }
 

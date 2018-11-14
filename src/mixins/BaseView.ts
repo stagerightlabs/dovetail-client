@@ -4,14 +4,22 @@ import { Alert } from '@/types';
 import Component from 'vue-class-component';
 
 @Component
-export default class HandleResponseErrors extends Vue {
+export default class BaseView extends Vue {
 
-    //public $bus = EventBus;
-
+    /**
+     * Trigger a toast notification
+     *
+     * @param alert Alert
+     */
     public toast(alert: Alert) {
         EventBus.$emit('toast', alert);
     }
 
+    /**
+     * Interpret server side validation errors
+     *
+     * @param error
+     */
     public handleResponseErrors(error: any) {
 
         // Ensure we have a valid error object
@@ -37,8 +45,8 @@ export default class HandleResponseErrors extends Vue {
                 // console.log(key, error.response.data.errors[key].shift());
                 this.$validator.errors.add({
                     field: key,
-                    msg: error.response.data.errors[key].shift()
-                })
+                    msg: error.response.data.errors[key].shift(),
+                });
             });
         } else if (error.data.hasOwnProperty('message')) {
             // Notify the user of this message
