@@ -88,8 +88,23 @@ describe('Login.vue', () => {
     const wrapper = createWrapper({ store });
 
     const emailInput = wrapper.find('input[type="email"]');
+    emailInput.setValue('example@gmail.com');
+    wrapper.find('button').trigger('click');
+
+    await flushPromises();
+    expect(repository.httpPostLogin).not.toHaveBeenCalled();
+    expect(store.commit).not.toHaveBeenCalledWith('auth/storeAuthTokenInLocalStorage', fakeToken);
+    expect(store.commit).not.toHaveBeenCalledWith('auth/setAuthTokenForSession', fakeToken);
+  });
+
+  test('the email field is required', async () => {
+    jest.resetAllMocks();
+    const store = createStore();
+    store.commit = jest.fn(() => Promise.resolve());
+    const wrapper = createWrapper({ store });
+
     const passwordInput = wrapper.find('input[type="password"]');
-    emailInput.setValue('fred@gmail.com');
+    passwordInput.setValue('secret');
     wrapper.find('button').trigger('click');
 
     await flushPromises();
