@@ -61,7 +61,11 @@ describe('Login.vue', () => {
       store: createStore(),
       sync: false,
     };
-    return shallowMount(Login, merge(defaultMountingOptions, overrides));
+    const wrapper = shallowMount(Login, merge(defaultMountingOptions, overrides));
+
+    wrapper.vm.$validator.errors.clear();
+
+    return wrapper;
   }
 
   test('a user can log in', async () => {
@@ -70,7 +74,7 @@ describe('Login.vue', () => {
     const wrapper = createWrapper({ store });
 
     const emailInput = wrapper.find('input[type="email"]');
-    emailInput.setValue('email@gmail.com');
+    emailInput.setValue('email@example.com');
     const passwordInput = wrapper.find('input[type="password"]');
     passwordInput.setValue('secret');
     wrapper.find('button').trigger('click');
@@ -79,6 +83,7 @@ describe('Login.vue', () => {
     expect(repository.httpPostLogin).toHaveBeenCalled();
     expect(store.commit).toHaveBeenCalledWith('auth/storeAuthTokenInLocalStorage', fakeToken);
     expect(store.commit).toHaveBeenCalledWith('auth/setAuthTokenForSession', fakeToken);
+    expect(wrapper.vm.$validator.errors.count()).toBe(0);
   });
 
   test('the password field is required', async () => {
@@ -88,13 +93,30 @@ describe('Login.vue', () => {
     const wrapper = createWrapper({ store });
 
     const emailInput = wrapper.find('input[type="email"]');
-    const passwordInput = wrapper.find('input[type="password"]');
-    emailInput.setValue('fred@gmail.com');
+    emailInput.setValue('email@example.com');
     wrapper.find('button').trigger('click');
 
     await flushPromises();
     expect(repository.httpPostLogin).not.toHaveBeenCalled();
     expect(store.commit).not.toHaveBeenCalledWith('auth/storeAuthTokenInLocalStorage', fakeToken);
     expect(store.commit).not.toHaveBeenCalledWith('auth/setAuthTokenForSession', fakeToken);
+    expect(wrapper.vm.$validator.errors.items).toHaveLength(1);
+  });
+
+  test('the email field is required', async () => {
+    jest.resetAllMocks();
+    const store = createStore();
+    store.commit = jest.fn(() => Promise.resolve());
+    const wrapper = createWrapper({ store });
+
+    const passwordInput = wrapper.find('input[type="password"]');
+    passwordInput.setValue('secret');
+    wrapper.find('button').trigger('click');
+
+    await flushPromises();
+    expect(repository.httpPostLogin).not.toHaveBeenCalled();
+    expect(store.commit).not.toHaveBeenCalledWith('auth/storeAuthTokenInLocalStorage', fakeToken);
+    expect(store.commit).not.toHaveBeenCalledWith('auth/setAuthTokenForSession', fakeToken);
+    expect(wrapper.vm.$validator.errors.count()).toBe(1);
   });
 });
