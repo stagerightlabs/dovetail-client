@@ -55,16 +55,23 @@ const namespace: string = 'auth';
   email : string = '';
   password : string = '';
 
-  // attemptLogin() {
-  //   this.login({email: this.email, password: this.password});
-  // }
+  async login() {
 
-  login() {
+    this.$validator.validateAll()
+      .then((valid) => {
+        if (valid) {
+          this.submitCredentials()
+        }
+      }).catch((response) => {
+        console.log('caught error')
+      })
+  }
+
+  submitCredentials() {
     // Request an auth token from the api
     repository.httpPostLogin({email: this.email, password: this.password})
       .then((response) => {
         const authToken: AuthToken = response && response.data;
-        //console.log('hello world', authToken)
         this.storeAuthTokenInLocalStorage(authToken);
         this.setAuthTokenForSession(authToken);
       })
@@ -75,7 +82,3 @@ const namespace: string = 'auth';
 
 }
 </script>
-
-<style>
-
-</style>
