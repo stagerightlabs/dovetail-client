@@ -1,5 +1,5 @@
 e<template>
-  <div class="pin mx-auto h-full flex flex-col justify-center items-center">
+  <main class="pin mx-auto h-full flex flex-col justify-center items-center">
     <div class="card">
       <div class="input-group">
         <label>Organization:</label>
@@ -69,7 +69,7 @@ e<template>
     <div class="mt-4">
       <router-link class="text-grey-dark font-bold no-underline" :to="{ name: 'login'}">Already Have an Account?</router-link>
     </div>
-  </div>
+  </main>
 </template>
 
 <script lang="ts">
