@@ -5,7 +5,7 @@ jest.mock('@/repository', () => ({
 }));
 
 import { shallowMount, createLocalVue, RouterLinkStub } from '@vue/test-utils';
-import Register from '@/views/auth/Register.vue';
+import Register from '@/views/session/Register.vue';
 import flushPromises from 'flush-promises';
 import VeeValidate from 'vee-validate';
 import repository from '@/repository';
@@ -79,8 +79,8 @@ describe('Register.vue', () => {
 
     await flushPromises();
     expect(repository.httpPostRegister).toHaveBeenCalled();
-    expect(store.commit).toHaveBeenCalledWith('auth/storeAuthTokenInLocalStorage', fakeToken);
-    expect(store.commit).toHaveBeenCalledWith('auth/setAuthTokenForSession', fakeToken);
+    expect(store.commit).toHaveBeenCalledWith('session/storeAuthTokenInLocalStorage', fakeToken);
+    expect(store.commit).toHaveBeenCalledWith('session/setAuthTokenForSession', fakeToken);
     expect(wrapper.vm.$validator.errors.count()).toBe(0);
     wrapper.vm.$validator.errors.clear();
   });
@@ -100,8 +100,8 @@ describe('Register.vue', () => {
 
     await flushPromises();
     expect(repository.httpPostRegister).not.toHaveBeenCalled();
-    expect(store.commit).not.toHaveBeenCalledWith('auth/storeAuthTokenInLocalStorage', fakeToken);
-    expect(store.commit).not.toHaveBeenCalledWith('auth/setAuthTokenForSession', fakeToken);
+    expect(store.commit).not.toHaveBeenCalledWith('session/storeAuthTokenInLocalStorage', fakeToken);
+    expect(store.commit).not.toHaveBeenCalledWith('session/setAuthTokenForSession', fakeToken);
     expect(wrapper.vm.$validator.errors.items).toHaveLength(1);
     wrapper.vm.$validator.errors.clear();
   });
@@ -121,8 +121,8 @@ describe('Register.vue', () => {
 
     await flushPromises();
     expect(repository.httpPostRegister).not.toHaveBeenCalled();
-    expect(store.commit).not.toHaveBeenCalledWith('auth/storeAuthTokenInLocalStorage', fakeToken);
-    expect(store.commit).not.toHaveBeenCalledWith('auth/setAuthTokenForSession', fakeToken);
+    expect(store.commit).not.toHaveBeenCalledWith('session/storeAuthTokenInLocalStorage', fakeToken);
+    expect(store.commit).not.toHaveBeenCalledWith('session/setAuthTokenForSession', fakeToken);
     expect(wrapper.vm.$validator.errors.items).toHaveLength(1);
     wrapper.vm.$validator.errors.clear();
   });
@@ -142,8 +142,8 @@ describe('Register.vue', () => {
 
     await flushPromises();
     expect(repository.httpPostRegister).not.toHaveBeenCalled();
-    expect(store.commit).not.toHaveBeenCalledWith('auth/storeAuthTokenInLocalStorage', fakeToken);
-    expect(store.commit).not.toHaveBeenCalledWith('auth/setAuthTokenForSession', fakeToken);
+    expect(store.commit).not.toHaveBeenCalledWith('session/storeAuthTokenInLocalStorage', fakeToken);
+    expect(store.commit).not.toHaveBeenCalledWith('session/setAuthTokenForSession', fakeToken);
     expect(wrapper.vm.$validator.errors.items).toHaveLength(1);
     wrapper.vm.$validator.errors.clear();
   });
@@ -163,8 +163,8 @@ describe('Register.vue', () => {
 
     await flushPromises();
     expect(repository.httpPostRegister).not.toHaveBeenCalled();
-    expect(store.commit).not.toHaveBeenCalledWith('auth/storeAuthTokenInLocalStorage', fakeToken);
-    expect(store.commit).not.toHaveBeenCalledWith('auth/setAuthTokenForSession', fakeToken);
+    expect(store.commit).not.toHaveBeenCalledWith('session/storeAuthTokenInLocalStorage', fakeToken);
+    expect(store.commit).not.toHaveBeenCalledWith('session/setAuthTokenForSession', fakeToken);
     expect(wrapper.vm.$validator.errors.items).toHaveLength(1);
     wrapper.vm.$validator.errors.clear();
   });
@@ -184,8 +184,8 @@ describe('Register.vue', () => {
 
     await flushPromises();
     expect(repository.httpPostRegister).not.toHaveBeenCalled();
-    expect(store.commit).not.toHaveBeenCalledWith('auth/storeAuthTokenInLocalStorage', fakeToken);
-    expect(store.commit).not.toHaveBeenCalledWith('auth/setAuthTokenForSession', fakeToken);
+    expect(store.commit).not.toHaveBeenCalledWith('session/storeAuthTokenInLocalStorage', fakeToken);
+    expect(store.commit).not.toHaveBeenCalledWith('session/setAuthTokenForSession', fakeToken);
     expect(wrapper.vm.$validator.errors.items).toHaveLength(1);
     wrapper.vm.$validator.errors.clear();
   });

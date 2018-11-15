@@ -49,8 +49,8 @@ const namespace: string = 'auth';
 })
   export default class LoginView extends mixins(BaseView) {
   @State('profile') profile!: AuthState;
-  @Mutation('auth/storeAuthTokenInLocalStorage') storeAuthTokenInLocalStorage! : (authToken: AuthToken) => void
-  @Mutation('auth/setAuthTokenForSession') setAuthTokenForSession! : (authToken: AuthToken) => void
+  @Mutation('session/storeAuthTokenInLocalStorage') storeAuthTokenInLocalStorage! : (authToken: AuthToken) => void
+  @Mutation('session/setAuthTokenForSession') setAuthTokenForSession! : (authToken: AuthToken) => void
 
   email : string = '';
   password : string = '';

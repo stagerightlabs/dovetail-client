@@ -12,7 +12,7 @@ export const state: AuthState = {
 
 const namespaced: boolean = true;
 
-export const auth: Module<AuthState, RootState> = {
+export const session: Module<AuthState, RootState> = {
     namespaced,
     state,
     getters,

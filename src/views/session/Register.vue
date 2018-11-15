@@ -1,4 +1,4 @@
-<template>
+e<template>
   <div class="pin mx-auto h-full flex flex-col justify-center items-center">
     <div class="card">
       <div class="input-group">
@@ -86,8 +86,8 @@ const namespace: string = 'auth';
 })
 export default class RegisterView extends mixins(BaseView) {
 
-  @Mutation('auth/storeAuthTokenInLocalStorage') storeAuthTokenInLocalStorage! : (authToken: AuthToken) => void
-  @Mutation('auth/setAuthTokenForSession') setAuthTokenForSession! : (authToken: AuthToken) => void
+  @Mutation('session/storeAuthTokenInLocalStorage') storeAuthTokenInLocalStorage! : (authToken: AuthToken) => void
+  @Mutation('session/setAuthTokenForSession') setAuthTokenForSession! : (authToken: AuthToken) => void
 
   name : string = '';
   organization : string = '';

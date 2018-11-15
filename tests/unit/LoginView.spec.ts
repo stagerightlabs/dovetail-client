@@ -5,7 +5,7 @@ jest.mock('@/repository', () => ({
 }));
 
 import { shallowMount, createLocalVue, RouterLinkStub } from '@vue/test-utils';
-import Login from '@/views/auth/Login.vue';
+import Login from '@/views/session/Login.vue';
 import flushPromises from 'flush-promises';
 import VeeValidate from 'vee-validate';
 import repository from '@/repository';
@@ -28,7 +28,7 @@ describe('Login.vue', () => {
 
   const defaultStoreConfig = {
     modules: {
-      auth: {
+      session: {
         namespaced: true,
         mutations: {
           storeAuthTokenInLocalStorage: jest.fn(),
@@ -78,8 +78,8 @@ describe('Login.vue', () => {
 
     await flushPromises();
     expect(repository.httpPostLogin).toHaveBeenCalled();
-    expect(store.commit).toHaveBeenCalledWith('auth/storeAuthTokenInLocalStorage', fakeToken);
-    expect(store.commit).toHaveBeenCalledWith('auth/setAuthTokenForSession', fakeToken);
+    expect(store.commit).toHaveBeenCalledWith('session/storeAuthTokenInLocalStorage', fakeToken);
+    expect(store.commit).toHaveBeenCalledWith('session/setAuthTokenForSession', fakeToken);
     expect(wrapper.vm.$validator.errors.count()).toBe(0);
   });
 
@@ -95,8 +95,8 @@ describe('Login.vue', () => {
 
     await flushPromises();
     expect(repository.httpPostLogin).not.toHaveBeenCalled();
-    expect(store.commit).not.toHaveBeenCalledWith('auth/storeAuthTokenInLocalStorage', fakeToken);
-    expect(store.commit).not.toHaveBeenCalledWith('auth/setAuthTokenForSession', fakeToken);
+    expect(store.commit).not.toHaveBeenCalledWith('session/storeAuthTokenInLocalStorage', fakeToken);
+    expect(store.commit).not.toHaveBeenCalledWith('session/setAuthTokenForSession', fakeToken);
     expect(wrapper.vm.$validator.errors.count()).toBe(1);
   });
 
@@ -112,8 +112,8 @@ describe('Login.vue', () => {
 
     await flushPromises();
     expect(repository.httpPostLogin).not.toHaveBeenCalled();
-    expect(store.commit).not.toHaveBeenCalledWith('auth/storeAuthTokenInLocalStorage', fakeToken);
-    expect(store.commit).not.toHaveBeenCalledWith('auth/setAuthTokenForSession', fakeToken);
+    expect(store.commit).not.toHaveBeenCalledWith('session/storeAuthTokenInLocalStorage', fakeToken);
+    expect(store.commit).not.toHaveBeenCalledWith('session/setAuthTokenForSession', fakeToken);
     expect(wrapper.vm.$validator.errors.count()).toBe(1);
   });
 });

@@ -25,7 +25,7 @@ const router =  new Router({
     {
       path: '/login',
       name: 'login',
-      component: () => import(/* webpackChunkName: "login" */ './views/auth/Login.vue'),
+      component: () => import(/* webpackChunkName: "login" */ './views/session/Login.vue'),
     },
     {
       path: '/logout',
@@ -39,7 +39,7 @@ const router =  new Router({
     {
       path: '/register',
       name: 'register',
-      component: () => import(/* webpackChunkName: "register" */ './views/auth/Register.vue'),
+      component: () => import(/* webpackChunkName: "register" */ './views/session/Register.vue'),
     },
     {
       path: '/about',
