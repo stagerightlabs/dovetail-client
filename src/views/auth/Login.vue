@@ -36,11 +36,11 @@
 
 <script lang="ts">
 import store from '@/store/index';
-import { State, Mutation } from 'vuex-class';
 import repository from '@/repository';
 import { AuthToken, User } from '@/types';
 import { AuthState } from '@/store/types';
 import BaseView from '@/mixins/BaseView.ts';
+import { State, Mutation } from 'vuex-class';
 import Component, { mixins } from 'vue-class-component';
 const namespace: string = 'auth';
 
@@ -56,7 +56,6 @@ const namespace: string = 'auth';
   password : string = '';
 
   async login() {
-
     this.$validator.validateAll()
       .then((valid) => {
         if (valid) {
@@ -65,7 +64,7 @@ const namespace: string = 'auth';
       })
   }
 
-  submitCredentials() {
+  private submitCredentials() {
     // Request an auth token from the api
     repository.httpPostLogin({email: this.email, password: this.password})
       .then((response) => {

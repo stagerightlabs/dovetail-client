@@ -30,5 +30,5 @@ export default {
 
     httpPostRegister(registration: any): AxiosPromise<any> {
         return axios.post('/register', registration);
-    }
-}
+    },
+};

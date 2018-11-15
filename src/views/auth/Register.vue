@@ -3,23 +3,50 @@
     <div class="card">
       <div class="input-group">
         <label>Organization:</label>
-        <input type="text" v-model="organization">
+        <input
+          type="text"
+          id="text-organization"
+          v-model="organization"
+          name="organization"
+          required
+          v-validate
+        >
       </div>
       <div class="input-group">
         <label>Your Full Name:</label>
-        <input type="text" v-model="name">
+        <input
+          type="text"
+          id="text-name"
+          v-model="name"
+          name="name"
+          required
+          v-validate
+        >
       </div>
       <div class="input-group">
         <label>Email:</label>
-        <input type="text" v-model="email">
+        <input
+          type="text"
+          id="text-email"
+          v-model="email"
+        >
       </div>
       <div class="input-group">
         <label>Password:</label>
-        <input type="password" v-model="password">
+        <input
+          type="password"
+          id="password-password"
+          v-model="password"
+        >
       </div>
       <div class="input-group">
         <label>Confirm Password:</label>
-        <input type="password" v-model="password_confirmation" @keyup.enter="register">
+        <input
+          type="password"
+          id="password-confirmation"
+          v-model="password_confirmation"
+          @keyup.enter="register"
+        >
       </div>
       <div class="flex items-center justify-end text-right">
         <button class="btn btn-teal" @click="register">Register</button>
@@ -32,19 +59,21 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
 import repository from '@/repository';
 import { Mutation } from 'vuex-class';
-import Component from 'vue-class-component';
 import { AuthState } from '@/store/types';
 import { AuthToken, User } from '@/types';
+import BaseView from '@/mixins/BaseView.ts';
+import Component, { mixins } from 'vue-class-component';
 const namespace: string = 'auth';
 
-@Component({})
-export default class RegisterView extends Vue {
+@Component({
+  $_veeValidate: { validator: "new" }
+})
+export default class RegisterView extends mixins(BaseView) {
 
-  @Mutation('storeAuthTokenInLocalStorage', {namespace: 'auth'}) storeAuthTokenInLocalStorage : any
-  @Mutation('setAuthTokenForSession', {namespace: 'auth'}) setAuthTokenForSession : any
+  @Mutation('auth/storeAuthTokenInLocalStorage') storeAuthTokenInLocalStorage! : (authToken: AuthToken) => void
+  @Mutation('auth/setAuthTokenForSession') setAuthTokenForSession! : (authToken: AuthToken) => void
 
   name : string = '';
   organization : string = '';
@@ -52,31 +81,31 @@ export default class RegisterView extends Vue {
   password : string = '';
   password_confirmation : string = '';
 
-  register() {
+  async register() {
+    this.$validator.validateAll()
+      .then((valid) => {
+        if (valid) {
+          this.submitRegistration()
+        }
+      })
+  }
+
+  private submitRegistration() {
     repository.httpPostRegister({
       name: this.name,
       organization: this.organization,
       email: this.email,
       password: this.password,
-      password_confirmation: this.password
+      password_confirmation: this.password_confirmation,
     })
     .then((response) => {
       const authToken: AuthToken = response && response.data;
-      const now = new Date();
-      authToken.expiration_date = new Date(now.getTime() + (authToken.expires_in * 1000));
-      localStorage.setItem('access_token', authToken.access_token);
-      localStorage.setItem('access_expiration', authToken.expiration_date.toDateString());
-
       this.storeAuthTokenInLocalStorage(authToken);
       this.setAuthTokenForSession(authToken);
     }).catch((error) => {
-      console.log('error', error);
+      this.handleResponseErrors(error);
     })
   }
 
 }
 </script>
-
-<style>
-
-</style>
