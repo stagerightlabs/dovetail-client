@@ -61,11 +61,8 @@ describe('Register.vue', () => {
       store: createStore(),
       sync: false,
     };
-    const wrapper = shallowMount(Register, merge(defaultMountingOptions, overrides));
 
-    wrapper.vm.$validator.errors.clear();
-
-    return wrapper;
+    return shallowMount(Register, merge(defaultMountingOptions, overrides));
   }
 
   test('a user can register in', async () => {
@@ -85,6 +82,7 @@ describe('Register.vue', () => {
     expect(store.commit).toHaveBeenCalledWith('auth/storeAuthTokenInLocalStorage', fakeToken);
     expect(store.commit).toHaveBeenCalledWith('auth/setAuthTokenForSession', fakeToken);
     expect(wrapper.vm.$validator.errors.count()).toBe(0);
+    wrapper.vm.$validator.errors.clear();
   });
 
   test('the organization name field is required', async () => {
@@ -105,6 +103,7 @@ describe('Register.vue', () => {
     expect(store.commit).not.toHaveBeenCalledWith('auth/storeAuthTokenInLocalStorage', fakeToken);
     expect(store.commit).not.toHaveBeenCalledWith('auth/setAuthTokenForSession', fakeToken);
     expect(wrapper.vm.$validator.errors.items).toHaveLength(1);
+    wrapper.vm.$validator.errors.clear();
   });
 
   test('the user name field is required', async () => {
@@ -112,8 +111,6 @@ describe('Register.vue', () => {
     const store = createStore();
     store.commit = jest.fn(() => Promise.resolve());
     const wrapper = createWrapper({ store });
-    wrapper.vm.$validator.errors.clear();
-    console.log(wrapper.vm.$validator.errors.items);
 
     wrapper.find('#text-organization').setValue('Stage Right Labs');
     // wrapper.find('#text-name').setValue('Ryan Durham');
@@ -127,5 +124,69 @@ describe('Register.vue', () => {
     expect(store.commit).not.toHaveBeenCalledWith('auth/storeAuthTokenInLocalStorage', fakeToken);
     expect(store.commit).not.toHaveBeenCalledWith('auth/setAuthTokenForSession', fakeToken);
     expect(wrapper.vm.$validator.errors.items).toHaveLength(1);
+    wrapper.vm.$validator.errors.clear();
+  });
+
+  test('the email field is required', async () => {
+    jest.resetAllMocks();
+    const store = createStore();
+    store.commit = jest.fn(() => Promise.resolve());
+    const wrapper = createWrapper({ store });
+
+    wrapper.find('#text-organization').setValue('Stage Right Labs');
+    wrapper.find('#text-name').setValue('Ryan Durham');
+    // wrapper.find('#text-email').setValue('ryan@stagerightlabs.com');
+    wrapper.find('#password-password').setValue('secret');
+    wrapper.find('#password-confirmation').setValue('secret');
+    wrapper.find('button').trigger('click');
+
+    await flushPromises();
+    expect(repository.httpPostRegister).not.toHaveBeenCalled();
+    expect(store.commit).not.toHaveBeenCalledWith('auth/storeAuthTokenInLocalStorage', fakeToken);
+    expect(store.commit).not.toHaveBeenCalledWith('auth/setAuthTokenForSession', fakeToken);
+    expect(wrapper.vm.$validator.errors.items).toHaveLength(1);
+    wrapper.vm.$validator.errors.clear();
+  });
+
+  test('the password field is required', async () => {
+    jest.resetAllMocks();
+    const store = createStore();
+    store.commit = jest.fn(() => Promise.resolve());
+    const wrapper = createWrapper({ store });
+
+    wrapper.find('#text-organization').setValue('Stage Right Labs');
+    wrapper.find('#text-name').setValue('Ryan Durham');
+    wrapper.find('#text-email').setValue('ryan@stagerightlabs.com');
+    // wrapper.find('#password-password').setValue('secret');
+    wrapper.find('#password-confirmation').setValue('secret');
+    wrapper.find('button').trigger('click');
+
+    await flushPromises();
+    expect(repository.httpPostRegister).not.toHaveBeenCalled();
+    expect(store.commit).not.toHaveBeenCalledWith('auth/storeAuthTokenInLocalStorage', fakeToken);
+    expect(store.commit).not.toHaveBeenCalledWith('auth/setAuthTokenForSession', fakeToken);
+    expect(wrapper.vm.$validator.errors.items).toHaveLength(1);
+    wrapper.vm.$validator.errors.clear();
+  });
+
+  test('the password confirmation field is required', async () => {
+    jest.resetAllMocks();
+    const store = createStore();
+    store.commit = jest.fn(() => Promise.resolve());
+    const wrapper = createWrapper({ store });
+
+    wrapper.find('#text-organization').setValue('Stage Right Labs');
+    wrapper.find('#text-name').setValue('Ryan Durham');
+    wrapper.find('#text-email').setValue('ryan@stagerightlabs.com');
+    wrapper.find('#password-password').setValue('secret');
+    // wrapper.find('#password-confirmation').setValue('secret');
+    wrapper.find('button').trigger('click');
+
+    await flushPromises();
+    expect(repository.httpPostRegister).not.toHaveBeenCalled();
+    expect(store.commit).not.toHaveBeenCalledWith('auth/storeAuthTokenInLocalStorage', fakeToken);
+    expect(store.commit).not.toHaveBeenCalledWith('auth/setAuthTokenForSession', fakeToken);
+    expect(wrapper.vm.$validator.errors.items).toHaveLength(1);
+    wrapper.vm.$validator.errors.clear();
   });
 });

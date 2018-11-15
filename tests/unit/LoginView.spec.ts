@@ -61,11 +61,8 @@ describe('Login.vue', () => {
       store: createStore(),
       sync: false,
     };
-    const wrapper = shallowMount(Login, merge(defaultMountingOptions, overrides));
 
-    wrapper.vm.$validator.errors.clear();
-
-    return wrapper;
+    return shallowMount(Login, merge(defaultMountingOptions, overrides));
   }
 
   test('a user can log in', async () => {
@@ -100,7 +97,7 @@ describe('Login.vue', () => {
     expect(repository.httpPostLogin).not.toHaveBeenCalled();
     expect(store.commit).not.toHaveBeenCalledWith('auth/storeAuthTokenInLocalStorage', fakeToken);
     expect(store.commit).not.toHaveBeenCalledWith('auth/setAuthTokenForSession', fakeToken);
-    expect(wrapper.vm.$validator.errors.items).toHaveLength(1);
+    expect(wrapper.vm.$validator.errors.count()).toBe(1);
   });
 
   test('the email field is required', async () => {

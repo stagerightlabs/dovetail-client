@@ -11,6 +11,7 @@
           required
           v-validate
         >
+        <div class="input-error">{{ errors.first('organization') }}</div>
       </div>
       <div class="input-group">
         <label>Your Full Name:</label>
@@ -22,6 +23,7 @@
           required
           v-validate
         >
+        <div class="input-error">{{ errors.first('name') }}</div>
       </div>
       <div class="input-group">
         <label>Email:</label>
@@ -29,7 +31,11 @@
           type="text"
           id="text-email"
           v-model="email"
+          name="email"
+          required
+          v-validate
         >
+        <div class="input-error">{{ errors.first('email') }}</div>
       </div>
       <div class="input-group">
         <label>Password:</label>
@@ -37,7 +43,11 @@
           type="password"
           id="password-password"
           v-model="password"
+          name="password"
+          required
+          v-validate
         >
+        <div class="input-error">{{ errors.first('password') }}</div>
       </div>
       <div class="input-group">
         <label>Confirm Password:</label>
@@ -46,7 +56,11 @@
           id="password-confirmation"
           v-model="password_confirmation"
           @keyup.enter="register"
+          name="password_confirmation"
+          required
+          v-validate
         >
+        <div class="input-error">{{ errors.first('password_confirmation') }}</div>
       </div>
       <div class="flex items-center justify-end text-right">
         <button class="btn btn-teal" @click="register">Register</button>
