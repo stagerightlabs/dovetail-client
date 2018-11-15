@@ -18,6 +18,10 @@
   @apply bg-blue-lighter
 }
 
+.btn-blue.disabled {
+  @apply .bg-blue-lighter .cursor-not-allowed;
+}
+
 .btn-link {
   @apply no-underline inline-block align-baseline font-bold text-sm text-black
 }

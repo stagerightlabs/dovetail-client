@@ -64,7 +64,12 @@ e<template>
         <div class="input-error">{{ errors.first('password_confirmation') }}</div>
       </div>
       <div class="flex items-center justify-end text-right">
-        <button class="btn btn-blue" @click="register">Register</button>
+        <button class="btn btn-blue" :class="{'disabled': registration_submitted}" @click="register">
+          <span v-if="registration_submitted" class="mx-7">
+            <fa-icon icon="spinner" spin></fa-icon>
+          </span>
+          <span v-else>Register</span>
+        </button>
       </div>
     </div>
     <div class="mt-4">
@@ -95,12 +100,14 @@ export default class RegisterView extends mixins(BaseView) {
   email : string = '';
   password : string = '';
   password_confirmation : string = '';
+  registration_submitted = false;
 
   async register() {
     this.$validator.validateAll()
       .then((valid) => {
         if (valid) {
-          this.submitRegistration()
+        this.submitRegistration()
+        this.registration_submitted = true;
         }
       })
   }
@@ -119,6 +126,7 @@ export default class RegisterView extends mixins(BaseView) {
       this.setAuthTokenForSession(authToken);
     }).catch((error) => {
       this.handleResponseErrors(error);
+      this.registration_submitted = false;
     })
   }
 
