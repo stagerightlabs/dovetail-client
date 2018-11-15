@@ -1,11 +1,11 @@
 jest.mock('@/repository', () => ({
-  httpPostLogin: jest.fn(() => Promise.resolve({
+  httpPostRegister: jest.fn(() => Promise.resolve({
     data: fakeToken,
   })),
 }));
 
 import { shallowMount, createLocalVue, RouterLinkStub } from '@vue/test-utils';
-import Login from '@/views/auth/Login.vue';
+import Register from '@/views/auth/Register.vue';
 import flushPromises from 'flush-promises';
 import VeeValidate from 'vee-validate';
 import repository from '@/repository';
@@ -24,7 +24,7 @@ const localVue = createLocalVue();
 localVue.use(Vuex);
 localVue.use(VeeValidate, { inject: false, delay: 1 });
 
-describe('Login.vue', () => {
+describe('Register.vue', () => {
 
   const defaultStoreConfig = {
     modules: {
@@ -61,62 +61,71 @@ describe('Login.vue', () => {
       store: createStore(),
       sync: false,
     };
-    const wrapper = shallowMount(Login, merge(defaultMountingOptions, overrides));
+    const wrapper = shallowMount(Register, merge(defaultMountingOptions, overrides));
 
     wrapper.vm.$validator.errors.clear();
 
     return wrapper;
   }
 
-  test('a user can log in', async () => {
+  test('a user can register in', async () => {
     const store = createStore();
     store.commit = jest.fn(() => Promise.resolve());
     const wrapper = createWrapper({ store });
 
-    const emailInput = wrapper.find('input[type="email"]');
-    emailInput.setValue('email@example.com');
-    const passwordInput = wrapper.find('input[type="password"]');
-    passwordInput.setValue('secret');
+    wrapper.find('#text-organization').setValue('Stage Right Labs');
+    wrapper.find('#text-name').setValue('Ryan Durham');
+    wrapper.find('#text-email').setValue('ryan@stagerightlabs.com');
+    wrapper.find('#password-password').setValue('secret');
+    wrapper.find('#password-confirmation').setValue('secret');
     wrapper.find('button').trigger('click');
 
     await flushPromises();
-    expect(repository.httpPostLogin).toHaveBeenCalled();
+    expect(repository.httpPostRegister).toHaveBeenCalled();
     expect(store.commit).toHaveBeenCalledWith('auth/storeAuthTokenInLocalStorage', fakeToken);
     expect(store.commit).toHaveBeenCalledWith('auth/setAuthTokenForSession', fakeToken);
     expect(wrapper.vm.$validator.errors.count()).toBe(0);
   });
 
-  test('the password field is required', async () => {
+  test('the organization name field is required', async () => {
     jest.resetAllMocks();
     const store = createStore();
     store.commit = jest.fn(() => Promise.resolve());
     const wrapper = createWrapper({ store });
 
-    const emailInput = wrapper.find('input[type="email"]');
-    emailInput.setValue('email@example.com');
+    // wrapper.find('#text-organization').setValue('Stage Right Labs');
+    wrapper.find('#text-name').setValue('Ryan Durham');
+    wrapper.find('#text-email').setValue('ryan@stagerightlabs.com');
+    wrapper.find('#password-password').setValue('secret');
+    wrapper.find('#password-confirmation').setValue('secret');
     wrapper.find('button').trigger('click');
 
     await flushPromises();
-    expect(repository.httpPostLogin).not.toHaveBeenCalled();
+    expect(repository.httpPostRegister).not.toHaveBeenCalled();
     expect(store.commit).not.toHaveBeenCalledWith('auth/storeAuthTokenInLocalStorage', fakeToken);
     expect(store.commit).not.toHaveBeenCalledWith('auth/setAuthTokenForSession', fakeToken);
     expect(wrapper.vm.$validator.errors.items).toHaveLength(1);
   });
 
-  test('the email field is required', async () => {
+  test('the user name field is required', async () => {
     jest.resetAllMocks();
     const store = createStore();
     store.commit = jest.fn(() => Promise.resolve());
     const wrapper = createWrapper({ store });
+    wrapper.vm.$validator.errors.clear();
+    console.log(wrapper.vm.$validator.errors.items);
 
-    const passwordInput = wrapper.find('input[type="password"]');
-    passwordInput.setValue('secret');
+    wrapper.find('#text-organization').setValue('Stage Right Labs');
+    // wrapper.find('#text-name').setValue('Ryan Durham');
+    wrapper.find('#text-email').setValue('ryan@stagerightlabs.com');
+    wrapper.find('#password-password').setValue('secret');
+    wrapper.find('#password-confirmation').setValue('secret');
     wrapper.find('button').trigger('click');
 
     await flushPromises();
-    expect(repository.httpPostLogin).not.toHaveBeenCalled();
+    expect(repository.httpPostRegister).not.toHaveBeenCalled();
     expect(store.commit).not.toHaveBeenCalledWith('auth/storeAuthTokenInLocalStorage', fakeToken);
     expect(store.commit).not.toHaveBeenCalledWith('auth/setAuthTokenForSession', fakeToken);
-    expect(wrapper.vm.$validator.errors.count()).toBe(1);
+    expect(wrapper.vm.$validator.errors.items).toHaveLength(1);
   });
 });

@@ -36,18 +36,18 @@
 
 <script lang="ts">
 import store from '@/store/index';
-import { State, Mutation } from 'vuex-class';
 import repository from '@/repository';
 import { AuthToken, User } from '@/types';
 import { AuthState } from '@/store/types';
-import BaseComponent from '@/mixins/BaseComponent.ts';
+import BaseView from '@/mixins/BaseView.ts';
+import { State, Mutation } from 'vuex-class';
 import Component, { mixins } from 'vue-class-component';
 const namespace: string = 'auth';
 
 @Component({
   $_veeValidate: { validator: "new" }
 })
-  export default class LoginView extends mixins(BaseComponent) {
+  export default class LoginView extends mixins(BaseView) {
   @State('profile') profile!: AuthState;
   @Mutation('auth/storeAuthTokenInLocalStorage') storeAuthTokenInLocalStorage! : (authToken: AuthToken) => void
   @Mutation('auth/setAuthTokenForSession') setAuthTokenForSession! : (authToken: AuthToken) => void
@@ -56,18 +56,15 @@ const namespace: string = 'auth';
   password : string = '';
 
   async login() {
-
     this.$validator.validateAll()
       .then((valid) => {
         if (valid) {
           this.submitCredentials()
         }
-      }).catch((response) => {
-        console.log('caught error')
       })
   }
 
-  submitCredentials() {
+  private submitCredentials() {
     // Request an auth token from the api
     repository.httpPostLogin({email: this.email, password: this.password})
       .then((response) => {
