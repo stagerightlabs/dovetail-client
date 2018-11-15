@@ -1,6 +1,7 @@
 e<template>
-  <main class="pin mx-auto h-full flex flex-col justify-center items-center">
+  <main role="main" class="pin mx-auto h-screen flex flex-col justify-center items-center">
     <div class="card">
+      <h1 class="mb-4 text-center">Register</h1>
       <div class="input-group">
         <label>Organization:</label>
         <input
@@ -63,11 +64,11 @@ e<template>
         <div class="input-error">{{ errors.first('password_confirmation') }}</div>
       </div>
       <div class="flex items-center justify-end text-right">
-        <button class="btn btn-teal" @click="register">Register</button>
+        <button class="btn btn-blue" @click="register">Register</button>
       </div>
     </div>
     <div class="mt-4">
-      <router-link class="text-grey-dark font-bold no-underline" :to="{ name: 'login'}">Already Have an Account?</router-link>
+      <router-link class="text-grey-dark font-bold no-underline" :to="{ name: 'login'}">Do you already have an Account?</router-link>
     </div>
   </main>
 </template>

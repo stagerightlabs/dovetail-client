@@ -10,6 +10,14 @@
   @apply bg-teal
 }
 
+.btn-blue {
+  @apply bg-blue-light text-white
+}
+
+.btn-blue:hover {
+  @apply bg-blue-lighter
+}
+
 .btn-link {
   @apply no-underline inline-block align-baseline font-bold text-sm text-black
 }

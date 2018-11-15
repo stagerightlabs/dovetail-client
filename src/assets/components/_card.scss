@@ -1,11 +1,7 @@
 .card {
-  @apply bg-white rounded w-full overflow-hidden shadow-lg p-4 mx-10 text-left;
+  @apply bg-white rounded w-full overflow-hidden shadow-lg mx-10 px-8 py-6 text-left;
 
   @screen md {
-    @apply w-1/3 px-8 py-6;
+    @apply w-128 ;
   }
-
- @screen lg {
-   @apply w-128;
- }
 }

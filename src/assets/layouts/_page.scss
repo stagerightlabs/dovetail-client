@@ -1,0 +1,20 @@
+.page {
+  @apply .m-2;
+
+  @screen sm {
+    @apply .m-4;
+  }
+
+  @screen lg {
+    @apply .m-8;
+  }
+
+  .content {
+    width: 100%;
+    @apply .p-2 .mt-2 .bg-blue-lightest rounded;
+
+    @screen sm {
+      @apply .p-4 .mt-4;
+    }
+  }
+}

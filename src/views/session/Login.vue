@@ -1,6 +1,7 @@
 <template>
-  <div class="pin mx-auto h-full flex flex-col justify-center items-center">
+  <main role="main" class="pin mx-auto h-screen flex flex-col justify-center items-center">
     <div class="card">
+      <h1 class="mb-4 text-center">Login</h1>
       <div class="mb-4">
         <label>Email:</label>
         <input
@@ -29,9 +30,9 @@
       </div>
     </div>
     <div class="mt-4">
-      <router-link class="text-grey-dark font-bold no-underline" :to="{ name: 'register'}">Create a New Account</router-link>
+      <router-link class="text-grey-dark font-bold no-underline" :to="{ name: 'register'}">Would you like to create a new account?</router-link>
     </div>
-  </div>
+  </main>
 </template>
 
 <script lang="ts">

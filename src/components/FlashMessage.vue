@@ -1,5 +1,5 @@
 <template>
-  <div class="alert" :class="level" role="alert" v-show="show">
+  <div role="alert" aria-live="assertive" class="alert" :class="level" v-show="show">
     <div class="dismiss" @click="dismiss">
       <fa-icon icon="times" class="float-right cursor-pointer mx-2"></fa-icon>
     </div>

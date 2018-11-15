@@ -1,0 +1,36 @@
+.main-menu {
+  @apply bg-blue text-blue-lightest;
+
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 20;
+
+  @screen sm {
+    @apply flex flex-col shadow-md min-h-screen .relative;
+    width: 156px ;
+  }
+
+  @screen xl {
+    width: 256px;
+  }
+
+  nav {
+    @apply flex flex-col;
+
+    a {
+      @apply .p-4 .border-b .border-blue-lighter .text-blue-lightest .no-underline;
+    }
+
+    a:hover, a:visited {
+
+    }
+
+    a:first-child {
+      @apply border-t;
+    }
+  }
+}
