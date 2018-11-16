@@ -1,6 +1,9 @@
 <template>
   <div id="app">
-    <router-view/>
+    <transition name="fade" mode="out-in">
+      <router-view></router-view>
+    </transition>
+
     <!-- Alert Stack -->
     <flash-stack></flash-stack>
   </div>
@@ -23,4 +26,12 @@ export default class App extends Vue {
 
 <style lang="scss">
 @import './assets/styles.scss';
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .1s ease;
+}
+.fade-enter, .fade-leave-to {
+  opacity: 0;
+}
+
 </style>
