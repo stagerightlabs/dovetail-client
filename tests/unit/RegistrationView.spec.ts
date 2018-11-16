@@ -1,5 +1,5 @@
-jest.mock('@/repository', () => ({
-  httpPostRegister: jest.fn(() => Promise.resolve({
+jest.mock('@/repositories/session', () => ({
+  register: jest.fn(() => Promise.resolve({
     data: fakeToken,
   })),
 }));
@@ -9,7 +9,7 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import Register from '@/views/session/Register.vue';
 import flushPromises from 'flush-promises';
 import VeeValidate from 'vee-validate';
-import repository from '@/repository';
+import http from '@/repositories/session';
 import { AuthToken } from '@/types';
 import merge from 'lodash.merge';
 import Vuex from 'vuex';
@@ -80,7 +80,7 @@ describe('Register.vue', () => {
     wrapper.find('button').trigger('click');
 
     await flushPromises();
-    expect(repository.httpPostRegister).toHaveBeenCalled();
+    expect(http.register).toHaveBeenCalled();
     expect(store.commit).toHaveBeenCalledWith('session/storeAuthTokenInLocalStorage', fakeToken);
     expect(store.commit).toHaveBeenCalledWith('session/setAuthTokenForSession', fakeToken);
     expect(wrapper.vm.$validator.errors.count()).toBe(0);
@@ -101,7 +101,7 @@ describe('Register.vue', () => {
     wrapper.find('button').trigger('click');
 
     await flushPromises();
-    expect(repository.httpPostRegister).not.toHaveBeenCalled();
+    expect(http.register).not.toHaveBeenCalled();
     expect(store.commit).not.toHaveBeenCalledWith('session/storeAuthTokenInLocalStorage', fakeToken);
     expect(store.commit).not.toHaveBeenCalledWith('session/setAuthTokenForSession', fakeToken);
     expect(wrapper.vm.$validator.errors.items).toHaveLength(1);
@@ -122,7 +122,7 @@ describe('Register.vue', () => {
     wrapper.find('button').trigger('click');
 
     await flushPromises();
-    expect(repository.httpPostRegister).not.toHaveBeenCalled();
+    expect(http.register).not.toHaveBeenCalled();
     expect(store.commit).not.toHaveBeenCalledWith('session/storeAuthTokenInLocalStorage', fakeToken);
     expect(store.commit).not.toHaveBeenCalledWith('session/setAuthTokenForSession', fakeToken);
     expect(wrapper.vm.$validator.errors.items).toHaveLength(1);
@@ -143,7 +143,7 @@ describe('Register.vue', () => {
     wrapper.find('button').trigger('click');
 
     await flushPromises();
-    expect(repository.httpPostRegister).not.toHaveBeenCalled();
+    expect(http.register).not.toHaveBeenCalled();
     expect(store.commit).not.toHaveBeenCalledWith('session/storeAuthTokenInLocalStorage', fakeToken);
     expect(store.commit).not.toHaveBeenCalledWith('session/setAuthTokenForSession', fakeToken);
     expect(wrapper.vm.$validator.errors.items).toHaveLength(1);
@@ -164,7 +164,7 @@ describe('Register.vue', () => {
     wrapper.find('button').trigger('click');
 
     await flushPromises();
-    expect(repository.httpPostRegister).not.toHaveBeenCalled();
+    expect(http.register).not.toHaveBeenCalled();
     expect(store.commit).not.toHaveBeenCalledWith('session/storeAuthTokenInLocalStorage', fakeToken);
     expect(store.commit).not.toHaveBeenCalledWith('session/setAuthTokenForSession', fakeToken);
     expect(wrapper.vm.$validator.errors.items).toHaveLength(1);
@@ -185,7 +185,7 @@ describe('Register.vue', () => {
     wrapper.find('button').trigger('click');
 
     await flushPromises();
-    expect(repository.httpPostRegister).not.toHaveBeenCalled();
+    expect(http.register).not.toHaveBeenCalled();
     expect(store.commit).not.toHaveBeenCalledWith('session/storeAuthTokenInLocalStorage', fakeToken);
     expect(store.commit).not.toHaveBeenCalledWith('session/setAuthTokenForSession', fakeToken);
     expect(wrapper.vm.$validator.errors.items).toHaveLength(1);

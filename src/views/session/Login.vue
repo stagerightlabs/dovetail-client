@@ -37,7 +37,7 @@
 
 <script lang="ts">
 import store from '@/store/index';
-import repository from '@/repository';
+import http from '@/repositories/session';
 import { AuthToken, User } from '@/types';
 import { AuthState } from '@/store/types';
 import BaseView from '@/mixins/BaseView.ts';
@@ -67,7 +67,7 @@ const namespace: string = 'auth';
 
   private submitCredentials() {
     // Request an auth token from the api
-    repository.httpPostLogin({email: this.email, password: this.password})
+    http.login({email: this.email, password: this.password})
       .then((response) => {
         const authToken: AuthToken = response && response.data;
         this.storeAuthTokenInLocalStorage(authToken);

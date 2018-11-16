@@ -79,8 +79,8 @@ e<template>
 </template>
 
 <script lang="ts">
-import repository from '@/repository';
 import { Mutation } from 'vuex-class';
+import http from '@/repositories/session';
 import { AuthState } from '@/store/types';
 import { AuthToken, User } from '@/types';
 import BaseView from '@/mixins/BaseView.ts';
@@ -113,7 +113,7 @@ export default class RegisterView extends mixins(BaseView) {
   }
 
   private submitRegistration() {
-    repository.httpPostRegister({
+    http.register({
       name: this.name,
       organization: this.organization,
       email: this.email,

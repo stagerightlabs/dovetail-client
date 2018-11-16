@@ -1,5 +1,5 @@
-jest.mock('@/repository', () => ({
-  httpPostLogin: jest.fn(() => Promise.resolve({
+jest.mock('@/repositories/session', () => ({
+  login: jest.fn(() => Promise.resolve({
     data: fakeToken,
   })),
 }));
@@ -7,8 +7,8 @@ jest.mock('@/repository', () => ({
 import { shallowMount, createLocalVue, RouterLinkStub } from '@vue/test-utils';
 import Login from '@/views/session/Login.vue';
 import flushPromises from 'flush-promises';
+import http from '@/repositories/session';
 import VeeValidate from 'vee-validate';
-import repository from '@/repository';
 import { AuthToken } from '@/types';
 import merge from 'lodash.merge';
 import Vuex from 'vuex';
@@ -77,7 +77,7 @@ describe('Login.vue', () => {
     wrapper.find('button').trigger('click');
 
     await flushPromises();
-    expect(repository.httpPostLogin).toHaveBeenCalled();
+    expect(http.login).toHaveBeenCalled();
     expect(store.commit).toHaveBeenCalledWith('session/storeAuthTokenInLocalStorage', fakeToken);
     expect(store.commit).toHaveBeenCalledWith('session/setAuthTokenForSession', fakeToken);
     expect(wrapper.vm.$validator.errors.count()).toBe(0);
@@ -94,7 +94,7 @@ describe('Login.vue', () => {
     wrapper.find('button').trigger('click');
 
     await flushPromises();
-    expect(repository.httpPostLogin).not.toHaveBeenCalled();
+    expect(http.login).not.toHaveBeenCalled();
     expect(store.commit).not.toHaveBeenCalledWith('session/storeAuthTokenInLocalStorage', fakeToken);
     expect(store.commit).not.toHaveBeenCalledWith('session/setAuthTokenForSession', fakeToken);
     expect(wrapper.vm.$validator.errors.count()).toBe(1);
@@ -111,7 +111,7 @@ describe('Login.vue', () => {
     wrapper.find('button').trigger('click');
 
     await flushPromises();
-    expect(repository.httpPostLogin).not.toHaveBeenCalled();
+    expect(http.login).not.toHaveBeenCalled();
     expect(store.commit).not.toHaveBeenCalledWith('session/storeAuthTokenInLocalStorage', fakeToken);
     expect(store.commit).not.toHaveBeenCalledWith('session/setAuthTokenForSession', fakeToken);
     expect(wrapper.vm.$validator.errors.count()).toBe(1);
