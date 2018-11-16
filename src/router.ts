@@ -51,7 +51,11 @@ const router =  new Router({
       name: 'register',
       component: () => import(/* webpackChunkName: "register" */ './views/session/Register.vue'),
     },
-
+    {
+      path: '/forgot-password',
+      name: 'forgotPassword',
+      component: () => import(/* webpackChunkName: "register" */ './views/session/ForgotPassword.vue'),
+    },
   ],
 });
 

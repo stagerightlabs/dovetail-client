@@ -25,7 +25,7 @@
         <div class="input-error">{{ errors.first('password') }}</div>
       </div>
       <div class="flex items-center justify-between">
-        <a class="btn btn-link pl-0" href="#">Forgot Password?</a>
+        <router-link class="btn btn-link pl-0" :to="{ name: 'forgotPassword'}">Forgot Password?</router-link>
         <button class="btn btn-blue" @click="login">Login</button>
       </div>
     </div>

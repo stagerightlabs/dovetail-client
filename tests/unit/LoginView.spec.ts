@@ -83,7 +83,7 @@ describe('Login.vue', () => {
     expect(wrapper.vm.$validator.errors.count()).toBe(0);
   });
 
-  test('the password field is required', async () => {
+  test('the email field is required', async () => {
     jest.resetAllMocks();
     const store = createStore();
     store.commit = jest.fn(() => Promise.resolve());
@@ -100,7 +100,7 @@ describe('Login.vue', () => {
     expect(wrapper.vm.$validator.errors.count()).toBe(1);
   });
 
-  test('the email field is required', async () => {
+  test('the password field is required', async () => {
     jest.resetAllMocks();
     const store = createStore();
     store.commit = jest.fn(() => Promise.resolve());

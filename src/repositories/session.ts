@@ -9,4 +9,8 @@ export default {
     register(registration: any): AxiosPromise<any> {
         return axios.post('/register', registration);
     },
+
+    requestPasswordReset(email: any): AxiosPromise<any> {
+        return axios.post('/password/email', email);
+    },
 };
