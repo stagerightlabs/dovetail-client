@@ -5,6 +5,7 @@ jest.mock('@/repository', () => ({
 }));
 
 import { shallowMount, createLocalVue, RouterLinkStub } from '@vue/test-utils';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import Register from '@/views/session/Register.vue';
 import flushPromises from 'flush-promises';
 import VeeValidate from 'vee-validate';
@@ -23,6 +24,7 @@ const fakeToken: AuthToken = {
 const localVue = createLocalVue();
 localVue.use(Vuex);
 localVue.use(VeeValidate, { inject: false, delay: 1 });
+localVue.component('fa-icon', FontAwesomeIcon);
 
 describe('Register.vue', () => {
 
