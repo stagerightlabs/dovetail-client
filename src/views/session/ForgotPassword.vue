@@ -2,7 +2,7 @@
   <main role="main" class="billboard-wrapper">
     <div class="billboard">
       <h1 class="mb-4 text-center">Forgot your password?</h1>
-      <div class="mb-4">
+      <div class="input-group">
         <label>Email:</label>
         <input
           type="email"
@@ -10,6 +10,7 @@
           name="email"
           required
           v-validate
+          @keyup.enter="requestReset"
         >
         <div class="input-error">{{ errors.first('email') }}</div>
       </div>
@@ -30,7 +31,6 @@
 <script lang="ts">
 import http from '@/repositories/session';
 import BaseView from '@/mixins/BaseView.ts';
-import { State, Mutation } from 'vuex-class';
 import Component, { mixins } from 'vue-class-component';
 
 @Component({
