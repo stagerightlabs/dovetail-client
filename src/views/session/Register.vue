@@ -1,6 +1,6 @@
 e<template>
-  <main role="main" class="pin mx-auto h-screen flex flex-col justify-center items-center">
-    <div class="card">
+  <main role="main" class="billboard-wrapper">
+    <div class="billboard">
       <h1 class="mb-4 text-center">Register</h1>
       <div class="input-group">
         <label>Organization:</label>
