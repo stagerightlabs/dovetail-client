@@ -40,11 +40,11 @@ const router =  new Router({
     {
       path: '/logout',
       beforeEnter: (to, from, next) => {
-        store.dispatch('auth/logout');
+        store.dispatch('session/logout');
         next({
-          path: '/login'
+          path: '/login',
         });
-      }
+      },
     },
     {
       path: '/register',

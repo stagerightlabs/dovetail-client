@@ -27,21 +27,21 @@ const dictionary = {
 VeeValidate.Validator.localize('en', dictionary);
 Vue.use(VeeValidate, { inject: false, delay: 1 });
 
-// Install vue a11y helper, when not in production
-if (process.env.NODE_ENV !== 'production') {
-  // tslint:disable-next-line
-  const VueAxe = require('vue-axe')
-  Vue.use(VueAxe, {
-    config: {
-      rules: [],
-    },
-  });
-}
+// Install vue a11y helper when not in production
+// if (process.env.NODE_ENV !== 'production') {
+//   // tslint:disable-next-line
+//   const VueAxe = require('vue-axe')
+//   Vue.use(VueAxe, {
+//     config: {
+//       rules: [],
+//     },
+//   });
+// }
 
 Vue.config.productionTip = false;
 
 // Attempt to read credentials from local storage
-store.dispatch('auth/tryAutoLogin');
+store.dispatch('session/tryAutoLogin');
 
 new Vue({
   router,
