@@ -133,6 +133,8 @@ let colors = {
   // 'haze': 'rgba(255, 255, 255, 0.5)',
   // 'haze-lighter': 'rgba(255, 255, 255, 0.25)',
   'haze-lightest': 'rgba(255, 255, 255, 0.1)',
+
+  'slate': "#2a3e4e",
 }
 
 module.exports = {
