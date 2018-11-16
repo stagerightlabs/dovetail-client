@@ -26,7 +26,7 @@
       </div>
       <div class="flex items-center justify-between">
         <a class="btn btn-link pl-0" href="#">Forgot Password?</a>
-        <button class="btn btn-teal" @click="login">Login</button>
+        <button class="btn btn-blue" @click="login">Login</button>
       </div>
     </div>
     <div class="mt-4">

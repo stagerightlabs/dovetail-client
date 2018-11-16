@@ -1,5 +1,5 @@
 .card {
-  @apply bg-white rounded w-full overflow-hidden shadow-lg mx-10 px-8 py-6 text-left;
+  @apply bg-white rounded w-full overflow-hidden shadow-lg mx-10 px-8 py-6 text-left text-grey-darkest;
 
   @screen md {
     @apply w-128 ;
