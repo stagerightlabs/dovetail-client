@@ -27,6 +27,14 @@ export default class App extends Vue {
 <style lang="scss">
 @import './assets/styles.scss';
 
+body {
+  font-family: 'Open Sans', sans-serif;
+}
+
+h1,h2,h3,h4,h5,h6 {
+  font-family: 'Montserrat', sans-serif;
+}
+
 .fade-enter-active, .fade-leave-active {
   transition: opacity .1s ease;
 }
