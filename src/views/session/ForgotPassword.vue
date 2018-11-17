@@ -1,7 +1,7 @@
 <template>
   <main role="main" class="billboard-wrapper">
     <div class="billboard">
-      <h1 class="mb-4 text-center">Forgot your password?</h1>
+      <h1 class="mb-6 text-center">Forgot your password?</h1>
       <div class="input-group">
         <label>Email:</label>
         <input
@@ -15,11 +15,7 @@
         <div class="input-error">{{ errors.first('email') }}</div>
       </div>
       <div class="flex items-center justify-end">
-        <button class="btn btn-blue" @click="requestReset">
-          <span v-if="requestSubmitted" class="mx-7">
-            <fa-icon icon="spinner" spin></fa-icon>
-          </span>
-          <span v-else>Request Reset</span></button>
+        <action-button class="btn btn-blue" @click="requestReset" :spin="requestSubmitted">Request Reset</action-button>
       </div>
     </div>
     <div class="mt-4">
@@ -32,9 +28,11 @@
 import http from '@/repositories/session';
 import BaseView from '@/mixins/BaseView.ts';
 import Component, { mixins } from 'vue-class-component';
+import ActionButton from '@/components/ActionButton.vue';
 
 @Component({
-  $_veeValidate: { validator: "new" }
+  $_veeValidate: { validator: "new" },
+  components: { ActionButton }
 })
   export default class LoginView extends mixins(BaseView) {
 

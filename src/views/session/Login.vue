@@ -1,7 +1,7 @@
 <template>
   <main role="main" class="billboard-wrapper">
     <div class="billboard">
-      <h1 class="mb-4 text-center">Login</h1>
+      <h1 class="mb-6 text-center">Login</h1>
       <div class="input-group">
         <label>Email:</label>
         <input
