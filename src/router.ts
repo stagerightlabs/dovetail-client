@@ -62,6 +62,11 @@ const router =  new Router({
       component: () => import(/* webpackChunkName: "reset-password" */ './views/session/ResetPassword.vue'),
       props: true,
     },
+    {
+      path: '*',
+      name: '404',
+      component: () => import(/* webpackChunkName: "reset-password" */ './views/PageNotFound.vue'),
+    },
   ],
 });
 
