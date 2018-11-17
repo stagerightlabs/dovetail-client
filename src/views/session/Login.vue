@@ -26,7 +26,7 @@
       </div>
       <div class="flex items-center justify-between">
         <router-link class="btn btn-link pl-0" :to="{ name: 'forgotPassword'}">Forgot Password?</router-link>
-        <button class="btn btn-blue" @click="login">Login</button>
+        <button class="btn btn-slate" @click="login">Login</button>
       </div>
     </div>
     <div class="mt-4">

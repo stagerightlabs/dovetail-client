@@ -134,7 +134,11 @@ let colors = {
   // 'haze-lighter': 'rgba(255, 255, 255, 0.25)',
   'haze-lightest': 'rgba(255, 255, 255, 0.1)',
 
-  'slate': "#2a3e4e",
+  'slate-darker': '#0b2031',
+  'slate-dark': '#1a3144',
+  'slate': '#2a3e4e',
+  'slate-light': '#40576b',
+  'slate-lighter': '#5e7284',
 }
 
 module.exports = {
@@ -202,7 +206,7 @@ module.exports = {
 
   fonts: {
     'sans': [
-      'open-sans',
+      'Open Sans',
       'Montserrat',
       'sans-serif',
     ],

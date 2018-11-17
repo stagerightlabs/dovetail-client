@@ -22,6 +22,18 @@
   @apply .bg-blue-lighter .cursor-not-allowed;
 }
 
+.btn-slate {
+  @apply bg-slate-light text-white
+}
+
+.btn-slate:hover {
+  @apply bg-slate-lighter
+}
+
+.btn-slate.disabled {
+  @apply .bg-slate-lighter .cursor-not-allowed;
+}
+
 .btn-link {
   @apply no-underline inline-block align-baseline font-bold text-sm .text-grey-darkest
 }

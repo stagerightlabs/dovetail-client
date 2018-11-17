@@ -1,7 +1,7 @@
 e<template>
   <main role="main" class="billboard-wrapper">
     <div class="billboard">
-      <h1 class="mb-4 text-center">Register</h1>
+      <h1 class="mb-6 text-center">Register</h1>
       <div class="input-group">
         <label>Organization:</label>
         <input
@@ -64,12 +64,7 @@ e<template>
         <div class="input-error">{{ errors.first('password_confirmation') }}</div>
       </div>
       <div class="flex items-center justify-end text-right">
-        <button class="btn btn-blue" :class="{'disabled': registration_submitted}" @click="register">
-          <span v-if="registration_submitted" class="mx-7">
-            <fa-icon icon="spinner" spin></fa-icon>
-          </span>
-          <span v-else>Register</span>
-        </button>
+        <action-button class="btn btn-slate" @click="register" :spin="registration_submitted">Register</action-button>
       </div>
     </div>
     <div class="mt-4">
@@ -85,10 +80,14 @@ import { AuthState } from '@/store/types';
 import { AuthToken, User } from '@/types';
 import BaseView from '@/mixins/BaseView.ts';
 import Component, { mixins } from 'vue-class-component';
+import ActionButton from '@/components/ActionButton.vue';
 const namespace: string = 'auth';
 
 @Component({
-  $_veeValidate: { validator: "new" }
+  $_veeValidate: { validator: "new" },
+  components: {
+    ActionButton
+  }
 })
 export default class RegisterView extends mixins(BaseView) {
 

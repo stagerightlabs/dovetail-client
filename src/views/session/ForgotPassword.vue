@@ -15,7 +15,7 @@
         <div class="input-error">{{ errors.first('email') }}</div>
       </div>
       <div class="flex items-center justify-end">
-        <action-button class="btn btn-blue" @click="requestReset" :spin="requestSubmitted">Request Reset</action-button>
+        <action-button class="btn btn-slate" @click="requestReset" :spin="requestSubmitted">Request Reset</action-button>
       </div>
     </div>
     <div class="mt-4">
