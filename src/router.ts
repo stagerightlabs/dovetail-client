@@ -1,7 +1,6 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import store from './store/index';
-import Home from '@/views/Home.vue';
 
 Vue.use(Router);
 
@@ -20,7 +19,7 @@ const router =  new Router({
     {
       path: '/',
       name: 'home',
-      component: Home,
+      component: () => import(/* webpackChunkName: "console " */ './views/Console.vue'),
       children: [
         {
           path: '/about',
