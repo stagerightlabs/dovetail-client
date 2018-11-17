@@ -4,12 +4,15 @@ jest.mock('@/repositories/session', () => ({
   })),
 }));
 
-import { shallowMount, createLocalVue, RouterLinkStub } from '@vue/test-utils';
+import { mount, createLocalVue, RouterLinkStub } from '@vue/test-utils';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { library } from '@fortawesome/fontawesome-svg-core';
 import Register from '@/views/session/Register.vue';
 import flushPromises from 'flush-promises';
-import VeeValidate from 'vee-validate';
 import http from '@/repositories/session';
+import { config } from '@vue/test-utils';
+import VeeValidate from 'vee-validate';
 import { AuthToken } from '@/types';
 import merge from 'lodash.merge';
 import Vuex from 'vuex';
@@ -25,6 +28,8 @@ const localVue = createLocalVue();
 localVue.use(Vuex);
 localVue.use(VeeValidate, { inject: false, delay: 1 });
 localVue.component('fa-icon', FontAwesomeIcon);
+library.add(faSpinner);
+config.logModifiedComponents = false;
 
 describe('Register.vue', () => {
 
@@ -64,7 +69,7 @@ describe('Register.vue', () => {
       sync: false,
     };
 
-    return shallowMount(Register, merge(defaultMountingOptions, overrides));
+    return mount(Register, merge(defaultMountingOptions, overrides));
   }
 
   test('a user can register in', async () => {
@@ -77,7 +82,7 @@ describe('Register.vue', () => {
     wrapper.find('#text-email').setValue('ryan@stagerightlabs.com');
     wrapper.find('#password-password').setValue('secret');
     wrapper.find('#password-confirmation').setValue('secret');
-    wrapper.find('button').trigger('click');
+    wrapper.find({ name: 'ActionButton' }).trigger('click');
 
     await flushPromises();
     expect(http.register).toHaveBeenCalled();
@@ -98,7 +103,7 @@ describe('Register.vue', () => {
     wrapper.find('#text-email').setValue('ryan@stagerightlabs.com');
     wrapper.find('#password-password').setValue('secret');
     wrapper.find('#password-confirmation').setValue('secret');
-    wrapper.find('button').trigger('click');
+    wrapper.find({ name: 'ActionButton' }).trigger('click');
 
     await flushPromises();
     expect(http.register).not.toHaveBeenCalled();
@@ -119,7 +124,7 @@ describe('Register.vue', () => {
     wrapper.find('#text-email').setValue('ryan@stagerightlabs.com');
     wrapper.find('#password-password').setValue('secret');
     wrapper.find('#password-confirmation').setValue('secret');
-    wrapper.find('button').trigger('click');
+    wrapper.find({ name: 'ActionButton' }).trigger('click');
 
     await flushPromises();
     expect(http.register).not.toHaveBeenCalled();
@@ -140,7 +145,7 @@ describe('Register.vue', () => {
     // wrapper.find('#text-email').setValue('ryan@stagerightlabs.com');
     wrapper.find('#password-password').setValue('secret');
     wrapper.find('#password-confirmation').setValue('secret');
-    wrapper.find('button').trigger('click');
+    wrapper.find({ name: 'ActionButton' }).trigger('click');
 
     await flushPromises();
     expect(http.register).not.toHaveBeenCalled();
@@ -161,7 +166,7 @@ describe('Register.vue', () => {
     wrapper.find('#text-email').setValue('ryan@stagerightlabs.com');
     // wrapper.find('#password-password').setValue('secret');
     wrapper.find('#password-confirmation').setValue('secret');
-    wrapper.find('button').trigger('click');
+    wrapper.find({name: 'ActionButton'}).trigger('click');
 
     await flushPromises();
     expect(http.register).not.toHaveBeenCalled();
@@ -182,7 +187,7 @@ describe('Register.vue', () => {
     wrapper.find('#text-email').setValue('ryan@stagerightlabs.com');
     wrapper.find('#password-password').setValue('secret');
     // wrapper.find('#password-confirmation').setValue('secret');
-    wrapper.find('button').trigger('click');
+    wrapper.find({ name: 'ActionButton' }).trigger('click');
 
     await flushPromises();
     expect(http.register).not.toHaveBeenCalled();

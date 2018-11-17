@@ -5,8 +5,8 @@ import store from './store/index';
 import './registerServiceWorker';
 import VeeValidate from 'vee-validate';
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faTimes, faBars, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { faTimes, faBars, faSpinner } from '@fortawesome/free-solid-svg-icons';
 
 // Register FA Icon assets
 library.add(faTimes);
