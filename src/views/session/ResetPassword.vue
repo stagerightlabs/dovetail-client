@@ -1,5 +1,5 @@
 <template>
-  <main role="main" class="billboard-wrapper">
+  <main role="main" class="center-xy">
     <div class="billboard">
       <h1 class="mb-4 text-center">Reset Your Password</h1>
       <div class="input-group">

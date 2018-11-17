@@ -11,10 +11,15 @@
   display: inline-block; // new - for reading order in macOS VO
 }
 
+.center-xy {
+  @apply pin mx-auto h-screen flex flex-col justify-center items-center;
+}
+
 
 ::selection {
   @apply .bg-blue;
 }
+
 ::-moz-selection {
   @apply .bg-blue;
 }

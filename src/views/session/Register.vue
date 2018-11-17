@@ -1,5 +1,5 @@
 e<template>
-  <main role="main" class="billboard-wrapper">
+  <main role="main" class="center-xy">
     <div class="billboard">
       <h1 class="mb-6 text-center">Register</h1>
       <div class="input-group">
