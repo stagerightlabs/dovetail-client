@@ -17,4 +17,8 @@ export default {
     changePassword(credentials: any): AxiosPromise<any> {
         return axios.post('/password/reset', credentials);
     },
+
+    getUser(): AxiosPromise<any> {
+        return axios.get('/user');
+    }
 };
