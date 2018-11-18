@@ -1,4 +1,4 @@
-import { User, AuthToken } from '../types'
+import { User, AuthToken, Organization } from '../types'
 
 export interface RootState {
     version: string;
@@ -7,4 +7,5 @@ export interface RootState {
 export interface AuthState {
     user?: User;
     authToken?: AuthToken;
+    organization?: Organization;
 }

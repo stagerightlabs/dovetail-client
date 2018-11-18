@@ -7,6 +7,7 @@ import { getters } from './getters';
 
 export const state: AuthState = {
     user: undefined,
+    organization: undefined,
     authToken: undefined,
 };
 

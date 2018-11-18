@@ -23,7 +23,15 @@
   }
 
   .session-footer {
-    @apply  .border-t .border-grey-darker .h-16
+    @apply  .border-t .border-grey-darker .flex .justify-start .items-center;
+
+    .avatar {
+      @apply .p-2;
+    }
+
+    .user {
+      @apply .py-2 .text-xs .overflow-hidden;
+    }
   }
 
   #menu {

@@ -20,5 +20,9 @@ export default {
 
     getUser(): AxiosPromise<any> {
         return axios.get('/user');
-    }
+    },
+
+    getOrganization(): AxiosPromise<any> {
+        return axios.get('/organization');
+    },
 };

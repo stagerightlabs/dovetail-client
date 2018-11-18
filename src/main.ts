@@ -6,12 +6,13 @@ import './registerServiceWorker';
 import VeeValidate from 'vee-validate';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import { faTimes, faBars, faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { faTimes, faBars, faSpinner, faUserCircle } from '@fortawesome/free-solid-svg-icons';
 
 // Register FA Icon assets
 library.add(faTimes);
 library.add(faBars);
 library.add(faSpinner);
+library.add(faUserCircle);
 
 // Register the FA icon plugin
 Vue.component('fa-icon', FontAwesomeIcon);

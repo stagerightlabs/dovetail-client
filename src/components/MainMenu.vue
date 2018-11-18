@@ -1,8 +1,9 @@
 <template>
   <div class="main-menu sm:flex" :class="{'hidden': mobileNavHidden}" role="navigation">
     <div id="menu" class="flex flex-column">
-      <header>
-        <h1 class="nav-header">Hello World</h1>
+      <header class="nav-header">
+        <h1 class="mb-2">dovetail</h1>
+        <h4>{{ this.organization.name }}</h4>
       </header>
       <nav>
         <router-link to="/">Dashboard</router-link>
@@ -13,7 +14,13 @@
     </div>
     <footer>
       <div class="session-footer" v-if="isAuthenticated">
-        <p>There is an active session</p>
+        <div class="avatar">
+          <fa-icon icon="user-circle" size="2x"></fa-icon>
+        </div>
+        <div class="user">
+          <p>{{ user.name }}</p>
+          <p>{{ user.email }}</p>
+        </div>
       </div>
     </footer>
     <div class="block sm:hidden absolute pin-t pin-r">
@@ -27,13 +34,17 @@
 <script lang="ts">
 import EventBus from '@/bus';
 import { Action, Getter } from 'vuex-class'
+import { User, Organization } from '@/types';
 import { Vue, Component, Prop } from 'vue-property-decorator'
 
 @Component({})
 export default class MainMenu extends Vue {
-  @Action('logout', {namespace: 'session'}) logout : any;
-  @Getter('isAuthenticated', {namespace: 'session'}) isAuthenticated! : boolean;
+
   @Prop({ default: true }) mobileNavHidden!: boolean
+  @Getter('user', {namespace: 'session'}) user! : User;
+  @Action('logout', {namespace: 'session'}) logout : any;
+  @Getter('organization', {namespace: 'session'}) organization! : User;
+  @Getter('isAuthenticated', {namespace: 'session'}) isAuthenticated! : boolean;
 
   terminateSession() {
     this.logout()

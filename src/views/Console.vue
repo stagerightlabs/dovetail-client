@@ -18,22 +18,26 @@
 <script lang="ts">
 import Vue from 'vue'
 import EventBus from '@/bus';
-import BaseView from '@/mixins/BaseView.ts';
+import { User, Organization } from '@/types';
 import http from '@/repositories/session';
-import { Action, Getter } from 'vuex-class'
-import Component, { mixins } from 'vue-class-component';
+import BaseView from '@/mixins/BaseView.ts';
 import MainMenu from '@/components/MainMenu.vue';
+import { Action, Getter, Mutation } from 'vuex-class'
+import Component, { mixins } from 'vue-class-component';
 
 @Component({
   components: { MainMenu }
 })
 export default class Console extends mixins(BaseView) {
-  @Action('logout', {namespace: 'auth'}) logout : any;
-  @Getter('isAuthenticated', {namespace: 'auth'}) isAuthenticated! : boolean;
 
   mobileNavHidden = true;
   loading = false;
-  user = {};
+
+  @Action('logout', {namespace: 'session'}) logout : any;
+  @Getter('isAuthenticated', {namespace: 'session'}) isAuthenticated! : boolean;
+  @Mutation('saveSessionUser', {namespace: 'session'}) saveSessionUser! : (user: User) => void;
+  @Mutation('saveSessionOrganization', {namespace: 'session'}) saveSessionOrganization! : (organization: Organization) => void;
+  @Getter('profileHasBeenLoaded', {namespace: 'session'}) profileHasBeenLoaded! : boolean;
 
   terminateSession() {
     this.logout()
@@ -52,18 +56,35 @@ export default class Console extends mixins(BaseView) {
   }
 
   beforeMount() {
-    this.loading = true;
+    if (!this.profileHasBeenLoaded) {
+      this.loading = true;
+    }
   }
 
   mounted() {
-    http.getUser()
+    // Fetch the current user's profile
+    const promise1 = http.getUser()
       .then((response) => {
-        this.user = response.data.data;
+        this.saveSessionUser(response.data.data);
       })
       .catch((error) => {
         this.handleResponseErrors(error);
-        this.$router.push({name: 'logout'});
+        //this.$router.push({name: 'logout'});
+      });
+
+    // Fetch the current user's organization
+    const promise2 = http.getOrganization()
+      .then((response) => {
+        this.saveSessionOrganization(response.data.data);
       })
+      .catch((error) => {
+        this.handleResponseErrors(error);
+      });
+
+    // Loading is complete when our promises have been resolved
+    Promise.all([promise1, promise2]).then(() => {
+      this.loading = false;
+    })
   }
 }
 </script>

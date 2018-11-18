@@ -1,6 +1,6 @@
 import { MutationTree } from 'vuex';
 import { AuthState } from '../types';
-import { AuthToken } from '../../types';
+import { AuthToken, User, Organization } from '../../types';
 
 export const mutations: MutationTree<AuthState> = {
     storeAuthTokenInLocalStorage(state, authToken: AuthToken) {
@@ -22,5 +22,11 @@ export const mutations: MutationTree<AuthState> = {
     },
     clearSessionAuthToken(state) {
         state.authToken = undefined;
+    },
+    saveSessionUser(state, user: User) {
+        state.user = user;
+    },
+    saveSessionOrganization(state, organization: Organization) {
+        state.organization = organization;
     },
 };

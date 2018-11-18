@@ -11,7 +11,7 @@
 
   .content {
     width: 100%;
-    @apply .p-2 .mt-2 .bg-blue-lightest rounded;
+    @apply .p-2 .mt-2 .bg-white rounded;
 
     @screen sm {
       @apply .p-4 .mt-4;
