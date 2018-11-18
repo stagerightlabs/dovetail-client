@@ -8,9 +8,10 @@
   left: 0;
   right: 0;
   z-index: 20;
+  @apply flex flex-col .justify-between;
 
   @screen sm {
-    @apply flex flex-col .justify-between shadow-md min-h-screen .relative;
+    @apply shadow-md min-h-screen .relative;
     width: 156px ;
   }
 
@@ -35,10 +36,12 @@
   }
 
   #menu {
-    @apply .flex .flex-col .p-0 .m-0;
+    @apply .flex .flex-col .p-0 .m-0 .flex-grow;
+    min-height: 0;
+    scrollbar-color: #FFF;
 
     nav {
-      @apply flex flex-col w-full;
+      @apply .flex .flex-col .flex-auto .w-full .overflow-x-auto;
 
       a {
         @apply .p-4 .border-b .border-grey-darker .text-white .no-underline;
