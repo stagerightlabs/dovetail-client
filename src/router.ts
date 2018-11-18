@@ -38,6 +38,7 @@ const router =  new Router({
     },
     {
       path: '/logout',
+      name: 'logout',
       beforeEnter: (to, from, next) => {
         store.dispatch('session/logout');
         next({

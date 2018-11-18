@@ -47,7 +47,5 @@ export const actions: ActionTree<AuthState, RootState> = {
     commit('clearSessionAuthToken');
     // Remove auth token from local storage
     commit('removeAuthTokenFromLocalStorage');
-    // Redirect the user to the login page
-    // router.push({ name: 'Login' });
   },
 };
