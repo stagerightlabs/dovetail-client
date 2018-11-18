@@ -8,10 +8,10 @@
   left: 0;
   right: 0;
   z-index: 20;
-  @apply flex flex-col .justify-between;
+  @apply fixed flex flex-col .justify-between;
 
   @screen sm {
-    @apply shadow-md min-h-screen .relative;
+    @apply shadow-md h-screen .sticky;
     width: 156px ;
   }
 
@@ -21,6 +21,10 @@
 
   .nav-header {
     @apply .w-full .text-center .my-8;
+
+    a, a:hover, a:visited {
+      @apply .text-white .no-underline;
+    }
   }
 
   .session-footer {
@@ -33,6 +37,11 @@
     .user {
       @apply .py-2 .text-xs .overflow-hidden;
     }
+
+    a, a:hover, a:visited {
+      @apply .text-white .no-underline;
+    }
+
   }
 
   #menu {
