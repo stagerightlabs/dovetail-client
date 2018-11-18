@@ -2,25 +2,39 @@
   <div class="main-menu sm:flex" :class="{'hidden': mobileNavHidden}" role="navigation">
     <div id="menu" class="flex flex-column">
       <header class="nav-header">
-        <h1 class="mb-2">dovetail</h1>
-        <h4>{{ this.organization.name }}</h4>
+        <router-link to="/">
+          <h1 class="mb-2">dovetail</h1>
+          <h4>{{ this.organization.name }}</h4>
+        </router-link>
       </header>
       <nav>
-        <router-link to="/">Dashboard</router-link>
-        <router-link to="/about">About</router-link>
+        <router-link to="#">Notebooks</router-link>
+        <router-link to="#">Categories</router-link>
         <router-link to="/logout">Logout</router-link>
-        <a @click="sendAlert" class="cursor-pointer">Toast</a>
       </nav>
+      <div>
+        <h5 class="text-center mb-4">Administration</h5>
+        <nav>
+          <router-link to="#">Members</router-link>
+          <router-link to="#">Invitations</router-link>
+          <router-link to="#">Teams</router-link>
+          <router-link to="#">Settings</router-link>
+        </nav>
+      </div>
     </div>
     <footer>
       <div class="session-footer" v-if="isAuthenticated">
-        <div class="avatar">
-          <fa-icon icon="user-circle" size="2x"></fa-icon>
-        </div>
-        <div class="user">
-          <p>{{ user.name }}</p>
-          <p>{{ user.email }}</p>
-        </div>
+          <div class="avatar">
+            <router-link to="#">
+              <fa-icon icon="user-circle" size="2x"></fa-icon>
+            </router-link>
+          </div>
+          <div class="user">
+            <router-link to="#">
+              <p>{{ user.name }}</p>
+              <p>{{ user.email }}</p>
+            </router-link>
+          </div>
       </div>
     </footer>
     <div class="block sm:hidden absolute pin-t pin-r">
