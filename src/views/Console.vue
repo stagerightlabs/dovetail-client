@@ -1,5 +1,8 @@
 <template>
-  <div class="flex">
+  <div v-if="loading" class="center-xy">
+    <fa-icon icon="spinner" spin class="text-grey-light" size="4x"></fa-icon>
+  </div>
+  <div v-else class="flex">
     <main-menu :mobile-nav-hidden="mobileNavHidden" @close="hideMobileNav"></main-menu>
     <div class="flex-auto" >
       <router-view/>
@@ -22,11 +25,12 @@ import MainMenu from '@/components/MainMenu.vue';
 @Component({
   components: { MainMenu }
 })
-export default class Home extends Vue {
+export default class Console extends Vue {
   @Action('logout', {namespace: 'auth'}) logout : any;
   @Getter('isAuthenticated', {namespace: 'auth'}) isAuthenticated! : boolean;
 
   mobileNavHidden = true;
+  loading = true;
 
   terminateSession() {
     this.logout()
