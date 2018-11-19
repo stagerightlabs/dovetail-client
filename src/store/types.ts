@@ -8,4 +8,6 @@ export interface AuthState {
     user?: User;
     authToken?: AuthToken;
     organization?: Organization;
+    readonly: boolean;
+    administrator: boolean;
 }

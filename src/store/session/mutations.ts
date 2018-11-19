@@ -29,4 +29,10 @@ export const mutations: MutationTree<AuthState> = {
     saveSessionOrganization(state, organization: Organization) {
         state.organization = organization;
     },
+    saveAdministratorStatus(state, status: boolean) {
+        state.administrator = status;
+    },
+    saveReadonlyStatus(state, status: boolean) {
+        state.readonly = status;
+    },
 };

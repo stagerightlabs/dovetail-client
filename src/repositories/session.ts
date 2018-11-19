@@ -25,4 +25,12 @@ export default {
     getOrganization(): AxiosPromise<any> {
         return axios.get('/organization');
     },
+
+    getAdministratorStatus(): AxiosPromise<any> {
+        return axios.get('/user/admin');
+    },
+
+    getReadOnlyStatus(): AxiosPromise<any> {
+        return axios.get('/user/readonly');
+    }
 };

@@ -23,4 +23,12 @@ export const getters: GetterTree<AuthState, RootState> = {
     organization(state): Organization|undefined {
         return state.organization;
     },
+
+    isAdministrator(state): boolean {
+        return state.administrator;
+    },
+
+    userIsReadOnly(state): boolean {
+        return state.readonly;
+    },
 }

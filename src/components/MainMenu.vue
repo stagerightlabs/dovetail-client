@@ -2,7 +2,7 @@
   <div class="main-menu sm:flex" :class="{'hidden': mobileNavHidden}" role="navigation">
     <div id="menu" class="flex flex-column">
       <header class="nav-header">
-        <router-link to="/">
+        <router-link :to="{name: 'dashboard'}">
           <h1 class="mb-2">dovetail</h1>
           <h4>{{ this.organization.name }}</h4>
         </router-link>
@@ -12,7 +12,7 @@
         <router-link to="#">Categories</router-link>
         <router-link to="/logout">Logout</router-link>
       </nav>
-      <div>
+      <div v-if="isAuthenticated && isAdministrator">
         <h5 class="text-center mb-4">Administration</h5>
         <nav>
           <router-link to="#">Members</router-link>
@@ -56,6 +56,7 @@ export default class MainMenu extends Vue {
 
   @Prop({ default: true }) mobileNavHidden!: boolean
   @Getter('user', {namespace: 'session'}) user! : User;
+  @Getter('isAdministrator', {namespace: 'session'}) isAdministrator! : boolean;
   @Action('logout', {namespace: 'session'}) logout : any;
   @Getter('organization', {namespace: 'session'}) organization! : User;
   @Getter('isAuthenticated', {namespace: 'session'}) isAuthenticated! : boolean;

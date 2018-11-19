@@ -37,6 +37,8 @@ export default class Console extends mixins(BaseView) {
   @Getter('isAuthenticated', {namespace: 'session'}) isAuthenticated! : boolean;
   @Mutation('saveSessionUser', {namespace: 'session'}) saveSessionUser! : (user: User) => void;
   @Mutation('saveSessionOrganization', {namespace: 'session'}) saveSessionOrganization! : (organization: Organization) => void;
+  @Mutation('saveAdministratorStatus', {namespace: 'session'}) saveAdministratorStatus! : (status: boolean) => void;
+  @Mutation('saveReadonlyStatus', {namespace: 'session'}) saveReadonlyStatus! : (status: boolean) => void;
   @Getter('profileHasBeenLoaded', {namespace: 'session'}) profileHasBeenLoaded! : boolean;
 
   terminateSession() {
@@ -81,8 +83,22 @@ export default class Console extends mixins(BaseView) {
         this.handleResponseErrors(error);
       });
 
+    // Is this user an administrator?
+    const promise3 = http.getAdministratorStatus()
+      .then((response) => {
+        this.saveAdministratorStatus(response.data.data);
+      })
+      .catch(() => {});
+
+    // Should this user be restricted to read only access?
+    const promise4 = http.getReadOnlyStatus()
+      .then((response) => {
+        this.saveReadonlyStatus(response.data.data);
+      })
+      .catch(() => {});
+
     // Loading is complete when our promises have been resolved
-    Promise.all([promise1, promise2]).then(() => {
+    Promise.all([promise1, promise2, promise3, promise4]).then(() => {
       this.loading = false;
     })
   }

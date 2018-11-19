@@ -22,12 +22,22 @@ const router =  new Router({
       component: () => import(/* webpackChunkName: "console " */ './views/Console.vue'),
       children: [
         {
+          path: '/dashboard',
+          name: 'dashboard',
+          // route level code-splitting
+          // this generates a separate chunk (about.[hash].js) for this route
+          // which is lazy-loaded when the route is visited.
+          component: () => import(/* webpackChunkName: "dashboard" */ './views/Dashboard.vue'),
+          meta: { requiresAuth: true },
+        },
+        {
           path: '/about',
           name: 'about',
           // route level code-splitting
           // this generates a separate chunk (about.[hash].js) for this route
           // which is lazy-loaded when the route is visited.
           component: () => import(/* webpackChunkName: "about" */ './views/About.vue'),
+          meta: { requiresAuth: true },
         },
       ],
     },
@@ -75,7 +85,7 @@ router.beforeEach((to, from, next) => {
   if (to.matched.some((record) => record.meta.requiresAuth)) {
     // this route requires auth, check if logged in
     // if not, redirect to login page.
-    if (!store.getters.isAuthenticated) {
+    if (!store.getters['session/isAuthenticated']) {
       next({
         path: '/login',
         query: { redirect: to.fullPath },

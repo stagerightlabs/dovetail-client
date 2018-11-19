@@ -9,6 +9,8 @@ export const state: AuthState = {
     user: undefined,
     organization: undefined,
     authToken: undefined,
+    readonly: false,
+    administrator: false,
 };
 
 const namespaced: boolean = true;
