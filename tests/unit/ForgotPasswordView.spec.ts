@@ -66,7 +66,7 @@ describe('ForgotPassword.vue', () => {
   });
 
   test('the email field is required', async () => {
-    jest.resetAllMocks();
+    jest.clearAllMocks();
     const wrapper = createWrapper({});
     wrapper.vm.$router.push({path: '/forgot-password'});
 

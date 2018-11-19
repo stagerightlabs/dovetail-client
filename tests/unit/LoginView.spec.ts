@@ -84,7 +84,7 @@ describe('Login.vue', () => {
   });
 
   test('the email field is required', async () => {
-    jest.resetAllMocks();
+    jest.clearAllMocks();
     const store = createStore();
     store.commit = jest.fn(() => Promise.resolve());
     const wrapper = createWrapper({ store });
@@ -101,7 +101,7 @@ describe('Login.vue', () => {
   });
 
   test('the password field is required', async () => {
-    jest.resetAllMocks();
+    jest.clearAllMocks();
     const store = createStore();
     store.commit = jest.fn(() => Promise.resolve());
     const wrapper = createWrapper({ store });
