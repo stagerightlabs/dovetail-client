@@ -41,3 +41,27 @@
 .btn-link:hover {
   @apply .text-grey-dark
 }
+
+.btn-green {
+  @apply bg-green text-white
+}
+
+.btn-green:hover {
+  @apply bg-green-light
+}
+
+.btn-green.disabled {
+  @apply .bg-green-light .cursor-not-allowed;
+}
+
+.btn-red {
+  @apply bg-red text-white
+}
+
+.btn-red:hover {
+  @apply bg-red-light
+}
+
+.btn-red.disabled {
+  @apply .bg-red-light .cursor-not-allowed;
+}

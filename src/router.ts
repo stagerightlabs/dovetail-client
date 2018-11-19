@@ -24,9 +24,6 @@ const router =  new Router({
         {
           path: '/dashboard',
           name: 'dashboard',
-          // route level code-splitting
-          // this generates a separate chunk (about.[hash].js) for this route
-          // which is lazy-loaded when the route is visited.
           component: () => import(/* webpackChunkName: "dashboard" */ './views/Dashboard.vue'),
           meta: { requiresAuth: true },
         },
@@ -34,10 +31,15 @@ const router =  new Router({
           path: '/about',
           name: 'about',
           // route level code-splitting
-          // this generates a separate chunk (about.[hash].js) for this route
-          // which is lazy-loaded when the route is visited.
           component: () => import(/* webpackChunkName: "about" */ './views/About.vue'),
           meta: { requiresAuth: true },
+        },
+        {
+          path: '/invitations',
+          name: 'invitations',
+          // route level code-splitting
+          component: () => import(/* webpackChunkName: "invitations" */ './views/Invitations.vue'),
+          meta: { requiresAuth: true, requireAdmin: true },
         },
       ],
     },

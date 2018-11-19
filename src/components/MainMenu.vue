@@ -16,8 +16,8 @@
         <h5 class="text-center mb-4">Administration</h5>
         <nav>
           <router-link to="#">Members</router-link>
-          <router-link to="#">Invitations</router-link>
           <router-link to="#">Teams</router-link>
+          <router-link :to="{ name: 'invitations' }">Invitations</router-link>
           <router-link to="#">Settings</router-link>
         </nav>
       </div>

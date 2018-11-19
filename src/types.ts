@@ -33,3 +33,12 @@ export interface Team {
     hashid: string;
     name: string;
 }
+
+export interface Invitation {
+    hashid: string;
+    email: string;
+    revoked_at: string|null;
+    revoked_by: number|null;
+    completed_at: string|null;
+    created_at: string;
+}

@@ -9,12 +9,24 @@
     @apply .m-8;
   }
 
+  .page-header {
+    @apply .text-grey-light;
+  }
+
   .content {
     width: 100%;
     @apply .p-2 .mt-2 .bg-white rounded;
 
     @screen sm {
       @apply .p-4 .mt-4;
+    }
+
+    a, a:visited {
+      @apply .text-slate-light .cursor-pointer;
+    }
+
+    a:hover {
+      @apply .text-slate-lighter;
     }
   }
 }
