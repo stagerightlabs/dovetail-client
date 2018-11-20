@@ -63,6 +63,16 @@
       a:first-child {
         @apply border-t;
       }
+
+      .nav-button {
+        @apply .border-b-0 .text-grey-dark;
+      }
+    }
+
+    nav#administrator {
+      a:last-child {
+        border-bottom: 0;
+      }
     }
   }
 

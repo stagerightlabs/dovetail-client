@@ -10,7 +10,10 @@
       <nav>
         <router-link to="#">Notebooks</router-link>
         <router-link to="#">Categories</router-link>
-        <router-link to="/logout">Logout</router-link>
+        <router-link to="/logout" class="nav-button">
+          <fa-icon icon="sign-out-alt"></fa-icon>
+          Logout
+        </router-link>
       </nav>
       <div v-if="isAuthenticated && isAdministrator">
         <h5 class="text-center mb-4">Administration</h5>
