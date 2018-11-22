@@ -1,0 +1,9 @@
+.modal {
+  @apply .border .rounded border-grey-light .bg-white .mx-2 .p-4 .flex .flex-col .justify-between .leading-normal .max-w-md;
+  z-index: 30;
+
+  @screen md {
+    @apply .m-0;
+    width: 35rem;
+  }
+}

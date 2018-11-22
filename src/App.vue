@@ -1,11 +1,15 @@
 <template>
   <div id="app">
+
     <transition name="fade" mode="out-in">
       <router-view></router-view>
     </transition>
 
     <!-- Alert Stack -->
     <flash-stack></flash-stack>
+
+    <!-- Portals -->
+    <portal-target name="modal"></portal-target>
   </div>
 </template>
 

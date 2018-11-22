@@ -41,4 +41,8 @@ export interface Invitation {
     revoked_by: number|null;
     completed_at: string|null;
     created_at: string;
+    created_at_date?: Date;
+    revoked_at_date?: Date|null;
+    completed_at_date?: Date|null;
+    waitingForPromise?: string;
 }

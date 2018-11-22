@@ -1,12 +1,14 @@
 import Vue from 'vue';
 import App from './App.vue';
 import router from './router';
-import store from './store/index';
 import './registerServiceWorker';
+import store from './store/index';
+import PortalVue from 'portal-vue';
 import VeeValidate from 'vee-validate';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import { faTimes, faBars, faSpinner, faUserCircle, faSyncAlt, faPlus, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
+import { faTimes, faBars, faSpinner, faUserCircle, faSyncAlt, faPlus, faSignOutAlt, faCheck, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+
 
 // Register FA Icon assets
 library.add(faTimes);
@@ -16,6 +18,8 @@ library.add(faUserCircle);
 library.add(faSyncAlt);
 library.add(faPlus);
 library.add(faSignOutAlt);
+library.add(faCheck);
+library.add(faTrashAlt);
 
 // Register the FA icon plugin
 Vue.component('fa-icon', FontAwesomeIcon);
@@ -31,9 +35,12 @@ const dictionary = {
 VeeValidate.Validator.localize('en', dictionary);
 Vue.use(VeeValidate, { inject: false, delay: 500 });
 
+// Register the Portal Vue plugin
+Vue.use(PortalVue);
+
 // Install vue a11y helper when not in production
 // if (process.env.NODE_ENV !== 'production') {
-//   // tslint:disable-next-line
+  //   // tslint:disable-next-line
 //   const VueAxe = require('vue-axe')
 //   Vue.use(VueAxe, {
 //     config: {

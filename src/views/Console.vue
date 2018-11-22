@@ -4,7 +4,7 @@
   </div>
   <div v-else class="flex">
     <main-menu :mobile-nav-hidden="mobileNavHidden" @close="hideMobileNav"></main-menu>
-    <div class="flex-auto" >
+    <div class="flex-auto">
       <router-view/>
     </div>
     <div class="block sm:hidden absolute pin-t pin-r">

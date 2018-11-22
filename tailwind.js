@@ -53,7 +53,7 @@ let colors = {
   // 'grey': '#b8c2cc',
   'grey-light': '#dae1e7',
   'grey-lighter': '#f1f5f8',
-  // 'grey-lightest': '#f8fafc',
+  'grey-lightest': '#f8fafc',
   'white': '#ffffff',
 
   // 'red-darkest': '#3b0d0c',
@@ -61,7 +61,7 @@ let colors = {
   'red-dark': '#cc1f1a',
   'red': '#e3342f',
   'red-light': '#ef5753',
-  // 'red-lighter': '#f9acaa',
+  'red-lighter': '#f9acaa',
   'red-lightest': '#fcebea',
 
   // 'orange-darkest': '#462a16',
@@ -85,7 +85,7 @@ let colors = {
   'green-dark': '#1f9d55',
   'green': '#38c172',
   'green-light': '#51d88a',
-  // 'green-lighter': '#a2f5bf',
+  'green-lighter': '#a2f5bf',
   'green-lightest': '#e3fcec',
 
   // 'teal-darkest': '#0d3331',
@@ -133,6 +133,8 @@ let colors = {
   // 'haze': 'rgba(255, 255, 255, 0.5)',
   // 'haze-lighter': 'rgba(255, 255, 255, 0.25)',
   'haze-lightest': 'rgba(255, 255, 255, 0.1)',
+
+  'smoke': 'rgba(0, 0, 0, 0.5)',
 
   'slate-darker': '#0b2031',
   'slate-dark': '#1a3144',

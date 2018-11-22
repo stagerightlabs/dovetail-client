@@ -1,0 +1,117 @@
+table {
+  @apply .text-sm .w-full .leading-normal .text-left mb-4;
+
+  thead {
+    tr {
+      th {
+        @apply .font-bold .px-1;
+      }
+    }
+  }
+
+  tbody {
+    tr {
+      @apply .border-t .border-b;
+
+      td {
+        @apply .py-2 .px-1;
+      }
+
+      &:hover {
+          td {
+            @apply .bg-grey-lightest;
+          }
+        }
+
+    }
+
+    tr.danger {
+
+      @apply .bg-red-lighter;
+
+      &:hover {
+          td {
+            @apply .bg-red-lighter;
+          }
+        }
+    }
+
+    tr.success {
+
+      @apply .bg-green-lighter;
+
+      &:hover {
+          td {
+            @apply .bg-green-lighter;
+          }
+        }
+    }
+  }
+}
+
+// table, thead, tbody {
+//   display: block;
+
+//   @screen md {
+//     display: table;
+//   }
+// }
+
+// tr {
+//   display: block;
+
+//   @screen md {
+//     display: table-row;
+//   }
+// }
+
+// td {
+//   display: block;
+
+//   @screen md {
+//     display: table-cell;
+//   }
+// }
+
+// .responsive-table {
+//   //overflow-x: auto;
+// }
+
+
+@media screen and (max-width: 767px) {
+  thead {
+    display: none;
+  }
+
+  tr {
+    display: block;
+    position: relative;
+    padding: 1.2em 0;
+    &:first-of-type {
+      border-top: 1px solid #ccc;
+    }
+  }
+
+  td {
+    display: block;
+    text-align: center;
+    padding: .1rem !important;
+
+    &:before {
+      content: attr(  );
+      display: table-cell;
+      font-weight: bold;
+      //  padding: 0.2em 0.6em 0.2em 0;
+      text-align: right;
+    }
+
+    &:last-child:after {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      border-bottom: 1px solid #ccc;
+    }
+  }
+}
