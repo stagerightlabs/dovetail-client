@@ -22,7 +22,7 @@ import { User, Organization } from '@/types';
 import http from '@/repositories/session';
 import BaseView from '@/mixins/BaseView.ts';
 import MainMenu from '@/components/MainMenu.vue';
-import { Action, Getter, Mutation } from 'vuex-class'
+import { Action, Getter, Mutation } from 'vuex-class';
 import Component, { mixins } from 'vue-class-component';
 
 @Component({
