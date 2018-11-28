@@ -15,9 +15,9 @@ export interface AuthToken {
 export interface User {
     name: string;
     email: string;
-    email_verified_at?: string;
+    email_verified_at?: string|null;
     phone?: string;
-    phone_verified_at?: string;
+    phone_verified_at?: string|null;
     teams: Team[];
 }
 

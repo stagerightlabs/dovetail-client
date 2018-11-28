@@ -6,6 +6,19 @@
     <div class="page-header flex justify-between items-center ">
       <h1>Profile</h1>
     </div>
+    <div class="content">
+      <p>
+        {{ user.name }}
+      </p>
+      <p>
+        {{ user.email }}
+      </p>
+      <p v-if="user.email_verified_at">Email Verified</p>
+      <p v-else>
+        Your email address has not been verified.
+        <a id="link-resend-email" @click="sendVerificationEmail">Send Verification Email</a>
+      </p>
+    </div>
   </main>
 </template>
 
@@ -32,7 +45,7 @@ export default class ProfileView extends mixins(BaseView) {
   /**
    * Ask the api to send a new email verification link
    */
-  resendVerificationEmail() {
+  sendVerificationEmail() {
     profile.resendEmailVerificationLink()
       .then((response) => {
         this.toast({message: response.data.message, level: 'success'})

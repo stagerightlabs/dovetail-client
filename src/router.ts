@@ -28,6 +28,12 @@ const router =  new Router({
           meta: { requiresAuth: true },
         },
         {
+          path: '/profile',
+          name: 'profile',
+          component: () => import(/* webpackChunkName: "profile" */ './views/Profile.vue'),
+          meta: { requiresAuth: true },
+        },
+        {
           path: '/about',
           name: 'about',
           // route level code-splitting
@@ -73,6 +79,13 @@ const router =  new Router({
       name: 'resetPassword',
       component: () => import(/* webpackChunkName: "reset-password" */ './views/session/ResetPassword.vue'),
       props: true,
+    },
+    {
+      path: '/verify-email/:token',
+      name: 'verifyEmail',
+      component: () => import(/* webpackChunkName: "verify-email" */ './views/VerifyEmail.vue'),
+      props: true,
+      meta: {requiresAuth: true }
     },
     {
       path: '*',

@@ -35,7 +35,7 @@ describe('Register.vue', () => {
 
   const defaultStoreConfig = {
     modules: {
-      auth: {
+      session: {
         namespaced: true,
         mutations: {
           storeAuthTokenInLocalStorage: jest.fn(),
