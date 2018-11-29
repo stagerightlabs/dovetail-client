@@ -33,11 +33,23 @@ export default class VerifyEmail extends mixins(BaseView) {
             this.$router.push({name: 'profile'});
           })
           .catch((error) => {
+            // We shouldn't ever encounter this,
+            // but this is a failsafe, just in case
             this.handleResponseErrors(error);
+            this.toast({
+              message: "There was a problem syncing with the server.",
+              level: 'danger'
+            });
+            this.$router.push({name: 'profile'});
           });
       })
       .catch((error) => {
         this.handleResponseErrors(error);
+        this.toast({
+          message: error.response.data.message,
+          level: 'danger'
+        });
+        this.$router.push({name: 'profile'});
       });
   }
 

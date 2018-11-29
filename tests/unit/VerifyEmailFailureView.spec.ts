@@ -1,17 +1,15 @@
 jest.mock('@/repositories/profile', () => ({
-verifyEmail: jest.fn(() => Promise.resolve({
+verifyEmail: jest.fn(() => Promise.reject({
     data: {
       data: {
-        message: 'Thank you for verifying your email address',
+        message: 'There was a problem',
       },
     },
   })),
 }));
 jest.mock('@/repositories/session', () => ({
   getUser: jest.fn(() => Promise.resolve({
-    data: {
-      data: fakeVerifiedUser,
-    },
+    data: fakeVerifiedUser,
   })),
 }));
 
@@ -21,15 +19,15 @@ import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import VerifyEmailView from '@/views/VerifyEmail.vue';
 import profile from '@/repositories/profile';
+import session from '@/repositories/session';
 import flushPromises from 'flush-promises';
 import { config } from '@vue/test-utils';
-import VueRouter from 'vue-router';
+import VeeValidate from 'vee-validate';
 import merge from 'lodash.merge';
 import { User } from '@/types';
 import Vuex from 'vuex';
 
 const localVue = createLocalVue();
-localVue.use(VueRouter);
 localVue.use(Vuex);
 localVue.component('fa-icon', FontAwesomeIcon);
 library.add(faSpinner);
@@ -83,20 +81,14 @@ describe('Profile.vue', () => {
 
     const defaultMountingOptions = {
       mocks: {
-
+        $route: {
+          params: {},
+        },
       },
       stubs: {
         RouterLink: RouterLinkStub,
       },
       localVue,
-      router: new VueRouter({
-        routes: [
-          {
-            path: '/profile',
-            name: 'profile',
-          },
-        ],
-      }),
       store: createStore(),
       sync: false,
       propsData: {
@@ -107,14 +99,13 @@ describe('Profile.vue', () => {
     return mount(VerifyEmailView, merge(defaultMountingOptions, overrides));
   }
 
-  test('it makes email verification requests', async () => {
+  test('it handles failed email verification requests', async () => {
     const store = createStore();
     store.commit = jest.fn(() => Promise.resolve());
     createWrapper({ store });
 
-    await flushPromises();
-    expect(profile.verifyEmail).toHaveBeenCalledWith({code: 'fake-email-code'});
-    expect(store.commit).toHaveBeenCalled();
+    expect(profile.verifyEmail).toHaveBeenCalledWith({ code: 'fake-email-code' });
+    expect(store.commit).not.toHaveBeenCalled();
   });
 
 });
