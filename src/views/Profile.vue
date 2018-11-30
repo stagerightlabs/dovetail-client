@@ -78,7 +78,7 @@ export default class ProfileView extends mixins(BaseView) {
   /**
    * Validate profile data before proceeding
    */
-  updateProfile() {
+  async updateProfile() {
     this.$validator.validateAll()
       .then((valid) => {
         if (valid) {
@@ -90,7 +90,7 @@ export default class ProfileView extends mixins(BaseView) {
   /**
    * Submit a profile update request to the server
    */
-  requestProfileUpdate() {
+  private requestProfileUpdate() {
     this.loading = true;
     profile.updateProfile(this.user)
       .then((response) => {

@@ -85,7 +85,14 @@ const router =  new Router({
       name: 'verifyEmail',
       component: () => import(/* webpackChunkName: "verify-email" */ './views/VerifyEmail.vue'),
       props: true,
-      meta: {requiresAuth: true }
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/invitations/:code',
+      name: 'acceptInvitation',
+      component: () => import(/* webpackChunkName: "verify-email" */ './views/AcceptInvitation.vue'),
+      props: true,
+      meta: { requireGuest: true },
     },
     {
       path: '*',
@@ -101,6 +108,17 @@ router.beforeEach((to, from, next) => {
     // this route requires auth, check if logged in
     // if not, redirect to login page.
     if (!store.getters['session/isAuthenticated']) {
+      next({
+        path: '/login',
+        query: { redirect: to.fullPath },
+      });
+    } else {
+      next();
+    }
+  } else if (to.matched.some((record) => record.meta.requiresGuest)) {
+    // we don't want this route to be available to users
+    // with active sessions
+    if (store.getters['session/isAuthenticated']) {
       next({
         path: '/login',
         query: { redirect: to.fullPath },

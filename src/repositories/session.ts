@@ -32,5 +32,13 @@ export default {
 
     getReadOnlyStatus(): AxiosPromise<any> {
         return axios.get('/user/readonly');
-    }
+    },
+
+    confirmInvitation(code: string): AxiosPromise<any> {
+        return axios.get(`invitations/${code}/confirm`);
+    },
+
+    acceptInvitation(code: string, credentials: any): AxiosPromise<any> {
+        return axios.post(`invitations/${ code }/redeem`, credentials);
+    },
 };
