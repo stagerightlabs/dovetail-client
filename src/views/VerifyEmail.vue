@@ -45,10 +45,6 @@ export default class VerifyEmail extends mixins(BaseView) {
       })
       .catch((error) => {
         this.handleResponseErrors(error);
-        this.toast({
-          message: error.response.data.message,
-          level: 'danger'
-        });
         this.$router.push({name: 'profile'});
       });
   }

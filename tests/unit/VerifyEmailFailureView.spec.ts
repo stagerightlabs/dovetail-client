@@ -19,16 +19,15 @@ import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import VerifyEmailView from '@/views/VerifyEmail.vue';
 import profile from '@/repositories/profile';
-import session from '@/repositories/session';
-import flushPromises from 'flush-promises';
 import { config } from '@vue/test-utils';
-import VeeValidate from 'vee-validate';
+import VueRouter from 'vue-router';
 import merge from 'lodash.merge';
 import { User } from '@/types';
 import Vuex from 'vuex';
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
+localVue.use(VueRouter);
 localVue.component('fa-icon', FontAwesomeIcon);
 library.add(faSpinner);
 config.logModifiedComponents = false;
@@ -81,14 +80,20 @@ describe('Profile.vue', () => {
 
     const defaultMountingOptions = {
       mocks: {
-        $route: {
-          params: {},
-        },
+
       },
       stubs: {
         RouterLink: RouterLinkStub,
       },
       localVue,
+      router: new VueRouter({
+        routes: [
+          {
+            path: '/profile',
+            name: 'profile',
+          },
+        ],
+      }),
       store: createStore(),
       sync: false,
       propsData: {
