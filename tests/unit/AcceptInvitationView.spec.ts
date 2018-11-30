@@ -1,15 +1,23 @@
 jest.mock('@/repositories/session', () => ({
-  changePassword: jest.fn(() => Promise.resolve({
+  confirmInvitation: jest.fn(() => Promise.resolve({
+    data: {
+      data: {
+        email: 'wisoky.assunta@example.net',
+        code: 'YMKGEWXMZVQRPBZL',
+      },
+    },
+  })),
+  acceptInvitation: jest.fn(() => Promise.resolve({
     data: fakeToken,
   })),
 }));
 
 import { shallowMount, createLocalVue, RouterLinkStub } from '@vue/test-utils';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import ResetPassword from '@/views/session/ResetPassword.vue';
+import AcceptInvitation from '@/views/session/AcceptInvitation.vue';
 import flushPromises from 'flush-promises';
+import session from '@/repositories/session';
 import VeeValidate from 'vee-validate';
-import http from '@/repositories/session';
 import { AuthToken } from '@/types';
 import merge from 'lodash.merge';
 import Vuex from 'vuex';
@@ -26,7 +34,7 @@ localVue.use(Vuex);
 localVue.use(VeeValidate, { inject: false, delay: 1 });
 localVue.component('fa-icon', FontAwesomeIcon);
 
-describe('ResetPassword.vue', () => {
+describe('AcceptInvitation.vue', () => {
 
   const defaultStoreConfig = {
     modules: {
@@ -52,7 +60,7 @@ describe('ResetPassword.vue', () => {
 
     const defaultMountingOptions = {
       propsData: {
-        token: 'fake-token',
+        code: 'fake-token',
       },
       mocks: {
         $route: {
@@ -67,13 +75,15 @@ describe('ResetPassword.vue', () => {
       sync: false,
     };
 
-    return shallowMount(ResetPassword, merge(defaultMountingOptions, overrides));
+    return shallowMount(AcceptInvitation, merge(defaultMountingOptions, overrides));
   }
 
-  test('a user can reset their password', async () => {
+  test('a user can accept an invitation', async () => {
     const store = createStore();
     store.commit = jest.fn(() => Promise.resolve());
     const wrapper = createWrapper({ store });
+    wrapper.setData({loading: false});
+    await flushPromises();
 
     wrapper.find('#text-email').setValue('ryan@stagerightlabs.com');
     wrapper.find('#password-password').setValue('secret');
@@ -81,19 +91,22 @@ describe('ResetPassword.vue', () => {
     wrapper.find('button').trigger('click');
 
     await flushPromises();
-    expect(wrapper.props().token).toBe('fake-token');
-    expect(http.changePassword).toHaveBeenCalled();
+    expect(wrapper.props().code).toBe('fake-token');
+    expect(session.acceptInvitation).toHaveBeenCalled();
+    expect(session.confirmInvitation).toHaveBeenCalled();
     expect(store.commit).toHaveBeenCalledWith('session/storeAuthTokenInLocalStorage', fakeToken);
     expect(store.commit).toHaveBeenCalledWith('session/setAuthTokenForSession', fakeToken);
     expect(wrapper.vm.$validator.errors.count()).toBe(0);
     wrapper.vm.$validator.errors.clear();
-});
+  });
 
   test('the email field is required', async () => {
     jest.clearAllMocks();
     const store = createStore();
     store.commit = jest.fn(() => Promise.resolve());
     const wrapper = createWrapper({ store });
+    wrapper.setData({ loading: false });
+    await flushPromises();
 
     // wrapper.find('#text-email').setValue('ryan@stagerightlabs.com');
     wrapper.find('#password-password').setValue('secret');
@@ -101,7 +114,7 @@ describe('ResetPassword.vue', () => {
     wrapper.find('button').trigger('click');
 
     await flushPromises();
-    expect(http.changePassword).not.toHaveBeenCalled();
+    expect(session.acceptInvitation).not.toHaveBeenCalled();
     expect(store.commit).not.toHaveBeenCalledWith('session/storeAuthTokenInLocalStorage', fakeToken);
     expect(store.commit).not.toHaveBeenCalledWith('session/setAuthTokenForSession', fakeToken);
     expect(wrapper.vm.$validator.errors.items).toHaveLength(1);
@@ -113,6 +126,8 @@ describe('ResetPassword.vue', () => {
     const store = createStore();
     store.commit = jest.fn(() => Promise.resolve());
     const wrapper = createWrapper({ store });
+    wrapper.setData({ loading: false });
+    await flushPromises();
 
     wrapper.find('#text-email').setValue('ryan@stagerightlabs.com');
     // wrapper.find('#password-password').setValue('secret');
@@ -120,7 +135,7 @@ describe('ResetPassword.vue', () => {
     wrapper.find('button').trigger('click');
 
     await flushPromises();
-    expect(http.changePassword).not.toHaveBeenCalled();
+    expect(session.acceptInvitation).not.toHaveBeenCalled();
     expect(store.commit).not.toHaveBeenCalledWith('session/storeAuthTokenInLocalStorage', fakeToken);
     expect(store.commit).not.toHaveBeenCalledWith('session/setAuthTokenForSession', fakeToken);
     expect(wrapper.vm.$validator.errors.items).toHaveLength(1);
@@ -132,6 +147,8 @@ describe('ResetPassword.vue', () => {
     const store = createStore();
     store.commit = jest.fn(() => Promise.resolve());
     const wrapper = createWrapper({ store });
+    wrapper.setData({ loading: false });
+    await flushPromises();
 
     wrapper.find('#text-email').setValue('ryan@stagerightlabs.com');
     wrapper.find('#password-password').setValue('secret');
@@ -139,7 +156,7 @@ describe('ResetPassword.vue', () => {
     wrapper.find('button').trigger('click');
 
     await flushPromises();
-    expect(http.changePassword).not.toHaveBeenCalled();
+    expect(session.acceptInvitation).not.toHaveBeenCalled();
     expect(store.commit).not.toHaveBeenCalledWith('session/storeAuthTokenInLocalStorage', fakeToken);
     expect(store.commit).not.toHaveBeenCalledWith('session/setAuthTokenForSession', fakeToken);
     expect(wrapper.vm.$validator.errors.items).toHaveLength(1);

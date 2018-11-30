@@ -1,5 +1,57 @@
 <template>
-
+  <div v-if="loading" class="center-xy">
+    <fa-icon icon="spinner" spin class="text-grey-light" size="4x"></fa-icon>
+  </div>
+  <main v-else role="main" class="center-xy">
+    <div class="billboard">
+      <h1 class="mb-4 text-center">Welcome to Dovetail</h1>
+      <p>You have been invited to join Dovetail. Let's create an account for you:</p>
+      <div class="input-group">
+        <label>Email:</label>
+        <input
+          type="email"
+          id="text-email"
+          v-model="email"
+          name="email"
+          required
+          v-validate
+        >
+        <div class="input-error">{{ errors.first('email') }}</div>
+      </div>
+      <div class="input-group">
+        <label>Password:</label>
+        <input
+          type="password"
+          id="password-password"
+          v-model="password"
+          name="password"
+          required
+          v-validate
+        >
+        <div class="input-error">{{ errors.first('password') }}</div>
+      </div>
+      <div class="input-group">
+        <label>Confirm Password:</label>
+        <input
+          type="password"
+          id="password-confirmation"
+          v-model="password_confirmation"
+          @keyup.enter="changePassword"
+          name="password_confirmation"
+          required
+          v-validate
+        >
+        <div class="input-error">{{ errors.first('password_confirmation') }}</div>
+      </div>
+      <div class="flex items-center justify-end">
+        <button class="btn btn-blue" @click="changePassword">
+          <span v-if="requestSubmitted" class="mx-7">
+            <fa-icon icon="spinner" spin></fa-icon>
+          </span>
+          <span v-else>Change Password</span></button>
+      </div>
+    </div>
+  </main>
 </template>
 
 <script lang="ts">
@@ -24,6 +76,7 @@ export default class AcceptInvitation extends mixins(BaseView) {
   requestSubmitted: boolean = false;
   loading: boolean = true;
   invalidInvitation: boolean = false;
+  invitedBy: string|null = null;
 
   async changePassword() {
     this.$validator.validateAll()
