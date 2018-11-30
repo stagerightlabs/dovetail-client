@@ -6,9 +6,17 @@ jest.mock('@/repositories/profile', () => ({
         },
     },
   })),
+  updateProfile: jest.fn(() => Promise.resolve({
+    data: {
+      data: fakeUnverifiedUser,
+    },
+  })),
 }));
 
 import { mount, createLocalVue, RouterLinkStub } from '@vue/test-utils';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { library } from '@fortawesome/fontawesome-svg-core';
 import ProfileView from '@/views/Profile.vue';
 import profile from '@/repositories/profile';
 import flushPromises from 'flush-promises';
@@ -21,6 +29,8 @@ import Vuex from 'vuex';
 const localVue = createLocalVue();
 localVue.use(Vuex);
 localVue.use(VeeValidate, { inject: false, delay: 500 });
+localVue.component('fa-icon', FontAwesomeIcon);
+library.add(faSpinner);
 config.logModifiedComponents = false;
 
 const fakeUnverifiedUser: User = {
@@ -39,8 +49,7 @@ describe('Profile.vue', () => {
       session: {
         namespaced: true,
         mutations: {
-          storeAuthTokenInLocalStorage: jest.fn(),
-          setAuthTokenForSession: jest.fn(),
+          saveSessionUser: jest.fn(),
         },
         getters: {
           user: jest.fn(),
@@ -90,6 +99,38 @@ describe('Profile.vue', () => {
     expect(wrapper.text()).toContain('Your email address has not been verified');
     wrapper.find('#link-resend-email').trigger('click');
     expect(profile.resendEmailVerificationLink).toHaveBeenCalled();
+  });
+
+  test('a user profile can be updated', async () => {
+    const store = createStore({
+      modules: {
+        session: {
+          getters: {
+            user: () => fakeUnverifiedUser,
+          },
+        },
+      },
+    });
+    store.commit = jest.fn(() => Promise.resolve());
+    const wrapper = createWrapper({ store });
+
+    const user = {
+      name: 'Admiral Hopper',
+      email: 'test@example.com',
+      email_verified_at: null,
+      phone: '907.748.2258 x7660',
+      phone_verified_at: '2018-09-10T23:09:31+00:00',
+      teams: [],
+    }
+
+    wrapper.find('#input-email').setValue(user.email);
+    wrapper.find('#input-name').setValue(user.name);
+    // wrapper.find('#input-phone').setValue('(123) 456-7890');
+    wrapper.find('#btn-submit').trigger('click');
+
+    await flushPromises();
+    expect(store.commit).toHaveBeenCalled();
+    expect(profile.updateProfile).toHaveBeenCalledWith(user);
   });
 
 });

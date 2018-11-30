@@ -10,14 +10,33 @@
       <p>
         {{ user.name }}
       </p>
+      <input
+        type="text"
+        id="input-name"
+        name="name"
+        v-model="user.name"
+        required
+        v-validate
+      >
+      <div class="input-error">{{ errors.first('name') }}</div>
       <p>
         {{ user.email }}
       </p>
+      <input
+        type="email"
+        id="input-email"
+        name="email"
+        v-model="user.email"
+        required
+        v-validate
+      >
+      <div class="input-error">{{ errors.first('email') }}</div>
       <p v-if="user.email_verified_at">Email Verified</p>
       <p v-else>
         Your email address has not been verified.
         <a id="link-resend-email" @click="sendVerificationEmail">Send Verification Email</a>
       </p>
+      <button @click="updateProfile" id="btn-submit">Update Profile</button>
     </div>
   </main>
 </template>
@@ -35,6 +54,7 @@ import ActionButton from '@/components/ActionButton.vue';
   components: { ActionButton }
 })
 export default class ProfileView extends mixins(BaseView) {
+  @Mutation('saveSessionUser', {namespace: 'session'}) saveSessionUser! : (user: User) => void;
   @Getter('user', {namespace: 'session'}) user! : User;
 
   /**
@@ -52,6 +72,38 @@ export default class ProfileView extends mixins(BaseView) {
       })
       .catch((error) => {
         this.handleResponseErrors(error);
+      })
+  }
+
+  /**
+   * Validate profile data before proceeding
+   */
+  updateProfile() {
+    this.$validator.validateAll()
+      .then((valid) => {
+        if (valid) {
+        this.requestProfileUpdate()
+        }
+      })
+  }
+
+  /**
+   * Submit a profile update request to the server
+   */
+  requestProfileUpdate() {
+    this.loading = true;
+    profile.updateProfile(this.user)
+      .then((response) => {
+        this.saveSessionUser(response.data.data);
+        this.toast({
+          message: "Your profile has been updated",
+          level: 'success'
+        });
+        this.loading = false;
+      })
+      .catch((error) => {
+        this.handleResponseErrors(error);
+        this.loading = false;
       })
   }
 
