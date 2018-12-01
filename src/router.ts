@@ -34,6 +34,12 @@ const router =  new Router({
           meta: { requiresAuth: true },
         },
         {
+          path: '/settings',
+          name: 'settings',
+          component: () => import(/* webpackChunkName: "settings" */ './views/OrgSettings.vue'),
+          meta: { requiresAuth: true },
+        },
+        {
           path: '/about',
           name: 'about',
           // route level code-splitting
