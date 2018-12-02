@@ -7,7 +7,7 @@
         <label>Notebooks:</label>
         <input
           type="text"
-          id="text-label-notebooks"
+          id="input-label-notebooks"
           v-model="labelNotebooks"
           name="label.notebook"
           required
@@ -17,6 +17,7 @@
       </div>
       <action-button
         class="btn btn-slate"
+        id="btn-submit"
         @click="updateLabels"
         :spin="labels_updating"
       >
@@ -29,6 +30,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import BaseView from '@/mixins/BaseView.ts';
+import settings from '@/repositories/settings';
 import { Organization, OrgSetting } from '@/types';
 import { Action, Getter, Mutation } from 'vuex-class';
 import Component, { mixins } from 'vue-class-component';
@@ -40,12 +42,10 @@ import ActionButton from '@/components/ActionButton.vue';
 })
 export default class OrgSettings extends mixins(BaseView) {
   @Getter('organization', {namespace: 'session'}) organization! : Organization;
+  @Mutation('session/writeOrgSetting') writeOrgSetting! : (setting: OrgSetting) => void
 
-  labels_updating = false;
-  labelNotebooks = this.organization
-    // @ts-ignore
-    ? this.organization.settings.filter((setting) => setting.key === 'label.notebooks')[0].value
-    : '';
+  labels_updating: boolean = false;
+  labelNotebooks: string = '';
 
   async updateLabels() {
     this.$validator.validateAll()
@@ -58,7 +58,32 @@ export default class OrgSettings extends mixins(BaseView) {
   }
 
   private requestLabelUpdate() {
+    let promises = [];
+    if (this.fields['label.notebook'].dirty) {
+        promises.push(
+          settings.writeSetting('label.notebooks', this.labelNotebooks)
+            .then(() => {
+              this.writeOrgSetting({
+                key: 'label.notebooks',
+                value: this.labelNotebooks
+              })
+            })
+            .catch((error) => {
+              this.handleResponseErrors(error);
+            })
+        )
+    }
+    Promise.all(promises)
+      .then(() => {
+        this.labels_updating = false;
+      })
+  }
 
+  mounted() {
+    this.labelNotebooks = this.organization
+      // @ts-ignore
+      ? this.organization.settings.filter((setting) => setting.key === 'label.notebooks')[0].value
+      : '';
   }
 
 }

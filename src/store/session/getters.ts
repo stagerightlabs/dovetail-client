@@ -28,7 +28,7 @@ export const getters: GetterTree<AuthState, RootState> = {
         return state.organization
             // @ts-ignore
             ? state.organization.settings.filter((setting) => setting.key === 'label.notebooks')[0].value
-            : '';
+            : 'Notebooks';
     },
 
     isAdministrator(state): boolean {

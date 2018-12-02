@@ -1,6 +1,6 @@
 import { MutationTree } from 'vuex';
 import { AuthState } from '../types';
-import { AuthToken, User, Organization } from '../../types';
+import { AuthToken, User, Organization, OrgSetting } from '../../types';
 
 export const mutations: MutationTree<AuthState> = {
     storeAuthTokenInLocalStorage(state, authToken: AuthToken) {
@@ -34,5 +34,13 @@ export const mutations: MutationTree<AuthState> = {
     },
     saveReadonlyStatus(state, status: boolean) {
         state.readonly = status;
+    },
+    writeOrgSetting(state, setting: OrgSetting) {
+        if (state.organization) {
+            // @ts-ignore
+            const index = state.organization.settings.findIndex((s) => s.key === setting.key);
+            // @ts-ignore
+            state.organization.settings.splice(index, 1, setting);
+        }
     },
 };

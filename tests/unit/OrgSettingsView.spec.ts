@@ -1,16 +1,7 @@
-jest.mock('@/repositories/profile', () => ({
-  // resendEmailVerificationLink: jest.fn(() => Promise.resolve({
-  //   data: {
-  //     data: {
-  //       message: 'A fresh verification link has been sent to your email address.',
-  //     },
-  //   },
-  // })),
-  // updateProfile: jest.fn(() => Promise.resolve({
-  //   data: {
-  //     data: fakeUnverifiedUser,
-  //   },
-  // })),
+jest.mock('@/repositories/settings', () => ({
+  writeSetting: jest.fn((key: string, value: string) => Promise.resolve({
+    data: {},
+  })),
 }));
 
 import { mount, createLocalVue, RouterLinkStub } from '@vue/test-utils';
@@ -18,7 +9,7 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import OrgSettingsView from '@/views/OrgSettings.vue';
-import profile from '@/repositories/profile';
+import settings from '@/repositories/settings';
 import flushPromises from 'flush-promises';
 import { config } from '@vue/test-utils';
 import VeeValidate from 'vee-validate';
@@ -38,11 +29,16 @@ const fakeOrganization: Organization = {
   name: 'Hopper Labs',
   slug: 'hopper-labs',
   logo_url: null,
-  settings: {
-    'label.notebooks': 'Experiments',
-    'label.protocols': 'Protocols',
-    'label.plates': 'Plates',
-  },
+  settings: [
+    {
+      key: 'label.plates',
+      value: 'Plates',
+    },
+    {
+      key: 'label.notebooks',
+      value: 'Notebooks',
+    }
+  ],
 };
 
 describe('OrgSettings.vue', () => {
@@ -101,36 +97,25 @@ describe('OrgSettings.vue', () => {
     expect(orgGetter).toHaveBeenCalled();
   });
 
-  // test('a user profile can be updated', async () => {
-  //   const store = createStore({
-  //     modules: {
-  //       session: {
-  //         getters: {
-  //           user: () => fakeUnverifiedUser,
-  //         },
-  //       },
-  //     },
-  //   });
-  //   store.commit = jest.fn(() => Promise.resolve());
-  //   const wrapper = createWrapper({ store });
+  test('an organization setting can be updated', async () => {
+    const store = createStore({
+      modules: {
+        session: {
+          getters: {
+            organization: jest.fn(() => fakeOrganization),
+          },
+        },
+      },
+    });
+    store.commit = jest.fn(() => Promise.resolve());
+    const wrapper = createWrapper({ store });
 
-  //   const user = {
-  //     name: 'Admiral Hopper',
-  //     email: 'test@example.com',
-  //     email_verified_at: null,
-  //     phone: '907.748.2258 x7660',
-  //     phone_verified_at: '2018-09-10T23:09:31+00:00',
-  //     teams: [],
-  //   };
+    wrapper.find('#input-label-notebooks').setValue('new label');
+    wrapper.find('#btn-submit').trigger('click');
 
-  //   wrapper.find('#input-email').setValue(user.email);
-  //   wrapper.find('#input-name').setValue(user.name);
-  //   // wrapper.find('#input-phone').setValue('(123) 456-7890');
-  //   wrapper.find('#btn-submit').trigger('click');
-
-  //   await flushPromises();
-  //   expect(store.commit).toHaveBeenCalled();
-  //   expect(profile.updateProfile).toHaveBeenCalledWith(user);
-  // });
+    await flushPromises();
+    expect(store.commit).toHaveBeenCalled();
+    expect(settings.writeSetting).toHaveBeenCalledWith('label.notebooks', 'new label');
+  });
 
 });

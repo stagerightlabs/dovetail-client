@@ -8,7 +8,7 @@
         </router-link>
       </header>
       <nav>
-        <router-link to="#">Notebooks</router-link>
+        <router-link to="#">{{ orgNotebooksLabel }}</router-link>
         <router-link to="#">Categories</router-link>
         <router-link to="/logout" class="nav-button">
           <fa-icon icon="sign-out-alt"></fa-icon>
@@ -60,6 +60,7 @@ export default class MainMenu extends Vue {
   @Prop({ default: true }) mobileNavHidden!: boolean
   @Getter('user', {namespace: 'session'}) user! : User;
   @Getter('isAdministrator', {namespace: 'session'}) isAdministrator! : boolean;
+  @Getter('orgNotebooksLabel', {namespace: 'session'}) orgNotebooksLabel! : boolean;
   @Action('logout', {namespace: 'session'}) logout : any;
   @Getter('organization', {namespace: 'session'}) organization! : User;
   @Getter('isAuthenticated', {namespace: 'session'}) isAuthenticated! : boolean;
