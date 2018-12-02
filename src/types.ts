@@ -25,8 +25,13 @@ export interface Organization {
     hashid: string;
     name: string;
     slug: string;
-    logo_url?: string;
-    configuration?: [];
+    logo_url?: string|null;
+    settings?: OrgSetting[];
+}
+
+export interface OrgSetting {
+    key: string;
+    value: string;
 }
 
 export interface Team {

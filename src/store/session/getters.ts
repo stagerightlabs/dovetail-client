@@ -24,6 +24,13 @@ export const getters: GetterTree<AuthState, RootState> = {
         return state.organization;
     },
 
+    orgNotebooksLabel(state): string {
+        return state.organization
+            // @ts-ignore
+            ? state.organization.settings.filter((setting) => setting.key === 'label.notebooks')[0].value
+            : '';
+    },
+
     isAdministrator(state): boolean {
         return state.administrator;
     },

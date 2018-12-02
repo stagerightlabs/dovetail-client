@@ -1,0 +1,136 @@
+jest.mock('@/repositories/profile', () => ({
+  // resendEmailVerificationLink: jest.fn(() => Promise.resolve({
+  //   data: {
+  //     data: {
+  //       message: 'A fresh verification link has been sent to your email address.',
+  //     },
+  //   },
+  // })),
+  // updateProfile: jest.fn(() => Promise.resolve({
+  //   data: {
+  //     data: fakeUnverifiedUser,
+  //   },
+  // })),
+}));
+
+import { mount, createLocalVue, RouterLinkStub } from '@vue/test-utils';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import OrgSettingsView from '@/views/OrgSettings.vue';
+import profile from '@/repositories/profile';
+import flushPromises from 'flush-promises';
+import { config } from '@vue/test-utils';
+import VeeValidate from 'vee-validate';
+import merge from 'lodash.merge';
+import { Organization } from '@/types';
+import Vuex from 'vuex';
+
+const localVue = createLocalVue();
+localVue.use(Vuex);
+localVue.use(VeeValidate, { inject: false, delay: 500 });
+localVue.component('fa-icon', FontAwesomeIcon);
+library.add(faSpinner);
+config.logModifiedComponents = false;
+
+const fakeOrganization: Organization = {
+  hashid: 'x737zq8',
+  name: 'Hopper Labs',
+  slug: 'hopper-labs',
+  logo_url: null,
+  settings: {
+    'label.notebooks': 'Experiments',
+    'label.protocols': 'Protocols',
+    'label.plates': 'Plates',
+  },
+};
+
+describe('OrgSettings.vue', () => {
+
+  const defaultStoreConfig = {
+    modules: {
+      session: {
+        namespaced: true,
+        getters: {
+          organization: jest.fn(() => fakeOrganization)
+        },
+        store: {
+          organization: fakeOrganization,
+        },
+      },
+    },
+  };
+
+  function createStore(overrides: any = {}) {
+    return new Vuex.Store(merge(defaultStoreConfig, overrides));
+  }
+
+  function createWrapper(overrides: any) {
+
+    const defaultMountingOptions = {
+      mocks: {
+        $route: {
+          params: {},
+        },
+      },
+      stubs: {
+        RouterLink: RouterLinkStub,
+      },
+      localVue,
+      store: createStore(),
+      sync: false,
+    };
+
+    return mount(OrgSettingsView, merge(defaultMountingOptions, overrides));
+  }
+
+  test('the org settings page can be viewed', async () => {
+    const orgGetter = jest.fn(() => fakeOrganization);
+    const store = createStore({
+      modules: {
+        session: {
+          getters: {
+            organization: orgGetter,
+          },
+        },
+      },
+    });
+    const wrapper = createWrapper({ store });
+
+    expect(wrapper.text()).toContain('Organization Settings');
+    expect(orgGetter).toHaveBeenCalled();
+  });
+
+  // test('a user profile can be updated', async () => {
+  //   const store = createStore({
+  //     modules: {
+  //       session: {
+  //         getters: {
+  //           user: () => fakeUnverifiedUser,
+  //         },
+  //       },
+  //     },
+  //   });
+  //   store.commit = jest.fn(() => Promise.resolve());
+  //   const wrapper = createWrapper({ store });
+
+  //   const user = {
+  //     name: 'Admiral Hopper',
+  //     email: 'test@example.com',
+  //     email_verified_at: null,
+  //     phone: '907.748.2258 x7660',
+  //     phone_verified_at: '2018-09-10T23:09:31+00:00',
+  //     teams: [],
+  //   };
+
+  //   wrapper.find('#input-email').setValue(user.email);
+  //   wrapper.find('#input-name').setValue(user.name);
+  //   // wrapper.find('#input-phone').setValue('(123) 456-7890');
+  //   wrapper.find('#btn-submit').trigger('click');
+
+  //   await flushPromises();
+  //   expect(store.commit).toHaveBeenCalled();
+  //   expect(profile.updateProfile).toHaveBeenCalledWith(user);
+  // });
+
+});
