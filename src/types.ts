@@ -21,6 +21,22 @@ export interface User {
     teams: Team[];
 }
 
+export interface Member {
+    hashid: string;
+    name: string;
+    email: string;
+    email_verified: boolean;
+    phone?: string;
+    phone_verified: boolean;
+    rank: string;
+    title: string;
+    teams: Team[];
+    created_at: string;
+    created_at_date?: Date;
+    deleted_at?: string;
+    deleted_at_date?: Date;
+}
+
 export interface Organization {
     hashid: string;
     name: string;
