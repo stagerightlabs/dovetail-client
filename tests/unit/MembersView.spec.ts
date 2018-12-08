@@ -9,40 +9,24 @@ jest.mock('@/repositories/members', () => ({
       data: fakeDeletedMembers,
     }
   })),
-//   create: jest.fn(() => Promise.resolve({
-//     data: {
-//       data: fakeInvitation,
-//     },
-//   })),
-//   resend: jest.fn(() => Promise.resolve({
-//     data: {
-//       data: fakeInvitation,
-//     },
-//   })),
-//   revoke: jest.fn(() => Promise.resolve({
-//     data: {
-//       data: fakeRevokedInvitation,
-//     },
-//   })),
-//   restore: jest.fn(() => Promise.resolve({
-//     data: {
-//       data: fakeInvitation,
-//     },
-//   })),
-//   delete: jest.fn(() => Promise.resolve({
-//     data: {
-//       data: {},
-//     },
-//   })),
+  update: jest.fn((member) => Promise.resolve({
+    data: {
+      data: fakeMember,
+    }
+  })),
+  delete: jest.fn((member) => Promise.resolve({
+    data: {}
+  })),
 }));
 
 import { mount, createLocalVue, RouterLinkStub } from '@vue/test-utils';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { faSpinner, faPlus, faSyncAlt, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import MembersView from '@/views/Members.vue';
 import members from '@/repositories/members';
 import flushPromises from 'flush-promises';
+import cloneDeep from 'lodash.clonedeep';
 import { config } from '@vue/test-utils';
 import VeeValidate from 'vee-validate';
 import merge from 'lodash.merge';
@@ -118,95 +102,120 @@ describe('Members.vue', () => {
     expect(wrapper.vm.$data.deletedMembers.length).toBe(1);
   });
 
-//   // Test that new invitations are created
-//   test('new invitations can be sent', async () => {
-//     jest.clearAllMocks();
-//     const wrapper = createWrapper({});
-//     await flushPromises();
-//     wrapper.vm.$data.invitations = [];
-//     wrapper.find('#btn-new').trigger('click');
-//     await flushPromises();
-//     // why so many flushPromises() calls?
-//     // See here: https://github.com/vuejs/vue-test-utils/issues/829
+  test('a member can be selected for editing', async () => {
+    jest.clearAllMocks();
+    const wrapper = createWrapper({});
+    wrapper.setData({members: fakeMembers, loading: false});
+    await flushPromises();
 
-//     const emailInput = wrapper.find('#new-invitation-email');
-//     emailInput.setValue('email@example.com');
-//     wrapper.find({ name: 'ActionButton' }).trigger('click');
+    wrapper.find('#btn-edit').trigger('click');
+    await flushPromises();
 
-//     await flushPromises();
-//     expect(invitations.create).toHaveBeenCalledWith({email: 'email@example.com'});
-//   });
+    expect(wrapper.vm.$data.editing.hashid).toBe(fakeMember.hashid);
+  });
 
-//   // Test that new invitations require an email address
-//   test('new invitations require a valid email address', async () => {
-//     jest.clearAllMocks();
-//     const wrapper = createWrapper({});
-//     await flushPromises();
-//     wrapper.vm.$data.invitations = [];
-//     wrapper.find('#btn-new').trigger('click');
-//     await flushPromises();
+  test('member editing can be cancelled', async () => {
+    jest.clearAllMocks();
+    const wrapper = createWrapper({});
+    wrapper.setData({
+      members: fakeMembers,
+      loading: false,
+      editing: cloneDeep(fakeMember),
+    });
+    await flushPromises();
 
-//     const emailInput = wrapper.find('#new-invitation-email');
-//     emailInput.setValue('');
-//     wrapper.find({ name: 'ActionButton' }).trigger('click');
+    wrapper.find('#btn-cancel').trigger('click');
+    await flushPromises();
 
-//     await flushPromises();
+    expect(wrapper.vm.$data.editing).toBe(null);
+    expect(members.update).not.toHaveBeenCalled();
+  });
 
-//     expect(invitations.create).not.toHaveBeenCalled();
-//     expect(wrapper.vm.$validator.errors.items).toHaveLength(1);
-//     wrapper.vm.$validator.errors.clear();
-//   });
+  // Test that new invitations require an email address
+  test('members require an email address', async () => {
+    jest.clearAllMocks();
+    const wrapper = createWrapper({});
+    wrapper.setData({
+      members: fakeMembers,
+      loading: false,
+      editing: cloneDeep(fakeMember),
+    });
+    await flushPromises();
 
-//   // Test that invitations can be refreshed
-//   test('the invitation list can be refreshed', async () => {
-//     jest.clearAllMocks();
-//     const wrapper = createWrapper({});
-//     await flushPromises();
+    const emailInput = wrapper.find('#text-email');
+    emailInput.setValue('');
+    wrapper.find({ name: 'ActionButton' }).trigger('click');
 
-//     wrapper.find('#btn-refresh').trigger('click');
-//     await flushPromises();
+    await flushPromises();
 
-//     expect(invitations.index).toHaveBeenCalledTimes(2);
-//     expect(wrapper.vm.$data.invitations.length).toBe(1);
-//   });
+    expect(members.update).not.toHaveBeenCalled();
+    expect(wrapper.vm.$validator.errors.items).toHaveLength(1);
+    wrapper.vm.$validator.errors.clear();
+  });
 
-//   test('an invitation can be resent', async () => {
-//     jest.clearAllMocks();
-//     const wrapper = createWrapper({});
-//     await flushPromises();
+  test('members require a name', async () => {
+    jest.clearAllMocks();
+    const wrapper = createWrapper({});
+    wrapper.setData({
+      members: fakeMembers,
+      loading: false,
+      editing: fakeMember,
+    });
+    await flushPromises();
 
-//     wrapper.find('#btn-resend').trigger('click');
-//     await flushPromises();
+    const nameInput = wrapper.find('#text-name');
+    nameInput.setValue('');
+    wrapper.find('#btn-update').trigger('click');
 
-//     expect(invitations.resend).toHaveBeenCalledTimes(1);
-//     expect(wrapper.vm.$data.invitations.length).toBe(1);
-//   });
+    await flushPromises();
 
-//   test('an invitation can be revoked', async () => {
-//     jest.clearAllMocks();
-//     const wrapper = createWrapper({});
-//     await flushPromises();
+    expect(members.update).not.toHaveBeenCalled();
+    expect(wrapper.vm.$validator.errors.items).toHaveLength(1);
+    wrapper.vm.$validator.errors.clear();
+  });
 
-//     wrapper.find('#btn-revoke').trigger('click');
-//     await flushPromises();
+  // A member can be updated
+  test('A member can be updated', async () => {
+    const updatedMember = cloneDeep(fakeMember);
+    updatedMember.email = 'newemail@example.com';
+    updatedMember.name = 'Admiral Hopper';
 
-//     expect(invitations.revoke).toHaveBeenCalledTimes(1);
-//     expect(wrapper.vm.$data.invitations.length).toBe(1);
-//   });
+    jest.clearAllMocks();
+    const wrapper = createWrapper({});
+    wrapper.setData({
+      members: fakeMembers,
+      loading: false,
+      editing: fakeMember,
+    });
+    await flushPromises();
 
-//   test('an invitation can be restored', async () => {
-//     jest.clearAllMocks();
-//     const wrapper = createWrapper({});
-//     await flushPromises();
+    const nameInput = wrapper.find('#text-name');
+    nameInput.setValue(updatedMember.name);
+    const emailInput = wrapper.find('#text-email');
+    emailInput.setValue(updatedMember.email);
+    wrapper.find('#btn-update').trigger('click');
 
-//     wrapper.vm.$data.invitations = [fakeRevokedInvitation];
-//     await flushPromises();
-//     wrapper.find('#btn-restore').trigger('click');
-//     await flushPromises();
+    await flushPromises();
+    expect(members.update).toHaveBeenCalledWith(updatedMember);
+    expect(wrapper.vm.$validator.errors.items).toHaveLength(0);
+  });
 
-//     expect(invitations.restore).toHaveBeenCalledTimes(1);
-//     expect(wrapper.vm.$data.invitations.length).toBe(1);
-//   });
+  // A member can be deleted
+  test('A member can be deleted', async () => {
+    jest.clearAllMocks();
+    const wrapper = createWrapper({});
+    wrapper.setData({
+      members: fakeMembers,
+      loading: false,
+    });
+    await flushPromises();
 
+    wrapper.find('#btn-delete').trigger('click');
+
+    await flushPromises();
+
+    expect(members.delete).toHaveBeenCalledWith(fakeMember);
+    expect(wrapper.vm.$data.members.length).toBe(0);
+  });
 
 });

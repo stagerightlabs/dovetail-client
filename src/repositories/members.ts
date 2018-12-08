@@ -1,5 +1,6 @@
 import axios from '@/repositories/axios';
 import { AxiosPromise } from 'axios';
+import { Member } from '@/types';
 
 export default {
     index(): AxiosPromise<any> {
@@ -10,13 +11,23 @@ export default {
         return axios.get(`/members/deleted`);
     },
 
-    // readSetting(key: string): AxiosPromise<any> {
-    //     return axios.get(`/organization/setting/${key}`);
-    // },
+    update(member: Member): AxiosPromise<any> {
+        return axios.put(`/members/${member.hashid}`);
+    },
 
-    // writeSetting(key: string, value: string): AxiosPromise<any> {
-    //     return axios.post(`/organization/setting`, {
-    //         '`setting[${key}]`': value,
-    //     });
-    // },
+    delete(member: Member): AxiosPromise<any> {
+        return axios.delete(`/members/${member.hashid}`);
+    },
+
+    restore(member: Member): AxiosPromise<any> {
+        return axios.delete(`/members/${member.hashid}/restore`);
+    },
+
+    permissions(member: Member): AxiosPromise<any> {
+        return axios.get(`/members/${member.hashid}/permissions`);
+    },
+
+    updatePermissions(member: Member): AxiosPromise<any> {
+        return axios.put(`/members/${member.hashid}/permissions`);
+    },
 };
