@@ -1,57 +1,57 @@
 <template>
-<div v-if="loading" class="center-xy">
-  <fa-icon icon="spinner" spin class="text-grey-light" size="4x"></fa-icon>
-</div>
-<main v-else role="main" class="page">
-  <div class="page-header flex justify-between items-center ">
-    <h1>Teams</h1>
-    <div>
-      <button @click="showTeamForm" class="text-grey-light" id="btn-show-create-form">
-        <fa-icon icon="plus" ></fa-icon> New
-      </button>
-      <button @click="refresh" class="text-grey-light ml-4" id="btn-refresh">
-        <fa-icon icon="sync-alt" ></fa-icon> Refresh
-      </button>
-    </div>
+  <div v-if="loading" class="center-xy">
+    <fa-icon icon="spinner" spin class="text-grey-light" size="4x"></fa-icon>
   </div>
-  <div v-if="creationFormVisible" class="content flex items-start">
-    <button id="hello">dd</button>
-    <label for="new-team-name" class="pt-2">Name:</label>
-    <div class="ml-2 flex-grow">
-      <input
-        type="text"
-        name="name"
-        class="leading-none"
-        id="new-team-name"
-        v-model="newTeamName"
-        ref="newTeamInput"
-        @keydown.esc="cancelNewTeam"
-        @keydown.enter="create"
-        required
-        v-validate
+  <main v-else role="main" class="page">
+    <div class="page-header flex justify-between items-center ">
+      <h1>Teams</h1>
+      <div>
+        <button @click="showTeamForm" class="text-grey-light" id="btn-show-create-form">
+          <fa-icon icon="plus" ></fa-icon> New
+        </button>
+        <button @click="refresh" class="text-grey-light ml-4" id="btn-refresh">
+          <fa-icon icon="sync-alt" ></fa-icon> Refresh
+        </button>
+      </div>
+    </div>
+    <div v-if="creationFormVisible" class="content flex items-start">
+      <button id="hello">dd</button>
+      <label for="new-team-name" class="pt-2">Name:</label>
+      <div class="ml-2 flex-grow">
+        <input
+          type="text"
+          name="name"
+          class="leading-none"
+          id="new-team-name"
+          v-model="newTeamName"
+          ref="newTeamInput"
+          @keydown.esc="cancelNewTeam"
+          @keydown.enter="create"
+          required
+          v-validate
+        >
+        <div class="input-error flex-none">{{ errors.first('name') }}</div>
+      </div>
+      <action-button
+        id="btn-create"
+        class="btn btn-green ml-2"
+        @click="createTeam"
+        :spin="creatingTeam"
       >
-      <div class="input-error flex-none">{{ errors.first('name') }}</div>
+        Send
+      </action-button>
+      <button
+        class="btn btn-red ml-2"
+        @click="cancelTeamCreation"
+      >
+        Cancel
+      </button>
     </div>
-    <action-button
-      id="btn-create"
-      class="btn btn-green ml-2"
-      @click="createTeam"
-      :spin="creatingTeam"
-    >
-      Send
-    </action-button>
-    <button
-      class="btn btn-red ml-2"
-      @click="cancelTeamCreation"
-    >
-      Cancel
-    </button>
-  </div>
-  <div v-for="team in teams" :key="team.hashid">
-    <h3>{{ team.name }}</h3>
-    <button id="btn-show" @click="view(team)">View</button>
-  </div>
-</main>
+    <div v-for="team in teams" :key="team.hashid">
+      <h3>{{ team.name }}</h3>
+      <button id="btn-show" @click="view(team)">View</button>
+    </div>
+  </main>
 </template>
 
 <script lang="ts">

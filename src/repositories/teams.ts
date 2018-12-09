@@ -1,6 +1,7 @@
 import axios from '@/repositories/axios';
 import { AxiosPromise } from 'axios';
 import { Team, Member } from '@/types';
+import members from './members';
 
 export default {
     index(): AxiosPromise<any> {
@@ -23,8 +24,10 @@ export default {
         return axios.delete(`/teams/${team.hashid}`);
     },
 
-    addMember(team: Team): AxiosPromise<any> {
-        return axios.post(`/teams/${team.hashid}/members`);
+    addMember(team: Team, member: Member): AxiosPromise<any> {
+        return axios.post(`/teams/${team.hashid}/members`, {
+            member: member.hashid,
+        });
     },
 
     removeMember(team: Team, member: Member): AxiosPromise<any> {

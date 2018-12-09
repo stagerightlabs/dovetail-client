@@ -7,8 +7,8 @@ import PortalVue from 'portal-vue';
 import VeeValidate from 'vee-validate';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import { faTimes, faBars, faSpinner, faUserCircle, faSyncAlt, faPlus, faSignOutAlt, faCheck, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
-
+import { faTimes, faEdit, faBars, faSpinner, faUserCircle } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faSignOutAlt, faCheck, faTrashAlt, faSyncAlt } from '@fortawesome/free-solid-svg-icons';
 
 // Register FA Icon assets
 library.add(faTimes);
@@ -20,6 +20,7 @@ library.add(faPlus);
 library.add(faSignOutAlt);
 library.add(faCheck);
 library.add(faTrashAlt);
+library.add(faEdit);
 
 // Register the FA icon plugin
 Vue.component('fa-icon', FontAwesomeIcon);

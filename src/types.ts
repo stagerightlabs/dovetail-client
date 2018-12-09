@@ -34,7 +34,7 @@ export interface Member {
     phone_verified: boolean;
     rank: string;
     title: string;
-    teams: Team[];
+    teams?: Team[];
     created_at: string;
     created_at_date?: Date;
     deleted_at?: string;
@@ -54,11 +54,6 @@ export interface OrgSetting {
     value: string;
 }
 
-export interface Team {
-    hashid: string;
-    name: string;
-}
-
 export interface Invitation {
     hashid: string;
     email: string;
@@ -75,5 +70,5 @@ export interface Invitation {
 export interface Team {
     hashid: string;
     name: string;
-    members?: Member[]
+    members?: Member[];
 }

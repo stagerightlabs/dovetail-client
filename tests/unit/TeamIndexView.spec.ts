@@ -16,7 +16,7 @@ import { faSpinner, faPlus, faSyncAlt, faTrashAlt } from '@fortawesome/free-soli
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import flushPromises from 'flush-promises';
-import TeamView from '@/views/Teams.vue';
+import TeamIndexView from '@/views/Teams.vue';
 import teams from '@/repositories/teams';
 import cloneDeep from 'lodash.clonedeep';
 import { config } from '@vue/test-utils';
@@ -64,7 +64,7 @@ describe('Teams.vue', () => {
       sync: false,
     };
 
-    return mount(TeamView, merge(defaultMountingOptions, overrides));
+    return mount(TeamIndexView, merge(defaultMountingOptions, overrides));
   }
 
   test('the teams index can be viewed', async () => {
@@ -84,7 +84,6 @@ describe('Teams.vue', () => {
     expect(wrapper.vm.$route.path).toEqual(`/teams/${fakeTeam.hashid}`);
   });
 
-  // new teams can be created
   test('a new team can be created', async () => {
     jest.clearAllMocks();
     const wrapper = createWrapper({});
