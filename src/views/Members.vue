@@ -148,7 +148,7 @@ export default class Members extends mixins(BaseView) {
   destroy(member: Member) {
     members.delete(member)
       .then(() => {
-        this.remove(member);
+        this.removeModel(this.members, member);
         this.toast({message: `Deleted ${member.email}`, level: 'success'});
       })
       .catch((error) => {
@@ -170,36 +170,13 @@ export default class Members extends mixins(BaseView) {
   private submitUpdates(member: Member) {
     members.update(member)
       .then((response) => {
-        this.addOrUpdate(response.data.data);
+        this.addOrUpdateModel(this.members, response.data.data);
         this.submittingUpdates = false;
         this.editing = null;
       })
       .catch((error) => {
         this.handleResponseErrors(error);
       })
-  }
-
-  /**
-   * Add a member to the members array if it is not already there, otherwise
-   * replace the existing one
-   */
-  private addOrUpdate(member: Member) {
-    const index = this.members.findIndex((i) => i.hashid === member.hashid)
-    if (index > -1) {
-      this.members.splice(index, 1, member);
-    } else {
-      this.members.push(member);
-    }
-  }
-
-  /**
-   * Remove a member from the members array
-   */
-  private remove(member: Member) {
-    const index = this.members.findIndex((i) => i.hashid === member.hashid)
-    if (index > -1) {
-      this.members.splice(index, 1);
-    }
   }
 
 }

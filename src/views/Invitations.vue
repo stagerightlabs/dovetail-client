@@ -217,7 +217,7 @@ export default class InvitationView extends mixins(BaseView) {
   submitInvitationRequest() {
     invitations.create({email: this.newInvitationEmail})
       .then((response) => {
-        this.addOrUpdate(this.hydrateInvitation(response.data.data));
+        this.addOrUpdateModel(this.invitations, this.hydrateInvitation(response.data.data));
         this.toast({
           message: `An invitation has been sent to ${response.data.data.email}`,
           level: 'success'
@@ -241,7 +241,7 @@ export default class InvitationView extends mixins(BaseView) {
     invitations.resend(invitation)
       .then((response) => {
         invitation.waitingForPromise = '';
-        this.addOrUpdate(this.hydrateInvitation(response.data.data));
+        this.addOrUpdateModel(this.invitations, this.hydrateInvitation(response.data.data));
         this.toast({
           message: `Re-sent the ${invitation.email} invitation.`,
           level: 'success'
@@ -259,7 +259,7 @@ export default class InvitationView extends mixins(BaseView) {
   revoke(invitation: Invitation) {
     invitations.revoke(invitation)
       .then((response) => {
-        this.addOrUpdate(this.hydrateInvitation(response.data.data));
+        this.addOrUpdateModel(this.invitations, this.hydrateInvitation(response.data.data));
         this.toast({
           message: `Revoked the ${invitation.email} invitation.`,
           level: 'success'
@@ -276,7 +276,7 @@ export default class InvitationView extends mixins(BaseView) {
   restore(invitation: Invitation) {
     invitations.restore(invitation)
       .then((response) => {
-        this.addOrUpdate(this.hydrateInvitation(response.data.data));
+        this.addOrUpdateModel(this.invitations, this.hydrateInvitation(response.data.data));
         this.toast({
           message: `Restored the ${invitation.email} invitation.`,
           level: 'success'
@@ -294,7 +294,7 @@ export default class InvitationView extends mixins(BaseView) {
     invitation.waitingForPromise = 'delete';
     invitations.delete(invitation)
       .then((response) => {
-        this.remove(invitation);
+        this.removeModel(this.invitations, invitation);
         this.toast({
           message: `Deleted the ${invitation.email} invitation.`,
           level: 'success'
@@ -337,29 +337,6 @@ export default class InvitationView extends mixins(BaseView) {
     invitation.completed_at_date = invitation.completed_at ? new Date(invitation.completed_at) : null;
     invitation.waitingForPromise = '';
     return invitation;
-  }
-
-  /**
-   * Remove an invitation from the invitations array
-   */
-  private remove(invitation: Invitation) {
-    const index = this.invitations.findIndex((i) => i.hashid === invitation.hashid)
-    if (index > -1) {
-      this.invitations.splice(index, 1);
-    }
-  }
-
-  /**
-   * Add an invitation to the invitations array if it is not already there, otherwise
-   * replace the existing one
-   */
-  private addOrUpdate(invitation: Invitation) {
-    const index = this.invitations.findIndex((i) => i.hashid === invitation.hashid)
-    if (index > -1) {
-      this.invitations.splice(index, 1, invitation);
-    } else {
-      this.invitations.push(invitation);
-    }
   }
 
   /**
