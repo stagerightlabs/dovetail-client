@@ -55,10 +55,13 @@ export default class OrgSettings extends mixins(BaseView) {
         this.labels_updating = true;
         }
       })
+
+    this.$validator.fields
   }
 
   private requestLabelUpdate() {
     let promises = [];
+    // @ts-ignore
     if (this.fields['label.notebook'].dirty) {
         promises.push(
           settings.writeSetting('label.notebooks', this.labelNotebooks)

@@ -42,16 +42,33 @@ const router =  new Router({
         {
           path: '/about',
           name: 'about',
-          // route level code-splitting
           component: () => import(/* webpackChunkName: "about" */ './views/About.vue'),
           meta: { requiresAuth: true },
         },
         {
           path: '/invitations',
           name: 'invitations',
-          // route level code-splitting
           component: () => import(/* webpackChunkName: "invitations" */ './views/Invitations.vue'),
           meta: { requiresAuth: true, requireAdmin: true },
+        },
+        {
+          path: '/members',
+          name: 'members',
+          component: () => import(/* webpackChunkName: "members" */ './views/Members.vue'),
+          meta: { requiresAuth: true, requireAdmin: true },
+        },
+        {
+          path: '/teams',
+          name: 'teams',
+          component: () => import(/* webpackChunkName: "teams" */ './views/Teams.vue'),
+          meta: { requiresAuth: true, requireAdmin: true },
+        },
+        {
+          path: '/teams/:hashid',
+          name: 'team',
+          component: () => import(/* webpackChunkName: "teams" */ './views/Team.vue'),
+          meta: { requiresAuth: true, requireAdmin: true },
+          props: true,
         },
       ],
     },

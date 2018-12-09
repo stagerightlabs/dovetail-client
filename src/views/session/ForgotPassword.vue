@@ -34,7 +34,7 @@ import ActionButton from '@/components/ActionButton.vue';
   $_veeValidate: { validator: "new" },
   components: { ActionButton }
 })
-  export default class LoginView extends mixins(BaseView) {
+export default class ForgotPassword extends mixins(BaseView) {
 
   email : string = '';
   requestSubmitted = false;

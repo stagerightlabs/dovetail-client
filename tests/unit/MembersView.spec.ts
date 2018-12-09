@@ -92,7 +92,7 @@ describe('Members.vue', () => {
     return mount(MembersView, merge(defaultMountingOptions, overrides));
   }
 
-  test('the invitations index can be viewed', async () => {
+  test('the members index can be viewed', async () => {
     const wrapper = createWrapper({});
 
     await flushPromises();

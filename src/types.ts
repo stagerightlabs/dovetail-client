@@ -12,6 +12,10 @@ export interface AuthToken {
     expiration_date?: Date;
 }
 
+export interface Model {
+    hashid: string;
+}
+
 export interface User {
     name: string;
     email: string;
@@ -66,4 +70,10 @@ export interface Invitation {
     revoked_at_date?: Date|null;
     completed_at_date?: Date|null;
     waitingForPromise?: string;
+}
+
+export interface Team {
+    hashid: string;
+    name: string;
+    members?: Member[]
 }

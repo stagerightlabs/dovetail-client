@@ -1,0 +1,125 @@
+jest.mock('@/repositories/teams', () => ({
+  index: jest.fn(() => Promise.resolve({
+    data: {
+        data: [fakeTeam],
+    },
+  })),
+  create: jest.fn((name) => Promise.resolve({
+    data: {
+      data: [fakeTeam],
+    },
+  })),
+}));
+
+import { mount, createLocalVue, RouterLinkStub } from '@vue/test-utils';
+import { faSpinner, faPlus, faSyncAlt, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import flushPromises from 'flush-promises';
+import TeamView from '@/views/Teams.vue';
+import teams from '@/repositories/teams';
+import cloneDeep from 'lodash.clonedeep';
+import { config } from '@vue/test-utils';
+import { Team, Member } from '@/types';
+import VeeValidate from 'vee-validate';
+import VueRouter from 'vue-router';
+import merge from 'lodash.merge';
+
+const localVue = createLocalVue();
+localVue.use(VueRouter);
+localVue.use(VeeValidate, { inject: false, delay: 500 });
+localVue.component('fa-icon', FontAwesomeIcon);
+library.add(faSpinner);
+library.add(faPlus);
+library.add(faSyncAlt);
+library.add(faTrashAlt);
+config.logModifiedComponents = false;
+
+const fakeTeam: Team = {
+  hashid: 'wy5dn36',
+  name: 'Red Team',
+};
+
+describe('Teams.vue', () => {
+
+  function createWrapper(overrides: any) {
+
+    const defaultMountingOptions = {
+      stubs: {
+        RouterLink: RouterLinkStub,
+      },
+      router: new VueRouter({
+        routes: [
+          {
+            path: '/teams',
+            name: 'teams',
+          },
+          {
+            path: '/teams/:hashid',
+            name: 'team',
+          },
+        ],
+      }),
+      localVue,
+      sync: false,
+    };
+
+    return mount(TeamView, merge(defaultMountingOptions, overrides));
+  }
+
+  test('the teams index can be viewed', async () => {
+    const wrapper = createWrapper({});
+
+    await flushPromises();
+    expect(teams.index).toHaveBeenCalled();
+    expect(wrapper.vm.$data.teams.length).toBe(1);
+  });
+
+  test('the team index page links to team detail page', async () => {
+    const wrapper = createWrapper({});
+    await flushPromises();
+
+    wrapper.find('#btn-show').trigger('click');
+
+    expect(wrapper.vm.$route.path).toEqual(`/teams/${fakeTeam.hashid}`);
+  });
+
+  // new teams can be created
+  test('a new team can be created', async () => {
+    jest.clearAllMocks();
+    const wrapper = createWrapper({});
+    wrapper.setData({
+      teams: [],
+      loading: false,
+      creationFormVisible: true,
+    });
+    await flushPromises();
+
+    const nameInput = wrapper.find('#new-team-name');
+    nameInput.setValue('Blue Team');
+    wrapper.find('#btn-create').trigger('click');
+
+    await flushPromises();
+    expect(teams.create).toHaveBeenCalledWith('Blue Team');
+  });
+
+  test('new teams require a name', async () => {
+    jest.clearAllMocks();
+    const wrapper = createWrapper({});
+    wrapper.setData({
+      teams: [],
+      loading: false,
+      creationFormVisible: true,
+    });
+    await flushPromises();
+
+    const nameInput = wrapper.find('#new-team-name');
+    nameInput.setValue('');
+    wrapper.find('#btn-create').trigger('click');
+
+    await flushPromises();
+    expect(teams.create).not.toHaveBeenCalled();
+    expect(wrapper.vm.$validator.errors.items).toHaveLength(1);
+    wrapper.vm.$validator.errors.clear();
+  });
+});
