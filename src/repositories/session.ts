@@ -2,43 +2,43 @@ import axios from '@/repositories/axios';
 import { AxiosPromise } from 'axios';
 
 export default {
-    login(credentials: any): AxiosPromise<any> {
-        return axios.post('/login', credentials);
-    },
+  login(credentials: any): AxiosPromise<any> {
+    return axios.post('/login', credentials);
+  },
 
-    register(registration: any): AxiosPromise<any> {
-        return axios.post('/register', registration);
-    },
+  register(registration: any): AxiosPromise<any> {
+    return axios.post('/register', registration);
+  },
 
-    requestPasswordReset(credentials: any): AxiosPromise<any> {
-        return axios.post('/password/email', credentials);
-    },
+  requestPasswordReset(credentials: any): AxiosPromise<any> {
+    return axios.post('/password/email', credentials);
+  },
 
-    changePassword(credentials: any): AxiosPromise<any> {
-        return axios.post('/password/reset', credentials);
-    },
+  changePassword(credentials: any): AxiosPromise<any> {
+    return axios.post('/password/reset', credentials);
+  },
 
-    getUser(): AxiosPromise<any> {
-        return axios.get('/user');
-    },
+  getUser(): AxiosPromise<any> {
+    return axios.get('/user');
+  },
 
-    getOrganization(): AxiosPromise<any> {
-        return axios.get('/organization');
-    },
+  getOrganization(): AxiosPromise<any> {
+    return axios.get('/organization');
+  },
 
-    getAdministratorStatus(): AxiosPromise<any> {
-        return axios.get('/user/admin');
-    },
+  getAdministratorStatus(): AxiosPromise<any> {
+    return axios.get('/user/admin');
+  },
 
-    getReadOnlyStatus(): AxiosPromise<any> {
-        return axios.get('/user/readonly');
-    },
+  getReadOnlyStatus(): AxiosPromise<any> {
+    return axios.get('/user/readonly');
+  },
 
-    confirmInvitation(code: string): AxiosPromise<any> {
-        return axios.get(`invitations/${code}/confirm`);
-    },
+  confirmInvitation(code: string): AxiosPromise<any> {
+    return axios.get(`invitations/${code}/confirm`);
+  },
 
-    acceptInvitation(code: string, credentials: any): AxiosPromise<any> {
-        return axios.post(`invitations/${ code }/redeem`, credentials);
-    },
+  acceptInvitation(code: string, credentials: any): AxiosPromise<any> {
+    return axios.post(`invitations/${ code }/redeem`, credentials);
+  },
 };

@@ -1,36 +1,35 @@
 import axios from '@/repositories/axios';
 import { AxiosPromise } from 'axios';
 import { Team, Member } from '@/types';
-import members from './members';
 
 export default {
-    index(): AxiosPromise<any> {
-        return axios.get(`/teams`);
-    },
+  index(): AxiosPromise<any> {
+    return axios.get(`/teams`);
+  },
 
-    create(name: string): AxiosPromise<any> {
-        return axios.post(`/teams`, { name });
-    },
+  create(name: string): AxiosPromise<any> {
+    return axios.post(`/teams`, { name });
+  },
 
-    show(hashid: string): AxiosPromise<any> {
-        return axios.get(`/teams/${hashid}`);
-    },
+  show(hashid: string): AxiosPromise<any> {
+    return axios.get(`/teams/${hashid}`);
+  },
 
-    update(team: Team): AxiosPromise<any> {
-        return axios.put(`/teams/${team.hashid}`);
-    },
+  update(team: Team): AxiosPromise<any> {
+    return axios.put(`/teams/${team.hashid}`);
+  },
 
-    delete(team: Team): AxiosPromise<any> {
-        return axios.delete(`/teams/${team.hashid}`);
-    },
+  delete(team: Team): AxiosPromise<any> {
+    return axios.delete(`/teams/${team.hashid}`);
+  },
 
-    addMember(team: Team, member: Member): AxiosPromise<any> {
-        return axios.post(`/teams/${team.hashid}/members`, {
-            member: member.hashid,
-        });
-    },
+  addMember(team: Team, member: Member): AxiosPromise<any> {
+    return axios.post(`/teams/${team.hashid}/members`, {
+      member: member.hashid,
+    });
+  },
 
-    removeMember(team: Team, member: Member): AxiosPromise<any> {
-        return axios.delete(`/teams/${team.hashid}/members/${member.hashid}`);
-    },
+  removeMember(team: Team, member: Member): AxiosPromise<any> {
+    return axios.delete(`/teams/${team.hashid}/members/${member.hashid}`);
+  },
 };

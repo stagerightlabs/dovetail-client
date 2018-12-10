@@ -3,31 +3,31 @@ import { AxiosPromise } from 'axios';
 import { Member } from '@/types';
 
 export default {
-    index(): AxiosPromise<any> {
-        return axios.get(`/members`);
-    },
+  index(): AxiosPromise<any> {
+    return axios.get(`/members`);
+  },
 
-    deletedMembers(): AxiosPromise<any> {
-        return axios.get(`/members/deleted`);
-    },
+  deletedMembers(): AxiosPromise<any> {
+    return axios.get(`/members/deleted`);
+  },
 
-    update(member: Member): AxiosPromise<any> {
-        return axios.put(`/members/${member.hashid}`);
-    },
+  update(member: Member): AxiosPromise<any> {
+    return axios.put(`/members/${member.hashid}`);
+  },
 
-    delete(member: Member): AxiosPromise<any> {
-        return axios.delete(`/members/${member.hashid}`);
-    },
+  delete(member: Member): AxiosPromise<any> {
+    return axios.delete(`/members/${member.hashid}`);
+  },
 
-    restore(member: Member): AxiosPromise<any> {
-        return axios.delete(`/members/${member.hashid}/restore`);
-    },
+  restore(member: Member): AxiosPromise<any> {
+    return axios.delete(`/members/${member.hashid}/restore`);
+  },
 
-    permissions(member: Member): AxiosPromise<any> {
-        return axios.get(`/members/${member.hashid}/permissions`);
-    },
+  permissions(member: Member): AxiosPromise<any> {
+    return axios.get(`/members/${member.hashid}/permissions`);
+  },
 
-    updatePermissions(member: Member): AxiosPromise<any> {
-        return axios.put(`/members/${member.hashid}/permissions`);
-    },
+  updatePermissions(member: Member): AxiosPromise<any> {
+    return axios.put(`/members/${member.hashid}/permissions`);
+  },
 };
