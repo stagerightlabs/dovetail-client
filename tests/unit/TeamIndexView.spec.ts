@@ -6,7 +6,7 @@ jest.mock('@/repositories/teams', () => ({
   })),
   create: jest.fn((name) => Promise.resolve({
     data: {
-      data: [fakeTeam],
+      data: fakeTeam,
     },
   })),
 }));

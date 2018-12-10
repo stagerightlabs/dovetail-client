@@ -60,12 +60,10 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
 import { Member } from '@/types';
 import cloneDeep from 'lodash.clonedeep';
 import BaseView from '@/mixins/BaseView.ts';
 import members from '@/repositories/members';
-import { Action, Getter, Mutation } from 'vuex-class';
 import Component, { mixins } from 'vue-class-component';
 import ActionButton from '@/components/ActionButton.vue';
 
