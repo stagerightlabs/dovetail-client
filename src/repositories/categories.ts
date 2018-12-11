@@ -7,8 +7,8 @@ export default {
     return axios.get(`/categories`);
   },
 
-  create(): AxiosPromise<any> {
-    return axios.post(`/categories`);
+  create(name: string): AxiosPromise<any> {
+    return axios.post(`/categories`, {name});
   },
 
   show(hashid: string): AxiosPromise<any> {

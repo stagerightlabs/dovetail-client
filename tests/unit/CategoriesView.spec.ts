@@ -4,14 +4,20 @@ jest.mock('@/repositories/categories', () => ({
         data: [fakeCategory],
     },
   })),
-  create: jest.fn((name) => Promise.resolve({
+  create: jest.fn((name: string) => Promise.resolve({
     data: {
       data: fakeCategory,
     },
   })),
+  update: jest.fn((category: Category) => Promise.resolve({
+    data: {
+      data: category,
+    },
+  })),
+  delete: jest.fn((category: Category) => Promise.resolve()),
 }));
 
-import { faSpinner, faPlus, faSyncAlt, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+import { faSpinner, faPlus, faSyncAlt, faTrashAlt, faEdit } from '@fortawesome/free-solid-svg-icons';
 import { mount, createLocalVue, RouterLinkStub } from '@vue/test-utils';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
@@ -33,6 +39,7 @@ library.add(faSpinner);
 library.add(faPlus);
 library.add(faSyncAlt);
 library.add(faTrashAlt);
+library.add(faEdit);
 config.logModifiedComponents = false;
 
 const fakeCategory: Category = {
@@ -73,5 +80,70 @@ describe('Teams.vue', () => {
     await flushPromises();
     expect(categories.index).toHaveBeenCalled();
     expect(wrapper.vm.$data.categories.length).toBe(1);
+  });
+
+  test('a new category can be added', async () => {
+    jest.clearAllMocks();
+    const wrapper = createWrapper({});
+    wrapper.setData({
+      categories: [],
+      loading: false,
+      creationFormVisible: true,
+    });
+    await flushPromises();
+
+    const nameInput = wrapper.find('#new-category-name');
+    nameInput.setValue('Polymerase');
+    wrapper.find('#btn-create').trigger('click');
+
+    await flushPromises();
+    expect(categories.create).toHaveBeenCalledWith('Polymerase');
+  });
+
+  test('a category can be edited', async () => {
+    jest.clearAllMocks();
+    const wrapper = createWrapper({});
+    await flushPromises();
+
+    wrapper.find('#btn-edit').trigger('click');
+    await wrapper.vm.$nextTick();
+
+    expect(wrapper.find('#text-name').isVisible()).toBe(true);
+
+  });
+
+  test('a category can be updated', async () => {
+    jest.clearAllMocks();
+    const editedCategory = cloneDeep(fakeCategory);
+    editedCategory.name = 'New Name';
+    const wrapper = createWrapper({});
+    wrapper.setData({
+      categories: [fakeCategory],
+      loading: false,
+      editing: editedCategory,
+    });
+    await flushPromises();
+
+    const nameInput = wrapper.find('#text-name');
+    nameInput.setValue('New Name');
+    wrapper.find('#btn-update').trigger('click');
+    await flushPromises();
+
+    expect(categories.update).toHaveBeenCalledWith(editedCategory);
+  });
+
+  test('a category can be updated', async () => {
+    jest.clearAllMocks();
+    const wrapper = createWrapper({});
+    wrapper.setData({
+      categories: [fakeCategory],
+      loading: false,
+    });
+    await flushPromises();
+
+    wrapper.find('#btn-delete').trigger('click');
+    await flushPromises();
+
+    expect(categories.delete).toHaveBeenCalledWith(fakeCategory);
   });
 });
