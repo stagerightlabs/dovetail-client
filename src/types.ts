@@ -77,3 +77,12 @@ export interface Category {
   hashid: string;
   name: string;
 }
+
+export interface Notebook {
+  hashid: string;
+  name: string;
+  category: string|null;
+  category_id: string|null;
+  comments_enabled: boolean;
+  current_user_is_following: boolean;
+}
