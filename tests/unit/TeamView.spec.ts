@@ -39,7 +39,7 @@ import VueRouter from 'vue-router';
 import merge from 'lodash.merge';
 
 const localVue = createLocalVue();
-localVue.use(VeeValidate, { inject: false, delay: 500 });
+localVue.use(VeeValidate, { inject: false, delay: 500, validity: true });
 localVue.component('fa-icon', FontAwesomeIcon);
 localVue.use(VueRouter);
 library.add(faSpinner);

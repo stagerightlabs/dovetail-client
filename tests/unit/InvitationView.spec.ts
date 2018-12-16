@@ -66,7 +66,7 @@ const fakeRevokedInvitation: Invitation = {
 const fakeInvitations: Invitation[] = [fakeInvitation];
 
 const localVue = createLocalVue();
-localVue.use(VeeValidate, { inject: false, delay: 500 });
+localVue.use(VeeValidate, { inject: false, delay: 500, validity: true });
 localVue.use(PortalVue);
 localVue.component('fa-icon', FontAwesomeIcon);
 library.add(faSpinner);

@@ -34,7 +34,7 @@ import { Member } from '@/types';
 
 
 const localVue = createLocalVue();
-localVue.use(VeeValidate, { inject: false, delay: 500 });
+localVue.use(VeeValidate, { inject: false, delay: 500, validity: true });
 localVue.component('fa-icon', FontAwesomeIcon);
 library.add(faSpinner);
 library.add(faPlus);

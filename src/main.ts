@@ -34,7 +34,7 @@ const dictionary = {
   },
 };
 VeeValidate.Validator.localize('en', dictionary);
-Vue.use(VeeValidate, { inject: false, delay: 500 });
+Vue.use(VeeValidate, { inject: false, delay: 500, validity: true });
 
 // Register the Portal Vue plugin
 Vue.use(PortalVue);

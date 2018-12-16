@@ -20,7 +20,7 @@ import merge from 'lodash.merge';
 
 const localVue = createLocalVue();
 localVue.use(VueRouter);
-localVue.use(VeeValidate, { inject: false, delay: 1 });
+localVue.use(VeeValidate, { inject: false, delay: 1, validity: true });
 localVue.component('fa-icon', FontAwesomeIcon);
 library.add(faSpinner);
 config.logModifiedComponents = false;

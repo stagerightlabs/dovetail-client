@@ -23,7 +23,7 @@ const fakeToken: AuthToken = {
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
-localVue.use(VeeValidate, { inject: false, delay: 1 });
+localVue.use(VeeValidate, { inject: false, delay: 1, validity: true });
 localVue.component('fa-icon', FontAwesomeIcon);
 
 describe('ResetPassword.vue', () => {

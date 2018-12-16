@@ -13,7 +13,7 @@ export const getters: GetterTree<AuthState, RootState> = {
     },
 
     authToken(state): string {
-        return state.authToken!.access_token || '';
+        return state.authToken ? state.authToken.access_token : '';
     },
 
     user(state): User|undefined {

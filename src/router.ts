@@ -113,7 +113,7 @@ const router =  new Router({
     {
       path: '/invitations/:code',
       name: 'acceptInvitation',
-      component: () => import(/* webpackChunkName: "verify-email" */ './views/AcceptInvitation.vue'),
+      component: () => import(/* webpackChunkName: "verify-email" */ './views/session/AcceptInvitation.vue'),
       props: true,
       meta: { requireGuest: true },
     },
