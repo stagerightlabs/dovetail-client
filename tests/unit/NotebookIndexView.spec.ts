@@ -12,15 +12,12 @@ jest.mock('@/repositories/notebooks', () => ({
 }));
 
 import { mount, createLocalVue, RouterLinkStub } from '@vue/test-utils';
-import { faSpinner, faPlus, faSyncAlt, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import { library } from '@fortawesome/fontawesome-svg-core';
-import flushPromises from 'flush-promises';
 import NotebookIndexView from '@/views/Notebooks.vue';
 import notebooks from '@/repositories/notebooks';
+import flushPromises from 'flush-promises';
+import { Notebook, Member } from '@/types';
 import cloneDeep from 'lodash.clonedeep';
 import { config } from '@vue/test-utils';
-import { Notebook, Member } from '@/types';
 import VeeValidate from 'vee-validate';
 import VueRouter from 'vue-router';
 import merge from 'lodash.merge';
@@ -28,11 +25,6 @@ import merge from 'lodash.merge';
 const localVue = createLocalVue();
 localVue.use(VueRouter);
 localVue.use(VeeValidate, { inject: false, delay: 500, validity: true });
-localVue.component('fa-icon', FontAwesomeIcon);
-library.add(faSpinner);
-library.add(faPlus);
-library.add(faSyncAlt);
-library.add(faTrashAlt);
 config.logModifiedComponents = false;
 
 const fakeNotebook: Notebook = {

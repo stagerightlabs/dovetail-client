@@ -13,8 +13,6 @@ jest.mock('@/repositories/notebooks', () => ({
 
 import { faSpinner, faEdit, faSyncAlt, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import { mount, createLocalVue, RouterLinkStub } from '@vue/test-utils';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import { library } from '@fortawesome/fontawesome-svg-core';
 import notebooks from '@/repositories/notebooks';
 import NotebookView from '@/views/Notebook.vue';
 import flushPromises from 'flush-promises';
@@ -27,12 +25,7 @@ import merge from 'lodash.merge';
 
 const localVue = createLocalVue();
 localVue.use(VeeValidate, { inject: false, delay: 500, validity: true });
-localVue.component('fa-icon', FontAwesomeIcon);
 localVue.use(VueRouter);
-library.add(faSpinner);
-library.add(faEdit);
-library.add(faSyncAlt);
-library.add(faTrashAlt);
 config.logModifiedComponents = false;
 
 const fakeNotebook: Notebook = {

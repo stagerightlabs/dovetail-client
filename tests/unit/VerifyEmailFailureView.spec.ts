@@ -14,9 +14,6 @@ jest.mock('@/repositories/session', () => ({
 }));
 
 import { mount, createLocalVue, RouterLinkStub } from '@vue/test-utils';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import { faSpinner } from '@fortawesome/free-solid-svg-icons';
-import { library } from '@fortawesome/fontawesome-svg-core';
 import VerifyEmailView from '@/views/VerifyEmail.vue';
 import profile from '@/repositories/profile';
 import { config } from '@vue/test-utils';
@@ -28,8 +25,6 @@ import Vuex from 'vuex';
 const localVue = createLocalVue();
 localVue.use(Vuex);
 localVue.use(VueRouter);
-localVue.component('fa-icon', FontAwesomeIcon);
-library.add(faSpinner);
 config.logModifiedComponents = false;
 
 const fakeUnverifiedUser: User = {

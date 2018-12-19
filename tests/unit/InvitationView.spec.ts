@@ -32,9 +32,6 @@ jest.mock('@/repositories/invitations', () => ({
 }));
 
 import { mount, createLocalVue, RouterLinkStub } from '@vue/test-utils';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import { faSpinner, faPlus, faSyncAlt, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
-import { library } from '@fortawesome/fontawesome-svg-core';
 import invitations from '@/repositories/invitations';
 import InvitationView from '@/views/Invitations.vue';
 import flushPromises from 'flush-promises';
@@ -68,11 +65,6 @@ const fakeInvitations: Invitation[] = [fakeInvitation];
 const localVue = createLocalVue();
 localVue.use(VeeValidate, { inject: false, delay: 500, validity: true });
 localVue.use(PortalVue);
-localVue.component('fa-icon', FontAwesomeIcon);
-library.add(faSpinner);
-library.add(faPlus);
-library.add(faSyncAlt);
-library.add(faTrashAlt);
 config.logModifiedComponents = false;
 
 describe('Invitation.vue', () => {

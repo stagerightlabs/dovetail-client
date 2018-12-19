@@ -13,7 +13,6 @@ jest.mock('@/repositories/session', () => ({
 }));
 
 import { shallowMount, createLocalVue, RouterLinkStub } from '@vue/test-utils';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import AcceptInvitation from '@/views/session/AcceptInvitation.vue';
 import flushPromises from 'flush-promises';
 import session from '@/repositories/session';
@@ -32,7 +31,6 @@ const fakeToken: AuthToken = {
 const localVue = createLocalVue();
 localVue.use(Vuex);
 localVue.use(VeeValidate, { inject: false, delay: 1, validity: true });
-localVue.component('fa-icon', FontAwesomeIcon);
 
 describe('AcceptInvitation.vue', () => {
 

@@ -5,9 +5,6 @@ jest.mock('@/repositories/session', () => ({
 }));
 
 import { mount, createLocalVue, RouterLinkStub } from '@vue/test-utils';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import { faSpinner } from '@fortawesome/free-solid-svg-icons';
-import { library } from '@fortawesome/fontawesome-svg-core';
 import Register from '@/views/session/Register.vue';
 import flushPromises from 'flush-promises';
 import http from '@/repositories/session';
@@ -27,8 +24,6 @@ const fakeToken: AuthToken = {
 const localVue = createLocalVue();
 localVue.use(Vuex);
 localVue.use(VeeValidate, { inject: false, delay: 1, validity: true });
-localVue.component('fa-icon', FontAwesomeIcon);
-library.add(faSpinner);
 config.logModifiedComponents = false;
 
 describe('Register.vue', () => {

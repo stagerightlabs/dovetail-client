@@ -6,7 +6,7 @@
     :id="id"
   >
     <span v-if="spin">
-      <fa-icon icon="spinner" spin></fa-icon>
+      <!-- <fa-icon icon="spinner" spin></fa-icon> -->
     </span>
     <span v-else>
       <slot></slot>

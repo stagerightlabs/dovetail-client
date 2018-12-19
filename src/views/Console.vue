@@ -9,7 +9,7 @@
     </div>
     <div class="block sm:hidden absolute pin-t pin-r">
       <button @click="showMobileNav" class="flex items-center px-3 py-2 border-0 rounded text-white">
-        <fa-icon icon="bars" />
+        <!-- <fa-icon icon="bars" /> -->
       </button>
     </div>
   </div>

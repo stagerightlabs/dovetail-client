@@ -1,16 +1,16 @@
 <template>
   <div v-if="loading" class="center-xy">
-    <fa-icon icon="spinner" spin class="text-grey-light" size="4x"></fa-icon>
+    <!-- <fa-icon icon="spinner" spin class="text-grey-light" size="4x"></fa-icon> -->
   </div>
   <main v-else role="main" class="page">
     <div class="page-header flex justify-between items-center ">
       <h1>Notebooks</h1>
       <div>
         <button @click="showNotebookForm" class="text-grey-light" id="btn-show-create-form">
-          <fa-icon icon="plus" ></fa-icon> New
+          <!-- <fa-icon icon="plus" ></fa-icon> New -->
         </button>
         <button @click="refresh" class="text-grey-light ml-4" id="btn-refresh">
-          <fa-icon icon="sync-alt" ></fa-icon> Refresh
+          <!-- <fa-icon icon="sync-alt" ></fa-icon> Refresh -->
         </button>
       </div>
     </div>

@@ -17,10 +17,7 @@ jest.mock('@/repositories/categories', () => ({
   delete: jest.fn((category: Category) => Promise.resolve()),
 }));
 
-import { faSpinner, faPlus, faSyncAlt, faTrashAlt, faEdit } from '@fortawesome/free-solid-svg-icons';
 import { mount, createLocalVue, RouterLinkStub } from '@vue/test-utils';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import { library } from '@fortawesome/fontawesome-svg-core';
 import CategoriesView from '@/views/Categories.vue';
 import categories from '@/repositories/categories';
 import flushPromises from 'flush-promises';
@@ -34,12 +31,6 @@ import merge from 'lodash.merge';
 const localVue = createLocalVue();
 localVue.use(VueRouter);
 localVue.use(VeeValidate, { inject: false, delay: 500 });
-localVue.component('fa-icon', FontAwesomeIcon);
-library.add(faSpinner);
-library.add(faPlus);
-library.add(faSyncAlt);
-library.add(faTrashAlt);
-library.add(faEdit);
 config.logModifiedComponents = false;
 
 const fakeCategory: Category = {

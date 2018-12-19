@@ -12,7 +12,7 @@
     </div>
     <div class="block sm:hidden absolute pin-t pin-r">
       <button @click="closeMobileNav" class="flex items-center px-3 py-2 border-0 rounded text-blue-lightest">
-        <fa-icon icon="times" />
+        <!-- <fa-icon icon="times" /> -->
       </button>
     </div>
   </div>

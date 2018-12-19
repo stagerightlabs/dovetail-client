@@ -8,9 +8,6 @@ jest.mock('@/repositories/session', () => ({
 
 import { mount, createLocalVue, RouterLinkStub } from '@vue/test-utils';
 import ForgotPassword from '@/views/session/ForgotPassword.vue';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import { faSpinner } from '@fortawesome/free-solid-svg-icons';
-import { library } from '@fortawesome/fontawesome-svg-core';
 import flushPromises from 'flush-promises';
 import http from '@/repositories/session';
 import { config } from '@vue/test-utils';
@@ -21,8 +18,6 @@ import merge from 'lodash.merge';
 const localVue = createLocalVue();
 localVue.use(VueRouter);
 localVue.use(VeeValidate, { inject: false, delay: 1, validity: true });
-localVue.component('fa-icon', FontAwesomeIcon);
-library.add(faSpinner);
 config.logModifiedComponents = false;
 
 describe('ForgotPassword.vue', () => {

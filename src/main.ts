@@ -6,24 +6,6 @@ import store from './store/index';
 import PortalVue from 'portal-vue';
 import VeeValidate from 'vee-validate';
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import { faTimes, faEdit, faBars, faSpinner, faUserCircle } from '@fortawesome/free-solid-svg-icons';
-import { faPlus, faSignOutAlt, faCheck, faTrashAlt, faSyncAlt } from '@fortawesome/free-solid-svg-icons';
-
-// Register FA Icon assets
-library.add(faTimes);
-library.add(faBars);
-library.add(faSpinner);
-library.add(faUserCircle);
-library.add(faSyncAlt);
-library.add(faPlus);
-library.add(faSignOutAlt);
-library.add(faCheck);
-library.add(faTrashAlt);
-library.add(faEdit);
-
-// Register the FA icon plugin
-Vue.component('fa-icon', FontAwesomeIcon);
 
 // Register the VeeValidate plugin
 const dictionary = {

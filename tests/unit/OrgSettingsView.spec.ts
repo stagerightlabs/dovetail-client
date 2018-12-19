@@ -5,9 +5,6 @@ jest.mock('@/repositories/settings', () => ({
 }));
 
 import { mount, createLocalVue, RouterLinkStub } from '@vue/test-utils';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import { faSpinner } from '@fortawesome/free-solid-svg-icons';
-import { library } from '@fortawesome/fontawesome-svg-core';
 import OrgSettingsView from '@/views/OrgSettings.vue';
 import settings from '@/repositories/settings';
 import flushPromises from 'flush-promises';
@@ -20,8 +17,6 @@ import Vuex from 'vuex';
 const localVue = createLocalVue();
 localVue.use(Vuex);
 localVue.use(VeeValidate, { inject: false, delay: 500 });
-localVue.component('fa-icon', FontAwesomeIcon);
-library.add(faSpinner);
 config.logModifiedComponents = false;
 
 const fakeOrganization: Organization = {

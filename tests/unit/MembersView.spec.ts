@@ -20,9 +20,6 @@ jest.mock('@/repositories/members', () => ({
 }));
 
 import { mount, createLocalVue, RouterLinkStub } from '@vue/test-utils';
-import { faSpinner, faPlus, faSyncAlt, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import { library } from '@fortawesome/fontawesome-svg-core';
 import MembersView from '@/views/Members.vue';
 import members from '@/repositories/members';
 import flushPromises from 'flush-promises';
@@ -35,11 +32,6 @@ import { Member } from '@/types';
 
 const localVue = createLocalVue();
 localVue.use(VeeValidate, { inject: false, delay: 500, validity: true });
-localVue.component('fa-icon', FontAwesomeIcon);
-library.add(faSpinner);
-library.add(faPlus);
-library.add(faSyncAlt);
-library.add(faTrashAlt);
 config.logModifiedComponents = false;
 
 const fakeMember: Member = {

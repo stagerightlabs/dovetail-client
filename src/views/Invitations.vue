@@ -1,16 +1,16 @@
 <template>
   <div v-if="loading" class="center-xy">
-    <fa-icon icon="spinner" spin class="text-grey-light" size="4x"></fa-icon>
+    <!-- <fa-icon icon="spinner" spin class="text-grey-light" size="4x"></fa-icon> -->
   </div>
   <main v-else role="main" class="page">
     <div class="page-header flex justify-between items-center ">
       <h1>Invitations</h1>
       <div>
         <button @click="showInvitationForm" class="text-grey-light" id="btn-new">
-          <fa-icon icon="plus" ></fa-icon> New
+          <!-- <fa-icon icon="plus" ></fa-icon> New -->
         </button>
         <button @click="refresh" class="text-grey-light ml-4" id="btn-refresh">
-          <fa-icon icon="sync-alt" ></fa-icon> Refresh
+          <!-- <fa-icon icon="sync-alt" ></fa-icon> Refresh -->
         </button>
       </div>
     </div>
@@ -68,7 +68,7 @@
             <td>{{ invitation.email }}</td>
             <td>{{ formattedDate(invitation.created_at) }}</td>
             <td class="text-center">
-              <fa-icon icon="check" v-if="invitation.completed_at"></fa-icon>
+              <!-- <fa-icon icon="check" v-if="invitation.completed_at"></fa-icon> -->
               <span v-if="invitation.revoked_at">Revoked</span>
             </td>
             <td class="text-center">
@@ -104,7 +104,7 @@
                 :message="`Remove the '${invitation.email}' invitation?`"
                 :confirm="true"
               >
-                <fa-icon icon="trash-alt"></fa-icon>
+                <!-- <fa-icon icon="trash-alt"></fa-icon> -->
               </action-button>
             </td>
           </tr>
