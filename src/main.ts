@@ -5,7 +5,7 @@ import './registerServiceWorker';
 import store from './store/index';
 import PortalVue from 'portal-vue';
 import VeeValidate from 'vee-validate';
-import { library } from '@fortawesome/fontawesome-svg-core';
+import Icon from '@/components/Icon.vue';
 
 // Register the VeeValidate plugin
 const dictionary = {
@@ -17,6 +17,9 @@ const dictionary = {
 };
 VeeValidate.Validator.localize('en', dictionary);
 Vue.use(VeeValidate, { inject: false, delay: 500, validity: true });
+
+// Register the icon component
+Vue.component('icon', Icon);
 
 // Register the Portal Vue plugin
 Vue.use(PortalVue);

@@ -16,7 +16,7 @@ import NotebookIndexView from '@/views/Notebooks.vue';
 import notebooks from '@/repositories/notebooks';
 import flushPromises from 'flush-promises';
 import { Notebook, Member } from '@/types';
-import cloneDeep from 'lodash.clonedeep';
+import Icon from '@/components/Icon.vue';
 import { config } from '@vue/test-utils';
 import VeeValidate from 'vee-validate';
 import VueRouter from 'vue-router';
@@ -25,6 +25,7 @@ import merge from 'lodash.merge';
 const localVue = createLocalVue();
 localVue.use(VueRouter);
 localVue.use(VeeValidate, { inject: false, delay: 500, validity: true });
+localVue.component('icon', Icon);
 config.logModifiedComponents = false;
 
 const fakeNotebook: Notebook = {

@@ -17,6 +17,7 @@ import { mount, createLocalVue, RouterLinkStub } from '@vue/test-utils';
 import VerifyEmailView from '@/views/VerifyEmail.vue';
 import profile from '@/repositories/profile';
 import { config } from '@vue/test-utils';
+import Icon from '@/components/Icon.vue';
 import VueRouter from 'vue-router';
 import merge from 'lodash.merge';
 import { User } from '@/types';
@@ -25,6 +26,7 @@ import Vuex from 'vuex';
 const localVue = createLocalVue();
 localVue.use(Vuex);
 localVue.use(VueRouter);
+localVue.component('icon', Icon);
 config.logModifiedComponents = false;
 
 const fakeUnverifiedUser: User = {

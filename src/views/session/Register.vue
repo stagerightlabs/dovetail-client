@@ -68,7 +68,7 @@ e<template>
       </div>
     </div>
     <div class="mt-4">
-      <router-link class="text-grey-dark font-bold no-underline" :to="{ name: 'login'}">Do you already have an Account?</router-link>
+      <router-link class="text-grey-dark font-bold no-underline" :to="{ name: 'login'}">Do you already have an account?</router-link>
     </div>
   </main>
 </template>

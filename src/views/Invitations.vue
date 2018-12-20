@@ -1,22 +1,22 @@
 <template>
   <div v-if="loading" class="center-xy">
-    <!-- <fa-icon icon="spinner" spin class="text-grey-light" size="4x"></fa-icon> -->
+    <icon name="refresh" width="128" height="128" class="text-grey-light" spin></icon>
   </div>
   <main v-else role="main" class="page">
-    <div class="page-header flex justify-between items-center ">
+    <div class="page-header sm:flex justify-between items-center ">
       <h1>Invitations</h1>
-      <div>
+      <div class="p-2 sm:p-0 text-right">
         <button @click="showInvitationForm" class="text-grey-light" id="btn-new">
-          <!-- <fa-icon icon="plus" ></fa-icon> New -->
+          <icon name="add-outline"></icon>
         </button>
         <button @click="refresh" class="text-grey-light ml-4" id="btn-refresh">
-          <!-- <fa-icon icon="sync-alt" ></fa-icon> Refresh -->
+          <icon name="refresh"></icon>
         </button>
       </div>
     </div>
-    <div v-if="creationFormVisible" class="content flex items-start">
-      <label for="new-invitation-email" class="pt-2">Invite:</label>
-      <div class="ml-2 flex-grow">
+    <div v-if="creationFormVisible" class="content sm:flex items-start">
+      <label for="new-invitation-email" class="pt-2 sm:ml-0">Invite:</label>
+      <div class="sm:ml-2 flex-grow">
         <input
           type="email"
           name="email"
@@ -33,15 +33,14 @@
         <div class="input-error flex-none">{{ errors.first('email') }}</div>
       </div>
       <action-button
-
-        class="btn btn-green ml-2"
+        class="btn btn-green sm:ml-2 w-full sm:w-auto mb-1 sm:mb-0"
         @click="invite"
         :spin="sendingInvitation"
       >
         Send
       </action-button>
       <button
-        class="btn btn-red ml-2"
+        class="btn btn-red sm:ml-2 w-full sm:w-auto"
         @click="cancelNewInvitation"
       >
         Cancel
@@ -68,7 +67,7 @@
             <td>{{ invitation.email }}</td>
             <td>{{ formattedDate(invitation.created_at) }}</td>
             <td class="text-center">
-              <!-- <fa-icon icon="check" v-if="invitation.completed_at"></fa-icon> -->
+              <icon name="checkmark" v-if="invitation.completed_at" />
               <span v-if="invitation.revoked_at">Revoked</span>
             </td>
             <td class="text-center">
@@ -104,7 +103,7 @@
                 :message="`Remove the '${invitation.email}' invitation?`"
                 :confirm="true"
               >
-                <!-- <fa-icon icon="trash-alt"></fa-icon> -->
+                <icon name="trash" />
               </action-button>
             </td>
           </tr>
@@ -124,6 +123,7 @@
 import Vue from 'vue';
 import { format } from 'date-fns';
 import { Invitation } from '@/types';
+import Icon from '@/components/Icon.vue';
 import BaseView from '@/mixins/BaseView.ts';
 import invitations from '@/repositories/invitations';
 import Component, { mixins } from 'vue-class-component';
@@ -131,7 +131,7 @@ import ActionButton from '@/components/ActionButton.vue';
 
 @Component({
   $_veeValidate: { validator: "new" },
-  components: { ActionButton }
+  components: { Icon, ActionButton }
 })
 export default class InvitationView extends mixins(BaseView) {
 

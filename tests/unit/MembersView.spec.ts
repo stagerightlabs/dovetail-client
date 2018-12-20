@@ -24,6 +24,7 @@ import MembersView from '@/views/Members.vue';
 import members from '@/repositories/members';
 import flushPromises from 'flush-promises';
 import cloneDeep from 'lodash.clonedeep';
+import Icon from '@/components/Icon.vue';
 import { config } from '@vue/test-utils';
 import VeeValidate from 'vee-validate';
 import merge from 'lodash.merge';
@@ -32,6 +33,7 @@ import { Member } from '@/types';
 
 const localVue = createLocalVue();
 localVue.use(VeeValidate, { inject: false, delay: 500, validity: true });
+localVue.component('icon', Icon);
 config.logModifiedComponents = false;
 
 const fakeMember: Member = {

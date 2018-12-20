@@ -23,6 +23,7 @@ import categories from '@/repositories/categories';
 import flushPromises from 'flush-promises';
 import cloneDeep from 'lodash.clonedeep';
 import { config } from '@vue/test-utils';
+import Icon from '@/components/Icon.vue';
 import VeeValidate from 'vee-validate';
 import { Category } from '@/types';
 import VueRouter from 'vue-router';
@@ -31,6 +32,7 @@ import merge from 'lodash.merge';
 const localVue = createLocalVue();
 localVue.use(VueRouter);
 localVue.use(VeeValidate, { inject: false, delay: 500 });
+localVue.component('icon', Icon);
 config.logModifiedComponents = false;
 
 const fakeCategory: Category = {

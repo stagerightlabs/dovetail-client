@@ -1,16 +1,17 @@
 <template>
 <div v-if="loading" class="center-xy">
-  <!-- <fa-icon icon="spinner" spin class="text-grey-light" size="4x"></fa-icon> -->
+  <icon name="refresh" width="128" height="128" class="text-grey-light" spin></icon>
+
 </div>
 <main v-else role="main" class="page">
   <div class="page-header flex justify-between items-center ">
     <h1>Categories</h1>
     <div>
       <button @click="showCreationForm" class="text-grey-light" id="btn-new">
-        <!-- <fa-icon icon="plus" ></fa-icon> New -->
+        <icon name="add-outline"></icon>
       </button>
       <button @click="refresh" class="text-grey-light ml-4" id="btn-refresh">
-        <!-- <fa-icon icon="sync-alt" ></fa-icon> Refresh -->
+        <icon name="refresh"></icon>
       </button>
     </div>
   </div>
@@ -68,7 +69,7 @@
     <div v-else>
       <h3>{{ category.name }}</h3>
       <button id="btn-edit" @click="edit(category)">
-        <!-- <fa-icon icon="edit"></fa-icon> -->
+        <icon name="edit-pencil" />
         Edit
       </button>
       <button id="btn-delete" @click="destroy(category)">Remove</button>

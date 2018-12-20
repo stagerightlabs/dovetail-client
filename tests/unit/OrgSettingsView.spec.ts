@@ -8,15 +8,17 @@ import { mount, createLocalVue, RouterLinkStub } from '@vue/test-utils';
 import OrgSettingsView from '@/views/OrgSettings.vue';
 import settings from '@/repositories/settings';
 import flushPromises from 'flush-promises';
+import Icon from '@/components/Icon.vue';
 import { config } from '@vue/test-utils';
 import VeeValidate from 'vee-validate';
-import merge from 'lodash.merge';
 import { Organization } from '@/types';
+import merge from 'lodash.merge';
 import Vuex from 'vuex';
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
 localVue.use(VeeValidate, { inject: false, delay: 500 });
+localVue.component('icon', Icon);
 config.logModifiedComponents = false;
 
 const fakeOrganization: Organization = {

@@ -11,6 +11,7 @@ import ForgotPassword from '@/views/session/ForgotPassword.vue';
 import flushPromises from 'flush-promises';
 import http from '@/repositories/session';
 import { config } from '@vue/test-utils';
+import Icon from '@/components/Icon.vue';
 import VeeValidate from 'vee-validate';
 import VueRouter from 'vue-router';
 import merge from 'lodash.merge';
@@ -18,6 +19,7 @@ import merge from 'lodash.merge';
 const localVue = createLocalVue();
 localVue.use(VueRouter);
 localVue.use(VeeValidate, { inject: false, delay: 1, validity: true });
+localVue.component('icon', Icon);
 config.logModifiedComponents = false;
 
 describe('ForgotPassword.vue', () => {

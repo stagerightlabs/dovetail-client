@@ -11,7 +11,7 @@
         <router-link to="#">{{ orgNotebooksLabel }}</router-link>
         <router-link to="#">Categories</router-link>
         <router-link to="/logout" class="nav-button">
-          <!-- <fa-icon icon="sign-out-alt"></fa-icon> -->
+          <icon name="lock-closed" />
           Logout
         </router-link>
       </nav>
@@ -29,7 +29,7 @@
       <div class="session-footer" v-if="isAuthenticated">
           <div class="avatar">
             <router-link to="#">
-              <!-- <fa-icon icon="user-circle" size="2x"></fa-icon> -->
+              <icon name="user-solid-circle" height="24" width="24" />
             </router-link>
           </div>
           <div class="user">
@@ -42,7 +42,7 @@
     </footer>
     <div class="block sm:hidden absolute pin-t pin-r">
       <button @click="closeMobileNav" class="flex items-center px-3 py-2 border-0 rounded text-blue-lightest">
-        <!-- <fa-icon icon="times" /> -->
+        <icon name="close"></icon>
       </button>
     </div>
   </div>
@@ -50,11 +50,12 @@
 
 <script lang="ts">
 import EventBus from '@/bus';
+import Icon from '@/components/Icon.vue'
 import { Action, Getter } from 'vuex-class'
 import { User, Organization } from '@/types';
 import { Vue, Component, Prop } from 'vue-property-decorator'
 
-@Component({})
+@Component({components: {Icon}})
 export default class MainMenu extends Vue {
 
   @Prop({ default: true }) mobileNavHidden!: boolean

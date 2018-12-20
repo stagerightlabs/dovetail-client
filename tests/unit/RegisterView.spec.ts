@@ -9,6 +9,7 @@ import Register from '@/views/session/Register.vue';
 import flushPromises from 'flush-promises';
 import http from '@/repositories/session';
 import { config } from '@vue/test-utils';
+import Icon from '@/components/Icon.vue';
 import VeeValidate from 'vee-validate';
 import { AuthToken } from '@/types';
 import merge from 'lodash.merge';
@@ -24,6 +25,7 @@ const fakeToken: AuthToken = {
 const localVue = createLocalVue();
 localVue.use(Vuex);
 localVue.use(VeeValidate, { inject: false, delay: 1, validity: true });
+localVue.component('icon', Icon);
 config.logModifiedComponents = false;
 
 describe('Register.vue', () => {

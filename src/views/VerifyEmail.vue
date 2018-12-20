@@ -1,7 +1,7 @@
 <template>
   <main role="main">
     <div v-if="loading" class="center-xy">
-      <!-- <fa-icon icon="spinner" spin class="text-grey-light" size="4x"></fa-icon> -->
+      <icon name="refresh" width="128" height="128" class="text-grey-light" spin></icon>
     </div>
   </main>
 </template>

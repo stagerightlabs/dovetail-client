@@ -12,10 +12,10 @@ jest.mock('@/repositories/teams', () => ({
 }));
 
 import { mount, createLocalVue, RouterLinkStub } from '@vue/test-utils';
-import flushPromises from 'flush-promises';
 import TeamIndexView from '@/views/Teams.vue';
+import flushPromises from 'flush-promises';
 import teams from '@/repositories/teams';
-import cloneDeep from 'lodash.clonedeep';
+import Icon from '@/components/Icon.vue';
 import { config } from '@vue/test-utils';
 import { Team, Member } from '@/types';
 import VeeValidate from 'vee-validate';
@@ -25,6 +25,7 @@ import merge from 'lodash.merge';
 const localVue = createLocalVue();
 localVue.use(VueRouter);
 localVue.use(VeeValidate, { inject: false, delay: 500, validity: true });
+localVue.component('icon', Icon);
 config.logModifiedComponents = false;
 
 const fakeTeam: Team = {

@@ -18,6 +18,7 @@ import ProfileView from '@/views/Profile.vue';
 import profile from '@/repositories/profile';
 import flushPromises from 'flush-promises';
 import { config } from '@vue/test-utils';
+import Icon from '@/components/Icon.vue';
 import VeeValidate from 'vee-validate';
 import merge from 'lodash.merge';
 import { User } from '@/types';
@@ -26,6 +27,7 @@ import Vuex from 'vuex';
 const localVue = createLocalVue();
 localVue.use(Vuex);
 localVue.use(VeeValidate, { inject: false, delay: 500 });
+localVue.component('icon', Icon);
 config.logModifiedComponents = false;
 
 const fakeUnverifiedUser: User = {

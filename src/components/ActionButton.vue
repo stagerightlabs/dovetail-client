@@ -2,11 +2,11 @@
   <button
     :class="{'disabled': spin}"
     @click="handleClick"
-    :style="[spin ? {width: `${clientWidth}px`} : {}]"
+    :style="[spin ? {width: `${clientWidth}px`, height: `${clientHeight}px`} : {}]"
     :id="id"
   >
     <span v-if="spin">
-      <!-- <fa-icon icon="spinner" spin></fa-icon> -->
+      <icon name="refresh" width="20" height="20" spin></icon>
     </span>
     <span v-else>
       <slot></slot>
@@ -47,6 +47,7 @@ export default class ActionButton extends Vue {
   @Prop({ default: 'Confirm'}) confirmLabel!: string;
   @Prop({ default: 'Cancel' }) cancelLabel!: string;
   clientWidth: number = 0;
+  clientHeight: number = 0;
   modalVisible = false;
 
   /**
@@ -54,6 +55,7 @@ export default class ActionButton extends Vue {
    */
   handleClick() {
     this.clientWidth = this.$el.clientWidth;
+    this.clientHeight = this.$el.clientHeight;
 
     if (this.confirm) {
       this.modalVisible = true;

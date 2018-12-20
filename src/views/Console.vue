@@ -1,6 +1,6 @@
 <template>
   <div v-if="loading" class="center-xy">
-    <fa-icon icon="spinner" spin class="text-grey-light" size="4x"></fa-icon>
+    <icon name="reload" width="48px"></icon>
   </div>
   <div v-else class="flex">
     <main-menu :mobile-nav-hidden="mobileNavHidden" @close="hideMobileNav"></main-menu>
@@ -9,7 +9,7 @@
     </div>
     <div class="block sm:hidden absolute pin-t pin-r">
       <button @click="showMobileNav" class="flex items-center px-3 py-2 border-0 rounded text-white">
-        <!-- <fa-icon icon="bars" /> -->
+        <icon name="menu"></icon>
       </button>
     </div>
   </div>
@@ -18,15 +18,16 @@
 <script lang="ts">
 import Vue from 'vue'
 import EventBus from '@/bus';
-import { User, Organization } from '@/types';
+import Icon from '@/components/Icon.vue'
 import http from '@/repositories/session';
 import BaseView from '@/mixins/BaseView.ts';
+import { User, Organization } from '@/types';
 import MainMenu from '@/components/MainMenu.vue';
 import { Action, Getter, Mutation } from 'vuex-class';
 import Component, { mixins } from 'vue-class-component';
 
 @Component({
-  components: { MainMenu }
+  components: { Icon, MainMenu }
 })
 export default class Console extends mixins(BaseView) {
 

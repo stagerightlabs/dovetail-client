@@ -28,8 +28,9 @@ import { mount, createLocalVue, RouterLinkStub } from '@vue/test-utils';
 import flushPromises from 'flush-promises';
 import teams from '@/repositories/teams';
 import cloneDeep from 'lodash.clonedeep';
-import TeamView from '@/views/Team.vue';
 import { config } from '@vue/test-utils';
+import TeamView from '@/views/Team.vue';
+import Icon from '@/components/Icon.vue';
 import { Team, Member } from '@/types';
 import VeeValidate from 'vee-validate';
 import VueRouter from 'vue-router';
@@ -38,6 +39,7 @@ import merge from 'lodash.merge';
 const localVue = createLocalVue();
 localVue.use(VeeValidate, { inject: false, delay: 500, validity: true });
 localVue.use(VueRouter);
+localVue.component('icon', Icon);
 config.logModifiedComponents = false;
 
 const fakeMember: Member = {
