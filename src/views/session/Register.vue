@@ -67,8 +67,8 @@ e<template>
         <action-button class="btn btn-slate" @click="register" :spin="registration_submitted">Register</action-button>
       </div>
     </div>
-    <div class="mt-4">
-      <router-link class="text-grey-dark font-bold no-underline" :to="{ name: 'login'}">Do you already have an account?</router-link>
+    <div class="bg-grey-darker mt-4 rounded w-full md:w-128 px-8 py-6 text-center">
+      <router-link class="text-grey-light font-bold no-underline" :to="{ name: 'login'}">Do you already have an account?</router-link>
     </div>
   </main>
 </template>

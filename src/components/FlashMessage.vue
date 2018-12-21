@@ -29,11 +29,11 @@ export default class FlashMessage extends Vue {
   created() {
     this.body = this.message;
 
-    if (this.delay > 0) {
-      setTimeout(() => {
-        this.dismiss();
-      }, this.delay);
-    }
+    // if (this.delay > 0) {
+    //   setTimeout(() => {
+    //     this.dismiss();
+    //   }, this.delay);
+    // }
   }
 };
 </script>

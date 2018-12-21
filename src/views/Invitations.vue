@@ -33,7 +33,7 @@
         <div class="input-error flex-none">{{ errors.first('email') }}</div>
       </div>
       <action-button
-        class="btn btn-green sm:ml-2 w-full sm:w-auto mb-1 sm:mb-0"
+        class="btn btn-green sm:ml-2 w-full sm:w-auto my-1 sm:my-0"
         @click="invite"
         :spin="sendingInvitation"
       >

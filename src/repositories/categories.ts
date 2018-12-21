@@ -16,7 +16,9 @@ export default {
   },
 
   update(category: Category): AxiosPromise<any> {
-    return axios.put(`/categories/${category.hashid}`);
+    return axios.put(`/categories/${category.hashid}`, {
+      name: category.name,
+    });
   },
 
   delete(category: Category): AxiosPromise<any> {

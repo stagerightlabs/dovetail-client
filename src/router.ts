@@ -28,6 +28,12 @@ const router =  new Router({
           meta: { requiresAuth: true },
         },
         {
+          path: '/categories',
+          name: 'categories',
+          component: () => import(/* webpackChunkName: "categories" */ './views/Categories.vue'),
+          meta: { requiresAuth: true },
+        },
+        {
           path: '/profile',
           name: 'profile',
           component: () => import(/* webpackChunkName: "profile" */ './views/Profile.vue'),

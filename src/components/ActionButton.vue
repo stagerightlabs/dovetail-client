@@ -36,7 +36,7 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from 'vue-property-decorator'
+import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
 
 @Component({})
 export default class ActionButton extends Vue {
@@ -46,6 +46,12 @@ export default class ActionButton extends Vue {
   @Prop({ default: 'Are you sure you want to do that?' }) message!: string;
   @Prop({ default: 'Confirm'}) confirmLabel!: string;
   @Prop({ default: 'Cancel' }) cancelLabel!: string;
+
+  @Watch('spin')
+  onPropertyChanged(value: boolean, oldValue: boolean) {
+    this.captureClientSize()
+  }
+
   clientWidth: number = 0;
   clientHeight: number = 0;
   modalVisible = false;
@@ -54,8 +60,7 @@ export default class ActionButton extends Vue {
    * Process a click event
    */
   handleClick() {
-    this.clientWidth = this.$el.clientWidth;
-    this.clientHeight = this.$el.clientHeight;
+    this.captureClientSize();
 
     if (this.confirm) {
       this.modalVisible = true;
@@ -98,6 +103,11 @@ export default class ActionButton extends Vue {
       document.removeEventListener('keydown', escapeHandler);
     });
 
+  }
+
+  private captureClientSize() {
+    this.clientWidth = this.$el.clientWidth;
+    this.clientHeight = this.$el.clientHeight;
   }
 }
 </script>

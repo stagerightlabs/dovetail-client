@@ -19,18 +19,19 @@
           type="password"
           v-model="password"
           name="password"
-          v-validate="{required: true}"
+          v-validate
+          required
           @keyup.enter="login"
         >
         <div class="input-error">{{ errors.first('password') }}</div>
       </div>
       <div class="flex items-center justify-between">
         <router-link class="btn btn-link pl-0" :to="{ name: 'forgotPassword'}">Forgot Password?</router-link>
-        <button class="btn btn-slate" @click="login">Login</button>
+        <action-button class="btn btn-slate" id="btn-login" @click="login" :spin="attemptingLogin">Login</action-button>
       </div>
     </div>
-    <div class="mt-4">
-      <router-link class="text-grey-dark font-bold no-underline" :to="{ name: 'register'}">Would you like to create a new account?</router-link>
+    <div class="bg-grey-darker mt-4 rounded w-full md:w-128 px-8 py-6 text-center">
+      <router-link class="text-grey-light font-bold no-underline" :to="{ name: 'register'}">Would you like to create a new account?</router-link>
     </div>
   </main>
 </template>
@@ -42,19 +43,22 @@ import { AuthToken, User } from '@/types';
 import BaseView from '@/mixins/BaseView.ts';
 import { State, Mutation } from 'vuex-class';
 import Component, { mixins } from 'vue-class-component';
+import ActionButton from '@/components/ActionButton.vue';
 const namespace: string = 'auth';
 
 @Component({
+  components: { ActionButton },
   $_veeValidate: { validator: "new" }
 })
   export default class LoginView extends mixins(BaseView) {
   @Mutation('session/storeAuthTokenInLocalStorage') storeAuthTokenInLocalStorage! : (authToken: AuthToken) => void
   @Mutation('session/setAuthTokenForSession') setAuthTokenForSession! : (authToken: AuthToken) => void
 
-  email : string = '';
-  password : string = '';
+  email: string = '';
+  password: string = '';
+  attemptingLogin: boolean = false;
 
-  async login() {
+  login() {
     this.$validator.validateAll()
       .then((valid) => {
         if (valid) {
@@ -65,6 +69,7 @@ const namespace: string = 'auth';
 
   private submitCredentials() {
     // Request an auth token from the api
+    this.attemptingLogin = true;
     http.login({email: this.email, password: this.password})
       .then((response) => {
         const authToken: AuthToken = response && response.data;
@@ -73,6 +78,7 @@ const namespace: string = 'auth';
         this.$router.push({name: 'about'});
       })
       .catch((error) => {
+        this.attemptingLogin = false;
         this.handleResponseErrors(error);
       });
   }

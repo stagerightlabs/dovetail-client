@@ -1,7 +1,6 @@
 <template>
 <div v-if="loading" class="center-xy">
   <icon name="refresh" width="128" height="128" class="text-grey-light" spin></icon>
-
 </div>
 <main v-else role="main" class="page">
   <div class="page-header flex justify-between items-center ">
@@ -16,63 +15,106 @@
     </div>
   </div>
   <div v-if="creationFormVisible" class="content flex items-start">
-      <label for="new-category-name" class="pt-2">Name:</label>
-      <div class="ml-2 flex-grow">
-        <input
-          type="text"
-          name="name"
-          class="leading-none"
-          id="new-category-name"
-          v-model="newCategoryName"
-          ref="newCategoryNameInput"
-          @keydown.esc="cancelCreation"
-          @keydown.enter="create"
-          required
-          v-validate
-        >
-        <div class="input-error flex-none">{{ errors.first('name') }}</div>
-      </div>
-      <action-button
-        id="btn-create"
-        class="btn btn-green ml-2"
-        @click="create"
-        :spin="creatingCategory"
+    <label for="new-category-name" class="pt-2">Name:</label>
+    <div class="ml-2 flex-grow">
+      <input
+        type="text"
+        name="name"
+        class="leading-none"
+        id="new-category-name"
+        v-model="newCategoryName"
+        ref="newCategoryNameInput"
+        @keydown.esc="cancelCreation"
+        @keydown.enter="create"
+        required
+        v-validate
       >
-        Save
-      </action-button>
-      <button
-        class="btn btn-red ml-2"
-        @click="cancelCreation"
+      <div class="input-error flex-none">{{ errors.first('name') }}</div>
+    </div>
+    <action-button
+      id="btn-create"
+      class="btn btn-green ml-2"
+      @click="create"
+      :spin="creatingCategory"
+    >
+      Save
+    </action-button>
+    <button
+      class="btn btn-red ml-2"
+      @click="cancelCreation"
+    >
+      Close
+    </button>
+  </div>
+  <div class="content">
+    <div v-if="categories.length">
+      <div
+        v-for="category in categories"
+        :key="category.hashid"
+        class="category"
       >
-        Cancel
-      </button>
-    </div>
-  <div v-for="category in categories" :key="category.hashid">
-    <div v-if="isEditing(category)">
-      <div class="input-group">
-        <label>Name:</label>
-        <input
-          type="text"
-          id="text-name"
-          v-model="editing.name"
-          name="name"
-          required
-          v-validate
-        >
-        <div class="input-error">{{ errors.first('name') }}</div>
+        <div v-if="isEditing(category)" class="flex justify-between">
+          <div class="inline-flex items-center ">
+            <label>Name:</label>
+            <div>
+              <input
+                type="text"
+                id="text-name"
+                class="ml-2"
+                v-model="editing.name"
+                ref="editCategoryInput"
+                name="name"
+                @keyup.enter="update(category)"
+                @keyup.esc="cancelUpdate"
+                required
+                v-validate
+              >
+              <div class="input-error">{{ errors.first('name') }}</div>
+            </div>
+          </div>
+          <div>
+            <action-button
+              id="btn-update"
+              class="btn btn-green mr-2"
+              :spin="submittingUpdates"
+              @click="update(category)"
+            >Save</action-button>
+            <button
+              id="btn-cancel"
+              class="btn btn-red"
+              @click="cancelUpdate"
+            >Cancel</button>
+          </div>
+        </div>
+        <div v-else class="flex justify-between items-center">
+          <div class="text-2xl">{{ category.name }}</div>
+          <div>
+            <button
+              id="btn-edit"
+              @click="edit(category)"
+              class="btn btn-green mr-2"
+            >
+              <icon name="edit-pencil" />
+            </button>
+            <action-button
+              class="btn btn-red"
+              id="btn-destroy"
+              @click="destroy(category)"
+              :spin="category.waitingForPromise === 'delete'"
+              :message="`Remove the '${category.name}' category?`"
+              :confirm="true"
+            >
+              <icon name="trash" />
+            </action-button>
+          </div>
+        </div>
       </div>
-      <div class="input-group">
-        <action-button id="btn-update" :spin="submittingUpdates" @click="update(member)">Update</action-button>
-        <button id="btn-cancel" @click="cancelUpdate">Cancel</button>
-      </div>
     </div>
-    <div v-else>
-      <h3>{{ category.name }}</h3>
-      <button id="btn-edit" @click="edit(category)">
-        <icon name="edit-pencil" />
-        Edit
-      </button>
-      <button id="btn-delete" @click="destroy(category)">Remove</button>
+    <div v-else class="text-center py-24">
+      <p class="mb-4">There are no categories available.</p>
+      <p v-if="!creationFormVisible">
+        <a @click.prevent="showCreationForm">Create One Now</a>
+      </p>
     </div>
   </div>
 </main>
@@ -105,7 +147,8 @@ export default class Categories extends mixins(BaseView) {
    * Element refs
    */
   $refs!: {
-    newCategoryNameInput: HTMLFormElement
+    newCategoryNameInput: HTMLFormElement,
+    editCategoryInput: HTMLFormElement[],
   }
 
   /**
@@ -121,6 +164,13 @@ export default class Categories extends mixins(BaseView) {
    */
   cancelUpdate() {
     this.editing = null;
+  }
+
+  /**
+   * Are there categories available?
+   */
+  get categoriesAvailable() {
+    return this.categories.length > 0;
   }
 
   /**
@@ -158,6 +208,10 @@ export default class Categories extends mixins(BaseView) {
    */
   edit(category: Category) {
     this.editing = cloneDeep(category);
+    // this.$refs.categoryEditInput[0].focus();
+    this.$nextTick(() => {
+      this.$refs.editCategoryInput[0].focus()
+    })
   }
 
   /**
@@ -206,9 +260,11 @@ export default class Categories extends mixins(BaseView) {
       .then((response) => {
         this.addOrUpdateModel(this.categories, response.data.data);
         this.editing = null;
+        this.submittingUpdates = false;
       })
       .catch((error) => {
         this.handleResponseErrors(error);
+        this.submittingUpdates = false;
       });
   }
 
@@ -226,9 +282,13 @@ export default class Categories extends mixins(BaseView) {
     categories.create(this.newCategoryName)
       .then((response) => {
         this.addOrUpdateModel(this.categories, response.data.data);
+        this.creatingCategory = false;
+        this.newCategoryName = '';
+        this.$refs.newCategoryNameInput.focus();
       })
       .catch((error) => {
         this.handleResponseErrors(error);
+        this.creatingCategory = false;
       });
   }
 
@@ -248,6 +308,12 @@ export default class Categories extends mixins(BaseView) {
 }
 </script>
 
-<style>
-
+<style scoped>
+.category {
+  border-bottom: 1px dashed #ccc;
+  @apply .py-2
+}
+.category:last-child {
+  border-bottom: none;
+}
 </style>

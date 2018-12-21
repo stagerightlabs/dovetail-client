@@ -4,10 +4,11 @@ jest.mock('@/repositories/session', () => ({
   })),
 }));
 
-import { shallowMount, createLocalVue, RouterLinkStub } from '@vue/test-utils';
+import { mount, createLocalVue, RouterLinkStub } from '@vue/test-utils';
 import Login from '@/views/session/Login.vue';
 import flushPromises from 'flush-promises';
 import http from '@/repositories/session';
+import Icon from '@/components/Icon.vue';
 import VeeValidate from 'vee-validate';
 import { AuthToken } from '@/types';
 import merge from 'lodash.merge';
@@ -22,6 +23,7 @@ const fakeToken: AuthToken = {
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
+localVue.component('icon', Icon);
 localVue.use(VeeValidate, { inject: false, delay: 1, validity: true });
 
 describe('Login.vue', () => {
@@ -62,7 +64,7 @@ describe('Login.vue', () => {
       sync: false,
     };
 
-    return shallowMount(Login, merge(defaultMountingOptions, overrides));
+    return mount(Login, merge(defaultMountingOptions, overrides));
   }
 
   test('a user can log in', async () => {
@@ -74,7 +76,7 @@ describe('Login.vue', () => {
     emailInput.setValue('email@example.com');
     const passwordInput = wrapper.find('input[type="password"]');
     passwordInput.setValue('secret');
-    wrapper.find('button').trigger('click');
+    wrapper.find({ name: 'ActionButton' }).trigger('click');
 
     await flushPromises();
     expect(http.login).toHaveBeenCalled();
@@ -83,7 +85,7 @@ describe('Login.vue', () => {
     expect(wrapper.vm.$validator.errors.count()).toBe(0);
   });
 
-  test('the email field is required', async () => {
+  test('the password field is required', async () => {
     jest.clearAllMocks();
     const store = createStore();
     store.commit = jest.fn(() => Promise.resolve());
@@ -91,7 +93,7 @@ describe('Login.vue', () => {
 
     const emailInput = wrapper.find('input[type="email"]');
     emailInput.setValue('email@example.com');
-    wrapper.find('button').trigger('click');
+    wrapper.find('#btn-login').trigger('click');
 
     await flushPromises();
     expect(http.login).not.toHaveBeenCalled();
@@ -100,7 +102,7 @@ describe('Login.vue', () => {
     expect(wrapper.vm.$validator.errors.count()).toBe(1);
   });
 
-  test('the password field is required', async () => {
+  test('the email field is required', async () => {
     jest.clearAllMocks();
     const store = createStore();
     store.commit = jest.fn(() => Promise.resolve());
@@ -108,7 +110,7 @@ describe('Login.vue', () => {
 
     const passwordInput = wrapper.find('input[type="password"]');
     passwordInput.setValue('secret');
-    wrapper.find('button').trigger('click');
+    wrapper.find('#btn-login').trigger('click');
 
     await flushPromises();
     expect(http.login).not.toHaveBeenCalled();

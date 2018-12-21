@@ -9,7 +9,7 @@
       </header>
       <nav>
         <router-link to="#">{{ orgNotebooksLabel }}</router-link>
-        <router-link to="#">Categories</router-link>
+        <router-link :to="{name: 'categories'}">Categories</router-link>
         <router-link to="/logout" class="nav-button">
           <icon name="lock-closed" />
           Logout
