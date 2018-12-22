@@ -23,12 +23,14 @@ import EditPencil from '@/icons/EditPencil.vue';
 import LockClosed from '@/icons/LockClosed.vue';
 import UserSolidCircle from '@/icons/UserSolidCircle.vue';
 import { Vue, Component, Prop } from 'vue-property-decorator'
+import ExclamationOutline from '@/icons/ExclamationOutline.vue';
 
 @Component({components: {
   AddOutline,
   Close,
   Checkmark,
   EditPencil,
+  ExclamationOutline,
   LockClosed,
   Menu,
   Reload,
@@ -52,6 +54,7 @@ export default class Icon extends Vue {
     'close': 'Close',
     'checkmark': 'Checkmark',
     'edit-pencil': 'EditPencil',
+    'exclamation-outline': 'ExclamationOutline',
     'lock-closed': 'LockClosed',
     'menu': 'Menu',
     'reload': 'Reload',
