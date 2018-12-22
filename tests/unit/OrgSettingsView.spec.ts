@@ -108,11 +108,12 @@ describe('OrgSettings.vue', () => {
     const wrapper = createWrapper({ store });
 
     wrapper.find('#input-label-notebooks').setValue('new label');
-    wrapper.find('#btn-submit').trigger('click');
-
     await flushPromises();
-    expect(store.commit).toHaveBeenCalled();
+    wrapper.find('#btn-submit').trigger('click');
+    await flushPromises();
+
     expect(settings.writeSetting).toHaveBeenCalledWith('label.notebooks', 'new label');
+    expect(store.commit).toHaveBeenCalled();
   });
 
 });

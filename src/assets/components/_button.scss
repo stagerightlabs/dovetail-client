@@ -22,7 +22,7 @@
   @apply bg-blue-light text-blue-lightest
 }
 
-.btn-blue.disabled {
+.btn-blue:disabled {
   @apply .bg-blue-lighter .cursor-not-allowed;
 }
 
@@ -34,7 +34,7 @@
   @apply bg-slate-lighter
 }
 
-.btn-slate.disabled {
+.btn-slate:disabled {
   @apply .bg-slate-lighter .cursor-not-allowed;
 }
 

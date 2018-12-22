@@ -114,7 +114,7 @@ export default class AcceptInvitation extends mixins(BaseView) {
           message: "Your password has been updated.",
           level: 'success'
         });
-        this.$router.push({name: 'about'});
+        this.$router.push({name: 'dashboard'});
       })
       .catch((error) => {
         this.handleResponseErrors(error);

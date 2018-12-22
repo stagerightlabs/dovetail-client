@@ -123,7 +123,7 @@ export default class RegisterView extends mixins(BaseView) {
       const authToken: AuthToken = response && response.data;
       this.storeAuthTokenInLocalStorage(authToken);
       this.setAuthTokenForSession(authToken);
-      this.$router.push({name: 'about'});
+      this.$router.push({name: 'dashboard'});
     }).catch((error) => {
       this.handleResponseErrors(error);
       this.registration_submitted = false;

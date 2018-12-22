@@ -21,7 +21,7 @@
           <router-link to="#">Members</router-link>
           <router-link to="#">Teams</router-link>
           <router-link :to="{ name: 'invitations' }">Invitations</router-link>
-          <router-link to="#">Settings</router-link>
+          <router-link :to="{ name: 'settings' }">Settings</router-link>
         </nav>
       </div>
     </div>

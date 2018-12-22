@@ -4,6 +4,7 @@
     @click="handleClick"
     :style="[spin ? {width: `${clientWidth}px`, height: `${clientHeight}px`} : {}]"
     :id="id"
+    :disabled="disabled"
   >
     <span v-if="spin">
       <icon name="refresh" width="20" height="20" spin></icon>
@@ -46,6 +47,7 @@ export default class ActionButton extends Vue {
   @Prop({ default: 'Are you sure you want to do that?' }) message!: string;
   @Prop({ default: 'Confirm'}) confirmLabel!: string;
   @Prop({ default: 'Cancel' }) cancelLabel!: string;
+  @Prop({ default: false }) disabled!: boolean;
 
   @Watch('spin')
   onPropertyChanged(value: boolean, oldValue: boolean) {

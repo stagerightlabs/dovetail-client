@@ -75,7 +75,7 @@ const namespace: string = 'auth';
         const authToken: AuthToken = response && response.data;
         this.storeAuthTokenInLocalStorage(authToken);
         this.setAuthTokenForSession(authToken);
-        this.$router.push({name: 'about'});
+        this.$router.push({name: 'dashboard'});
       })
       .catch((error) => {
         this.attemptingLogin = false;

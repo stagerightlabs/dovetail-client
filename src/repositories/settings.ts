@@ -3,12 +3,10 @@ import { AxiosPromise } from 'axios';
 
 export default {
   readSetting(key: string): AxiosPromise<any> {
-    return axios.get(`/organization/setting/${key}`);
+    return axios.get(`/organization/settings/${key}`);
   },
 
   writeSetting(key: string, value: string): AxiosPromise<any> {
-    return axios.post(`/organization/setting`, {
-      '`setting[${key}]`': value,
-    });
+    return axios.put(`/organization/settings`, {key, value});
   },
 };
