@@ -16,7 +16,7 @@ export default {
     return axios.put(`/user`, {
       name: profile.name,
       email: profile.email,
-      phone: profile.phone || '',
+      // phone: profile.phone || '',
     });
   },
 };

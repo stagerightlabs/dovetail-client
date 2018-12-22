@@ -7,36 +7,58 @@
       <h1>Profile</h1>
     </div>
     <div class="content">
-      <p>
-        {{ user.name }}
+      <div class="max-w-sm m-auto">
+      <div class="input-group">
+        <label>Name:</label>
+        <input
+          type="text"
+          v-model="user.name"
+          name="name"
+          id="input-name"
+          required
+          v-validate
+        >
+        <div class="input-error">{{ errors.first('name') }}</div>
+      </div>
+      <div class="input-group">
+        <label>Email:</label>
+        <input
+          type="email"
+          v-model="user.email"
+          name="email"
+          id="input-email"
+          required
+          v-validate
+        >
+        <div class="input-error">{{ errors.first('email') }}</div>
+      </div>
+      <div class="text-right">
+        <action-button
+          @click="updateProfile"
+          id="btn-submit"
+          class="btn btn-blue"
+          :spin="updating"
+        >Update Profile</action-button>
+      </div>
+      </div>
+    </div>
+    <div class="content">
+      <p v-if="user.email_verified_at" class="text-lg">
+        <icon name="checkmark" class="text-green-dark" />
+        Your E-Mail address has been verified.
       </p>
-      <input
-        type="text"
-        id="input-name"
-        name="name"
-        v-model="user.name"
-        required
-        v-validate
-      >
-      <div class="input-error">{{ errors.first('name') }}</div>
-      <p>
-        {{ user.email }}
+      <p v-else class="text-lg flex justify-between items-baseline">
+        <span>
+          <icon name="exclamation-outline" class="text-red-dark" />
+          Your email address has not been verified.
+        </span>
+        <action-button
+          id="link-resend-email"
+          @click="sendVerificationEmail"
+          class="btn btn-blue"
+          :spin="sendingVerification"
+        >Send Verification Email</action-button>
       </p>
-      <input
-        type="email"
-        id="input-email"
-        name="email"
-        v-model="user.email"
-        required
-        v-validate
-      >
-      <div class="input-error">{{ errors.first('email') }}</div>
-      <p v-if="user.email_verified_at">Email Verified</p>
-      <p v-else>
-        Your email address has not been verified.
-        <a id="link-resend-email" @click="sendVerificationEmail">Send Verification Email</a>
-      </p>
-      <button @click="updateProfile" id="btn-submit">Update Profile</button>
     </div>
   </main>
 </template>
@@ -61,17 +83,22 @@ export default class ProfileView extends mixins(BaseView) {
    * Data
    */
   loading: boolean = false;
+  updating: boolean = false;
+  sendingVerification: boolean = false;
 
   /**
    * Ask the api to send a new email verification link
    */
   sendVerificationEmail() {
+    this.sendingVerification = true;
     profile.resendEmailVerificationLink()
       .then((response) => {
-        this.toast({message: response.data.message, level: 'success'})
+        this.toast({message: response.data.message, level: 'success'});
+        this.sendingVerification = false;
       })
       .catch((error) => {
         this.handleResponseErrors(error);
+        this.sendingVerification = false;
       })
   }
 
@@ -82,7 +109,7 @@ export default class ProfileView extends mixins(BaseView) {
     this.$validator.validateAll()
       .then((valid) => {
         if (valid) {
-        this.requestProfileUpdate()
+          this.requestProfileUpdate()
         }
       })
   }
@@ -91,7 +118,7 @@ export default class ProfileView extends mixins(BaseView) {
    * Submit a profile update request to the server
    */
   private requestProfileUpdate() {
-    this.loading = true;
+    this.updating = true;
     profile.updateProfile(this.user)
       .then((response) => {
         this.saveSessionUser(response.data.data);
@@ -99,11 +126,11 @@ export default class ProfileView extends mixins(BaseView) {
           message: "Your profile has been updated",
           level: 'success'
         });
-        this.loading = false;
+        this.updating = false;
       })
       .catch((error) => {
         this.handleResponseErrors(error);
-        this.loading = false;
+        this.updating = false;
       })
   }
 

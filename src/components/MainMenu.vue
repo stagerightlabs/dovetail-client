@@ -28,12 +28,12 @@
     <footer>
       <div class="session-footer" v-if="isAuthenticated">
           <div class="avatar">
-            <router-link to="#">
+            <router-link :to="{name: 'profile'}">
               <icon name="user-solid-circle" height="24" width="24" />
             </router-link>
           </div>
           <div class="user">
-            <router-link to="#">
+            <router-link :to="{name: 'profile'}">
               <p>{{ user.name }}</p>
               <p>{{ user.email }}</p>
             </router-link>
