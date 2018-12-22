@@ -42,7 +42,7 @@
       <div class="flex items-center justify-end">
         <button class="btn btn-blue" @click="changePassword">
           <span v-if="requestSubmitted" class="mx-7">
-            <icon name="refresh" width="48" height="48" spin />
+            <icon name="refresh" width="20" height="20" spin />
           </span>
           <span v-else>Change Password</span></button>
       </div>
