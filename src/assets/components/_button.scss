@@ -15,11 +15,11 @@
 }
 
 .btn-blue {
-  @apply bg-blue-light text-white
+  @apply bg-blue text-blue-lightest
 }
 
 .btn-blue:hover {
-  @apply bg-blue-lighter
+  @apply bg-blue-light text-blue-lightest
 }
 
 .btn-blue.disabled {
