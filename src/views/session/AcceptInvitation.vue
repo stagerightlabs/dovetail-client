@@ -5,18 +5,23 @@
   <main v-else role="main" class="center-xy">
     <div class="billboard">
       <h1 class="mb-4 text-center">Welcome to Dovetail</h1>
-      <p>You have been invited to join Dovetail. Let's create an account for you:</p>
-      <div class="input-group">
+      <p class="mb-8 mt-6 leading-normal" v-if="invitedBy">{{ invitedBy }} has invited you to join Dovetail. Let's create your account:</p>
+      <p class="mb-8 mt-6 leading-normal" v-else>You have been invited to join Dovetail. Let's create your account:</p>
+      <div class="flex justify-between mb-6">
         <label>Email:</label>
+        <p>{{ email }}</p>
+      </div>
+      <div class="input-group">
+        <label>Name:</label>
         <input
-          type="email"
-          id="text-email"
-          v-model="email"
-          name="email"
+          type="text"
+          id="text-name"
+          v-model="name"
+          name="name"
           required
           v-validate
         >
-        <div class="input-error">{{ errors.first('email') }}</div>
+        <div class="input-error">{{ errors.first('name') }}</div>
       </div>
       <div class="input-group">
         <label>Password:</label>
@@ -46,9 +51,9 @@
       <div class="flex items-center justify-end">
         <button class="btn btn-blue" @click="changePassword">
           <span v-if="requestSubmitted" class="mx-7">
-            <icon name="refresh" width="48" height="48" spin />
+            <icon name="refresh" width="20" height="20" spin />
           </span>
-          <span v-else>Change Password</span></button>
+          <span v-else>Create Account</span></button>
       </div>
     </div>
   </main>
@@ -70,7 +75,8 @@ export default class AcceptInvitation extends mixins(BaseView) {
   @Mutation('session/setAuthTokenForSession') setAuthTokenForSession! : (authToken: AuthToken) => void
   @Prop({}) code!: string;
 
-  email : string = '';
+  email: string = '';
+  name: string = '';
   password: string = '';
   password_confirmation: string = '';
   requestSubmitted: boolean = false;
@@ -78,6 +84,9 @@ export default class AcceptInvitation extends mixins(BaseView) {
   invalidInvitation: boolean = false;
   invitedBy: string|null = null;
 
+  /**
+   * Validate the form data before proceeding
+   */
   async changePassword() {
     this.$validator.validateAll()
       .then((valid) => {
@@ -87,10 +96,13 @@ export default class AcceptInvitation extends mixins(BaseView) {
       })
   }
 
+  /**
+   * Ask the server to complete the invitation
+   */
   private submitInvitationAcceptance() {
     this.requestSubmitted = true;
     http.acceptInvitation(this.code, {
-      email: this.email,
+      name: this.name,
       password: this.password,
       password_confirmation: this.password_confirmation,
     })
@@ -122,12 +134,15 @@ export default class AcceptInvitation extends mixins(BaseView) {
    */
   private confirmInvitation() {
     http.confirmInvitation(this.code)
-      .then(() => {
+      .then((response) => {
+        this.invitedBy = response.data.data.invitedBy;
+        this.email = response.data.data.email;
         this.loading = false;
+
       })
       .catch((error) => {
         this.invalidInvitation = true;
-        this.loading = false;
+        this.$router.push({name: '404'});
       })
   }
 

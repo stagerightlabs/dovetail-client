@@ -85,7 +85,7 @@ describe('AcceptInvitation.vue', () => {
     wrapper.setData({loading: false});
     await flushPromises();
 
-    wrapper.find('#text-email').setValue('ryan@stagerightlabs.com');
+    wrapper.find('#text-name').setValue('Grace Hopper');
     wrapper.find('#password-password').setValue('secret');
     wrapper.find('#password-confirmation').setValue('secret');
     wrapper.find('button').trigger('click');
@@ -100,7 +100,7 @@ describe('AcceptInvitation.vue', () => {
     wrapper.vm.$validator.errors.clear();
   });
 
-  test('the email field is required', async () => {
+  test('the name field is required', async () => {
     jest.clearAllMocks();
     const store = createStore();
     store.commit = jest.fn(() => Promise.resolve());
@@ -108,7 +108,7 @@ describe('AcceptInvitation.vue', () => {
     wrapper.setData({ loading: false });
     await flushPromises();
 
-    // wrapper.find('#text-email').setValue('ryan@stagerightlabs.com');
+    // wrapper.find('#text-name').setValue('Grace Hopper');
     wrapper.find('#password-password').setValue('secret');
     wrapper.find('#password-confirmation').setValue('secret');
     wrapper.find('button').trigger('click');
@@ -129,7 +129,7 @@ describe('AcceptInvitation.vue', () => {
     wrapper.setData({ loading: false });
     await flushPromises();
 
-    wrapper.find('#text-email').setValue('ryan@stagerightlabs.com');
+    wrapper.find('#text-name').setValue('Grace Hopper');
     // wrapper.find('#password-password').setValue('secret');
     wrapper.find('#password-confirmation').setValue('secret');
     wrapper.find('button').trigger('click');
@@ -150,7 +150,7 @@ describe('AcceptInvitation.vue', () => {
     wrapper.setData({ loading: false });
     await flushPromises();
 
-    wrapper.find('#text-email').setValue('ryan@stagerightlabs.com');
+    wrapper.find('#text-name').setValue('Grace Hopper');
     wrapper.find('#password-password').setValue('secret');
     // wrapper.find('#password-confirmation').setValue('secret');
     wrapper.find('button').trigger('click');
