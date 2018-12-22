@@ -87,7 +87,7 @@ export default class Console extends mixins(BaseView) {
     // Is this user an administrator?
     const promise3 = http.getAdministratorStatus()
       .then((response) => {
-        this.saveAdministratorStatus(response.data.data);
+        this.saveAdministratorStatus(response.data.data.admin);
       })
       .catch(() => {});
 
