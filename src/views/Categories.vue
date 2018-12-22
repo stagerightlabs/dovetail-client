@@ -1,8 +1,5 @@
 <template>
-<div v-if="loading" class="center-xy">
-  <icon name="refresh" width="128" height="128" class="text-grey-light" spin></icon>
-</div>
-<main v-else role="main" class="page">
+<main role="main" class="page">
   <div class="page-header flex justify-between items-center ">
     <h1>Categories</h1>
     <div>
