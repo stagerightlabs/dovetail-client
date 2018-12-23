@@ -31,6 +31,7 @@ localVue.component('icon', Icon);
 config.logModifiedComponents = false;
 
 const fakeUnverifiedUser: User = {
+  hashid: 'wy5dn36',
   name: 'Grace Hopper',
   email: 'grace@example.org',
   email_verified_at: null,
@@ -111,7 +112,8 @@ describe('Profile.vue', () => {
     store.commit = jest.fn(() => Promise.resolve());
     const wrapper = createWrapper({ store });
 
-    const user = {
+    const user: User = {
+      hashid: 'wy5dn36',
       name: 'Admiral Hopper',
       email: 'test@example.com',
       email_verified_at: null,

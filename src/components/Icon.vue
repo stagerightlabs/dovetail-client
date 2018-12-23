@@ -7,6 +7,7 @@
     :width="width"
     :height="height"
   >
+    <title v-if="title">{{ title }}</title>
     <component :is="icon" />
   </svg>
 </template>
@@ -16,6 +17,7 @@ import Menu from '@/icons/Menu.vue';
 import Close from '@/icons/Close.vue';
 import Trash from '@/icons/Trash.vue';
 import Reload from '@/icons/Reload.vue';
+import Shield from '@/icons/Shield.vue';
 import Refresh from '@/icons/Refresh.vue';
 import Checkmark from '@/icons/Checkmark.vue';
 import AddOutline from '@/icons/AddOutline.vue';
@@ -35,6 +37,7 @@ import ExclamationOutline from '@/icons/ExclamationOutline.vue';
   Menu,
   Reload,
   Refresh,
+  Shield,
   Trash,
   UserSolidCircle,
 }})
@@ -44,6 +47,7 @@ export default class Icon extends Vue {
   @Prop({default: 16}) width!: number;
   @Prop({default: 16}) height!: number;
   @Prop({default: false, type: Boolean}) spin!: boolean;
+  @Prop({default: ''}) title!: string;
 
   get icon() {
     return this.names[this.name];
@@ -59,6 +63,7 @@ export default class Icon extends Vue {
     'menu': 'Menu',
     'reload': 'Reload',
     'refresh': 'Refresh',
+    'shield': 'Shield',
     'trash': 'Trash',
     'user-solid-circle': 'UserSolidCircle',
   };

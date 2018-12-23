@@ -30,6 +30,7 @@ localVue.component('icon', Icon);
 config.logModifiedComponents = false;
 
 const fakeUnverifiedUser: User = {
+  hashid: 'wy5dn36',
   name: 'Grace Hopper',
   email: 'grace@example.org',
   email_verified_at: null,
@@ -39,6 +40,7 @@ const fakeUnverifiedUser: User = {
 };
 
 const fakeVerifiedUser: User = {
+  hashid: 'wy5dn36',
   name: 'Grace Hopper',
   email: 'grace@example.org',
   email_verified_at: '2018-09-10T23:09:31+00:00',

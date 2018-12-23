@@ -18,7 +18,7 @@
       <div v-if="isAuthenticated && isAdministrator">
         <h5 class="text-center mb-4">Administration</h5>
         <nav>
-          <router-link to="#">Members</router-link>
+          <router-link :to="{name: 'members'}">Members</router-link>
           <router-link to="#">Teams</router-link>
           <router-link :to="{ name: 'invitations' }">Invitations</router-link>
           <router-link :to="{ name: 'settings' }">Settings</router-link>
@@ -27,17 +27,17 @@
     </div>
     <footer>
       <div class="session-footer" v-if="isAuthenticated">
-          <div class="avatar">
-            <router-link :to="{name: 'profile'}">
-              <icon name="user-solid-circle" height="24" width="24" />
-            </router-link>
-          </div>
-          <div class="user">
-            <router-link :to="{name: 'profile'}">
-              <p>{{ user.name }}</p>
-              <p>{{ user.email }}</p>
-            </router-link>
-          </div>
+        <div class="avatar">
+          <router-link :to="{name: 'profile'}">
+            <icon name="user-solid-circle" height="24" width="24" />
+          </router-link>
+        </div>
+        <div class="user">
+          <router-link :to="{name: 'profile'}">
+            <p>{{ user.name }}</p>
+            <p>{{ user.email }}</p>
+          </router-link>
+        </div>
       </div>
     </footer>
     <div class="block sm:hidden absolute pin-t pin-r">

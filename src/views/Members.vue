@@ -1,66 +1,138 @@
 <template>
-  <div v-if="loading" class="center-xy">
-    <icon name="refresh" width="128" height="128" class="text-grey-light" spin></icon>
-  </div>
-  <main v-else role="main" class="page">
-    <div class="page-header flex justify-between items-center ">
+  <main role="main" class="page">
+    <header>
       <h1>Members</h1>
-    </div>
-    <div v-for="member in members" :key="member.hashid">
-      <div v-if="isEditing(member)">
-        <div class="input-group">
-          <label>Name:</label>
-          <input
-            type="text"
-            id="text-name"
-            v-model="editing.name"
-            name="name"
-            required
-            v-validate
+      <aside>
+        <button @click="refresh" class="text-grey-light ml-4" id="btn-refresh">
+          <icon name="refresh"></icon>
+        </button>
+      </aside>
+    </header>
+    <article>
+      <section>
+        <div v-if="loading" class="flex h-32 items-center justify-center">
+          <icon name="refresh" width="32" height="32" spin />
+        </div>
+        <div v-else v-for="member in members" :key="member.hashid" class="faux-row">
+          <form
+            v-if="isEditing(member)"
+            class="p-4 bg-grey-lighter rounded"
+            @keydown.esc="cancelUpdate"
           >
-          <div class="input-error">{{ errors.first('name') }}</div>
+            <div class="input-group">
+              <label>Name:</label>
+              <input
+                type="text"
+                id="text-name"
+                v-model="editing.name"
+                name="name"
+                required
+                v-validate
+              >
+              <div class="input-error">{{ errors.first('name') }}</div>
+            </div>
+            <div class="input-group">
+              <label>Title:</label>
+              <input
+                type="text"
+                id="text-name"
+                v-model="editing.title"
+                name="title"
+              >
+              <div class="input-error">{{ errors.first('title') }}</div>
+            </div>
+            <div class="input-group">
+              <label>E-mail:</label>
+              <input
+                type="email"
+                id="text-email"
+                v-model="editing.email"
+                name="email"
+                required
+                v-validate
+              >
+              <div class="input-error">{{ errors.first('email') }}</div>
+            </div>
+            <div class="text-right">
+              <action-button
+                id="btn-update"
+                class="btn btn-green"
+                :spin="submittingUpdates"
+                @click="update(member)"
+                prevent
+              >Update</action-button>
+              <button
+                id="btn-cancel"
+                class="btn btn-red ml-2"
+                @click.prevent="cancelUpdate"
+              >Cancel</button>
+            </div>
+          </form>
+          <div v-else class="flex justify-between items-baseline">
+            <p>
+              {{ member.name }}
+              <icon name="shield" class="text-grey-darker" title="Administrator" v-if="memberIsAdmin(member)"></icon>
+            </p>
+            <p>{{ member.title }}</p>
+            <p>{{ member.email }}</p>
+            <p>
+              <action-button
+                id="btn-edit"
+                @click="edit(member)"
+                class="btn btn-blue"
+                :spin="submittingUpdates"
+              >Edit</action-button>
+              <action-button
+                id="btn-delete"
+                class="btn btn-red ml-2"
+                @click="destroy(member)"
+                :spin="isDeleting(member)"
+                v-if="!memberIsCurrentUser(member)"
+                confirm
+                :message="`Are you sure you want to remove ${member.name}?`"
+              >Remove</action-button>
+            </p>
+          </div>
         </div>
-        <div class="input-group">
-          <label>Title:</label>
-          <input
-            type="text"
-            id="text-name"
-            v-model="editing.title"
-            name="title"
-          >
-          <div class="input-error">{{ errors.first('title') }}</div>
-        </div>
-        <div class="input-group">
-          <label>E-mail:</label>
-          <input
-            type="email"
-            id="text-email"
-            v-model="editing.email"
-            name="email"
-            required
-            v-validate
-          >
-          <div class="input-error">{{ errors.first('title') }}</div>
-        </div>
-        <div class="input-group">
-          <action-button id="btn-update" :spin="submittingUpdates" @click="update(member)">Update</action-button>
-          <button id="btn-cancel" @click="cancelUpdate">Cancel</button>
-        </div>
-      </div>
-      <div v-else>
-        <p>{{ member.name }}</p>
-        <p>{{ member.title }}</p>
-        <p>{{ member.email }}</p>
-        <p><button id="btn-edit" @click="edit(member)">Edit</button></p>
-        <p><button id="btn-delete" @click="destroy(member)">Edit</button></p>
-      </div>
-    </div>
+      </section>
+    </article>
 
+    <article v-if="deletedMembers.length">
+      <header>
+        <h3>Deleted Members</h3>
+      </header>
+      <section>
+        <div v-for="member in deletedMembers" :key="member.hashid" class="member">
+          <div class="flex justify-between items-baseline">
+            <p>{{ member.name }}</p>
+            <p>{{ member.title }}</p>
+            <p>{{ member.email }}</p>
+            <action-button
+              id="btn-restore"
+              :spin="isRestoring(member)"
+              class="btn btn-red"
+              @click="restore(member)"
+            >Restore</action-button>
+          </div>
+        </div>
+      </section>
+    </article>
+
+    <footer>
+      <p>
+        Want to add members?
+        <router-link :to="{name: 'invitations'}">
+          Send invitations
+        </router-link>
+      </p>
+    </footer>
   </main>
 </template>
 
 <script lang="ts">
+import { User } from '@/types';
 import { Member } from '@/types';
+import { Getter } from 'vuex-class'
 import cloneDeep from 'lodash.clonedeep';
 import BaseView from '@/mixins/BaseView.ts';
 import members from '@/repositories/members';
@@ -76,15 +148,20 @@ export default class Members extends mixins(BaseView) {
   deletedMembers: Member[] = [];
   loading: boolean = true;
   editing: Member|null = null;
+  deleting: Member|null = null;
+  restoring: Member|null = null;
   submittingUpdates: boolean = false;
+
+  @Getter('user', {namespace: 'session'}) user! : User;
 
   /**
    * Request a list of members from the server
    */
-  requestMembers() {
-    members.index()
+  fetchMembers() {
+    return members.index()
       .then((response) => {
         this.members = response.data.data;
+        this.loading = false;
       })
       .catch((error) => {
         this.handleResponseErrors(error);
@@ -95,7 +172,7 @@ export default class Members extends mixins(BaseView) {
    * Request a list of deleted users from the server
    */
   requestDeletedMembers() {
-    members.deletedMembers()
+    return members.deletedMembers()
       .then((response) => {
         this.deletedMembers = response.data.data;
       })
@@ -121,13 +198,45 @@ export default class Members extends mixins(BaseView) {
   }
 
   /**
+   * Determine if a member is currently being edited
+   */
+  isDeleting(member: Member) : boolean {
+    return this.deleting
+      ? this.deleting.hashid === member.hashid
+      : false;
+  }
+
+  /**
+   * Determine if a member is currently being edited
+   */
+  isRestoring(member: Member) : boolean {
+    return this.restoring
+      ? this.restoring.hashid === member.hashid
+      : false;
+  }
+
+  /**
+   * Does a member represent the current user?
+   */
+  memberIsCurrentUser(member: Member) {
+    return member.hashid === this.user.hashid;
+  }
+
+  /**
+   * Is this member an administrator?
+   */
+  memberIsAdmin(member: Member) {
+    return member.rank === 'Admin';
+  }
+
+  /**
    * Validate form inputs before submitting an update request
    */
   async update(member: Member) {
     this.$validator.validateAll()
       .then((valid) => {
         if (valid) {
-          this.submitUpdates(member)
+          this.submitUpdates();
           this.submittingUpdates = true;
         }
       })
@@ -144,13 +253,48 @@ export default class Members extends mixins(BaseView) {
    * Ask the server to delete a member
    */
   destroy(member: Member) {
+    this.deleting = member;
     members.delete(member)
       .then(() => {
         this.removeModel(this.members, member);
-        this.toast({message: `Deleted ${member.email}`, level: 'success'});
+        this.addOrUpdateModel(this.deletedMembers, member);
+        this.deleting = null;
+        this.toast({message: `Deleted ${member.name}`, level: 'success'});
       })
       .catch((error) => {
         this.handleResponseErrors(error);
+        this.deleting = null;
+      })
+  }
+
+  /**
+   * Refresh the member listings
+   */
+  refresh() {
+    this.loading = true;
+    const p1 = this.fetchMembers();
+    const p2 = this.requestDeletedMembers();
+
+    Promise.all([p1, p2]).finally(() => {
+      this.loading = false;
+    })
+  }
+
+  /**
+   * Ask the server to delete a member
+   */
+  restore(member: Member) {
+    this.restoring = member;
+    members.restore(member)
+      .then(() => {
+        this.removeModel(this.deletedMembers, member);
+        this.addOrUpdateModel(this.members, member);
+        this.restoring = null;
+        this.toast({message: `Member ${member.email} has been restored.`, level: 'success'});
+      })
+      .catch((error) => {
+        this.handleResponseErrors(error);
+        this.restoring = null;
       })
   }
 
@@ -158,28 +302,32 @@ export default class Members extends mixins(BaseView) {
    * The mounted lifecycle hook
    */
   mounted() {
-    this.requestMembers();
+    this.fetchMembers();
     this.requestDeletedMembers();
   }
 
   /**
    * Ask the server to update a member
    */
-  private submitUpdates(member: Member) {
-    members.update(member)
+  private submitUpdates() {
+    if (!this.editing) {
+      return;
+    }
+    members.update(this.editing)
       .then((response) => {
         this.addOrUpdateModel(this.members, response.data.data);
         this.submittingUpdates = false;
         this.editing = null;
+        this.toast({
+          message: `${response.data.data.name} has been updated`,
+          level: 'success'
+        });
       })
       .catch((error) => {
         this.handleResponseErrors(error);
-      })
+        this.submittingUpdates = false;
+      });
   }
 
 }
 </script>
-
-<style>
-
-</style>

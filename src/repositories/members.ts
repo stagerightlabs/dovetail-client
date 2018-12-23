@@ -12,7 +12,12 @@ export default {
   },
 
   update(member: Member): AxiosPromise<any> {
-    return axios.put(`/members/${member.hashid}`);
+    console.log(member.title);
+    return axios.put(`/members/${member.hashid}`, {
+      name: member.name,
+      email: member.email,
+      title: member.title,
+    });
   },
 
   delete(member: Member): AxiosPromise<any> {

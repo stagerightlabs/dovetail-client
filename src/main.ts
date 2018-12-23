@@ -16,7 +16,7 @@ const dictionary = {
   },
 };
 VeeValidate.Validator.localize('en', dictionary);
-Vue.use(VeeValidate, { inject: false, delay: 500, validity: true });
+Vue.use(VeeValidate, { inject: false, delay: 1000, validity: true });
 
 // Register the icon component
 Vue.component('icon', Icon);

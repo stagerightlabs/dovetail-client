@@ -41,13 +41,14 @@ import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
 
 @Component({})
 export default class ActionButton extends Vue {
-  @Prop({ default: false }) spin!: boolean;
   @Prop({ default: ''}) id!: string;
-  @Prop({ default: false }) confirm!: boolean;
-  @Prop({ default: 'Are you sure you want to do that?' }) message!: string;
-  @Prop({ default: 'Confirm'}) confirmLabel!: string;
   @Prop({ default: 'Cancel' }) cancelLabel!: string;
-  @Prop({ default: false }) disabled!: boolean;
+  @Prop({ default: 'Confirm'}) confirmLabel!: string;
+  @Prop({ default: false, type: Boolean }) spin!: boolean;
+  @Prop({ default: false, type: Boolean}) prevent!: boolean;
+  @Prop({ default: false, type: Boolean }) confirm!: boolean;
+  @Prop({ default: false, type: Boolean }) disabled!: boolean;
+  @Prop({ default: 'Are you sure you want to do that?' }) message!: string;
 
   @Watch('spin')
   onPropertyChanged(value: boolean, oldValue: boolean) {
@@ -61,8 +62,12 @@ export default class ActionButton extends Vue {
   /**
    * Process a click event
    */
-  handleClick() {
+  handleClick(e: any) {
     this.captureClientSize();
+
+    if (this.prevent) {
+      e.preventDefault();
+    }
 
     if (this.confirm) {
       this.modalVisible = true;

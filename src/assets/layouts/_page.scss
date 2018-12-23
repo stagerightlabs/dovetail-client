@@ -43,4 +43,17 @@
       border-bottom: none;
     }
   }
+
+  footer {
+    width: 100%;
+    @apply .p-4 .mt-4 .bg-grey-darker .rounded .text-grey-light;
+
+    a, a:visited {
+      @apply .text-slate .cursor-pointer;
+    }
+
+    a:hover {
+      @apply .text-slate-light;
+    }
+  }
 }
