@@ -1,54 +1,57 @@
 <template>
 <main role="main" class="page">
-  <div class="page-header flex justify-between items-center ">
+  <header>
     <h1>Categories</h1>
-    <div>
+    <aside>
       <button @click="showCreationForm" class="text-grey-light" id="btn-new">
         <icon name="add-outline"></icon>
       </button>
       <button @click="refresh" class="text-grey-light ml-4" id="btn-refresh">
         <icon name="refresh"></icon>
       </button>
-    </div>
-  </div>
-  <div v-if="creationFormVisible" class="content flex items-start">
-    <label for="new-category-name" class="pt-2">Name:</label>
-    <div class="ml-2 flex-grow">
-      <input
-        type="text"
-        name="name"
-        class="leading-none"
-        id="new-category-name"
-        v-model="newCategoryName"
-        ref="newCategoryNameInput"
-        @keydown.esc="cancelCreation"
-        @keydown.enter="create"
-        required
-        v-validate
-      >
-      <div class="input-error flex-none">{{ errors.first('name') }}</div>
-    </div>
-    <action-button
-      id="btn-create"
-      class="btn btn-green ml-2"
-      @click="create"
-      :spin="creatingCategory"
-    >
-      Save
-    </action-button>
-    <button
-      class="btn btn-red ml-2"
-      @click="cancelCreation"
-    >
-      Close
-    </button>
-  </div>
-  <div class="content">
-    <div v-if="categories.length">
+    </aside>
+  </header>
+
+  <article v-if="creationFormVisible">
+    <section>
+      <form class="flex items-start">
+        <label for="new-category-name" class="pt-2">Name:</label>
+        <div class="ml-2 flex-grow">
+          <input
+            type="text"
+            name="name"
+            class="leading-none"
+            id="new-category-name"
+            v-model="newCategoryName"
+            ref="newCategoryNameInput"
+            @keydown.esc="cancelCreation"
+            @keydown.enter="create"
+            required
+            v-validate
+          >
+          <div class="input-error flex-none">{{ errors.first('name') }}</div>
+        </div>
+        <action-button
+          id="btn-create"
+          class="btn btn-green ml-2"
+          @click="create"
+          :spin="creatingCategory"
+          prevent
+        >Save</action-button>
+        <button
+          class="btn btn-red ml-2"
+          @click="cancelCreation"
+        >Close</button>
+      </form>
+    </section>
+  </article>
+
+  <article>
+    <section v-if="categories.length">
       <div
         v-for="category in categories"
         :key="category.hashid"
-        class="category"
+        class="faux-row"
       >
         <div v-if="isEditing(category)" class="flex justify-between">
           <div class="inline-flex items-center ">
@@ -106,14 +109,15 @@
           </div>
         </div>
       </div>
-    </div>
-    <div v-else class="text-center py-24">
+    </section>
+    <section v-else class="text-center py-24">
       <p class="mb-4">There are no categories available.</p>
       <p v-if="!creationFormVisible">
         <a @click.prevent="showCreationForm">Create One Now</a>
       </p>
-    </div>
-  </div>
+    </section>
+  </article>
+
 </main>
 </template>
 
@@ -304,13 +308,3 @@ export default class Categories extends mixins(BaseView) {
 
 }
 </script>
-
-<style scoped>
-.category {
-  border-bottom: 1px dashed #ccc;
-  @apply .py-2
-}
-.category:last-child {
-  border-bottom: none;
-}
-</style>

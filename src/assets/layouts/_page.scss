@@ -9,11 +9,16 @@
     @apply .m-8;
   }
 
-  .page-header {
-    @apply .text-grey-light;
+  header {
+    @apply .text-grey-light .flex .justify-between .items-center;
   }
 
-  .content {
+  article header {
+    @apply .text-grey-light .mb-0;
+    margin-top: 1.5rem;
+  }
+
+  article section {
     width: 100%;
     @apply .p-2 .mt-2 .bg-white rounded;
 
@@ -27,6 +32,15 @@
 
     a:hover {
       @apply .text-slate-lighter;
+    }
+
+    .faux-row {
+      border-bottom: 1px dashed #ccc;
+      @apply .py-2
+    }
+
+    .faux-row:last-child {
+      border-bottom: none;
     }
   }
 }

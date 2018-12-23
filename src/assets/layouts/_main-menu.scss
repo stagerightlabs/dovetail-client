@@ -11,7 +11,7 @@
   @apply fixed flex flex-col flex-none .justify-between;
 
   @screen sm {
-    @apply shadow-md h-screen .sticky;
+    @apply  h-screen .sticky;
     width: 156px ;
   }
 
@@ -58,6 +58,10 @@
 
       a:hover, a:visited {
 
+      }
+
+      a.router-link-active {
+        @apply .bg-blue-darkest
       }
 
       a:first-child {

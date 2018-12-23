@@ -1,118 +1,121 @@
 <template>
   <main role="main" class="page">
-    <div class="page-header sm:flex justify-between items-center ">
+    <header>
       <h1>Invitations</h1>
-      <div class="p-2 sm:p-0 text-right">
+      <aside class="p-2 sm:p-0 text-right">
         <button @click="showInvitationForm" class="text-grey-light" id="btn-new">
           <icon name="add-outline"></icon>
         </button>
         <button @click="refresh" class="text-grey-light ml-4" id="btn-refresh">
           <icon name="refresh"></icon>
         </button>
-      </div>
-    </div>
-    <div v-if="creationFormVisible" class="content sm:flex items-start">
-      <label for="new-invitation-email" class="pt-2 sm:ml-0">Invite:</label>
-      <div class="sm:ml-2 flex-grow">
-        <input
-          type="email"
-          name="email"
-          class="leading-none"
-          id="new-invitation-email"
-          placeholder="E-mail Address"
-          v-model="newInvitationEmail"
-          ref="newInvitationInput"
-          @keydown.esc="cancelNewInvitation"
-          @keydown.enter="invite"
-          required
-          v-validate
-        >
-        <div class="input-error flex-none">{{ errors.first('email') }}</div>
-      </div>
-      <action-button
-        class="btn btn-green sm:ml-2 w-full sm:w-auto my-1 sm:my-0"
-        @click="invite"
-        :spin="sendingInvitation"
-      >
-        Send
-      </action-button>
-      <button
-        class="btn btn-red sm:ml-2 w-full sm:w-auto"
-        @click="cancelNewInvitation"
-      >
-        Cancel
-      </button>
-    </div>
-    <div class="content">
-      <table class="mt-2" v-if="invitations.length">
-        <thead>
-          <tr>
-            <th data-label="Email Address">Email Address</th>
-            <th data-label="First Sent">First Sent</th>
-            <th data-label="Accepted" class="text-center">Accepted</th>
-            <th data-label="Resend" class="text-center">Resend</th>
-            <th data-label="Revoke" class="text-center">Revoke</th>
-            <th data-label="Remove" class="text-center">Remove</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr
-            v-for="invitation in invitations"
-            :key="invitation.hashid"
-            :class="invitationRowClass(invitation)"
-          >
-            <td>{{ invitation.email }}</td>
-            <td>{{ formattedDate(invitation.created_at) }}</td>
-            <td class="text-center">
-              <icon name="checkmark" v-if="invitation.completed_at" />
-              <span v-if="invitation.revoked_at">Revoked</span>
-            </td>
-            <td class="text-center">
-              <action-button
-                v-if="!invitation.revoked_at && !invitation.completed_at"
-                class="btn btn-green"
-                id="btn-resend"
-                @click="resend(invitation)"
-                :spin="invitation.waitingForPromise === 'resend'"
-              >Re-Send</action-button>
-            </td>
-            <td class="text-center">
-              <button
-                v-if="!invitation.revoked_at && !invitation.completed_at"
-                class="btn btn-red"
-                id="btn-revoke"
-                @click="revoke(invitation)"
-              >Revoke</button>
-              <button
-                v-if="invitation.revoked_at && !invitation.completed_at"
-                class="btn btn-red"
-                id="btn-restore"
-                @click="restore(invitation)"
-              >Restore</button>
-            </td>
-            <td class="text-center">
-              <action-button
-                v-if="!invitation.completed_at"
-                class="btn btn-red"
-                id="btn-destroy"
-                @click="destroy(invitation)"
-                :spin="invitation.waitingForPromise === 'delete'"
-                :message="`Remove the '${invitation.email}' invitation?`"
-                :confirm="true"
-              >
-                <icon name="trash" />
-              </action-button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      <div v-else class="text-center py-24">
-        <p class="mb-4">You have not sent any invitations.</p>
-        <p v-if="!creationFormVisible">
-          <a @click.prevent="showInvitationForm">Send One Now</a>
-        </p>
-      </div>
-    </div>
+      </aside>
+    </header>
+    <article v-if="creationFormVisible">
+      <section>
+        <form class="sm:flex items-start">
+          <label for="new-invitation-email" class="pt-2 sm:ml-0">Invite:</label>
+          <div class="sm:ml-2 flex-grow">
+            <input
+              type="email"
+              name="email"
+              class="leading-none"
+              id="new-invitation-email"
+              placeholder="E-mail Address"
+              v-model="newInvitationEmail"
+              ref="newInvitationInput"
+              @keydown.esc="cancelNewInvitation"
+              @keydown.enter="invite"
+              v-validate="'required'"
+            >
+            <div class="input-error flex-none">{{ errors.first('email') }}</div>
+          </div>
+          <action-button
+            class="btn btn-green sm:ml-2 w-full sm:w-auto my-1 sm:my-0"
+            @click="invite"
+            prevent
+            :spin="sendingInvitation"
+          >Send</action-button>
+          <button
+            class="btn btn-red sm:ml-2 w-full sm:w-auto"
+            @click.prevent="cancelNewInvitation"
+          >Cancel></button>
+        </form>
+      </section>
+    </article>
+
+    <article>
+      <section>
+        <table class="mt-2" v-if="invitations.length">
+          <thead>
+            <tr>
+              <th data-label="Email Address">Email Address</th>
+              <th data-label="First Sent">First Sent</th>
+              <th data-label="Accepted" class="text-center">Accepted</th>
+              <th data-label="Resend" class="text-center">Resend</th>
+              <th data-label="Revoke" class="text-center">Revoke</th>
+              <th data-label="Remove" class="text-center">Remove</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              v-for="invitation in invitations"
+              :key="invitation.hashid"
+              :class="invitationRowClass(invitation)"
+            >
+              <td>{{ invitation.email }}</td>
+              <td>{{ formattedDate(invitation.created_at) }}</td>
+              <td class="text-center">
+                <icon name="checkmark" v-if="invitation.completed_at" />
+                <span v-if="invitation.revoked_at">Revoked</span>
+              </td>
+              <td class="text-center">
+                <action-button
+                  v-if="!invitation.revoked_at && !invitation.completed_at"
+                  class="btn btn-green"
+                  id="btn-resend"
+                  @click="resend(invitation)"
+                  :spin="invitation.waitingForPromise === 'resend'"
+                >Re-Send</action-button>
+              </td>
+              <td class="text-center">
+                <button
+                  v-if="!invitation.revoked_at && !invitation.completed_at"
+                  class="btn btn-red"
+                  id="btn-revoke"
+                  @click="revoke(invitation)"
+                >Revoke</button>
+                <button
+                  v-if="invitation.revoked_at && !invitation.completed_at"
+                  class="btn btn-red"
+                  id="btn-restore"
+                  @click="restore(invitation)"
+                >Restore</button>
+              </td>
+              <td class="text-center">
+                <action-button
+                  v-if="!invitation.completed_at"
+                  class="btn btn-red"
+                  id="btn-destroy"
+                  @click="destroy(invitation)"
+                  :spin="invitation.waitingForPromise === 'delete'"
+                  :message="`Remove the '${invitation.email}' invitation?`"
+                  :confirm="true"
+                >
+                  <icon name="trash" />
+                </action-button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div v-else class="text-center py-24">
+          <p class="mb-4">You have not sent any invitations.</p>
+          <p v-if="!creationFormVisible">
+            <a @click.prevent="showInvitationForm">Send One Now</a>
+          </p>
+        </div>
+      </section>
+    </article>
   </main>
 </template>
 
