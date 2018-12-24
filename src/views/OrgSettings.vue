@@ -1,40 +1,45 @@
 <template>
   <main role="main" class="page">
-    <div class="page-header flex justify-between items-center ">
+    <header>
       <h1>Organization Settings</h1>
-    </div>
-    <div class="content">
-      <div class="max-w-sm m-auto">
+    </header>
+    <article>
+      <header>
         <h3>Labels</h3>
-        <div class="input-group flex items-center mt-8">
-          <label>Notebooks:</label>
-          <div class="ml-4 w-full">
-            <input
-              type="text"
-              id="input-label-notebooks"
-              v-model="labelNotebooks"
-              name="label.notebook"
-              required
-              data-vv-as="Notebook Label"
-              v-validate
-              @keydown.enter="updateLabels"
-            >
-            <div class="input-error">{{ errors.first('label.notebook') }}</div>
+      </header>
+      <section>
+        <form class="max-w-sm m-auto">
+          <div class="input-group flex items-center mt-8">
+            <label>Notebooks:</label>
+            <div class="ml-4 w-full">
+              <input
+                type="text"
+                id="input-label-notebooks"
+                v-model="labelNotebooks"
+                name="label.notebook"
+                required
+                data-vv-as="Notebook Label"
+                v-validate
+                @keydown.enter="updateLabels"
+              >
+              <div class="input-error">{{ errors.first('label.notebook') }}</div>
+            </div>
           </div>
-        </div>
-        <div class="text-right mt-8">
-          <action-button
-            class="btn btn-blue"
-            id="btn-submit"
-            @click="updateLabels"
-            :spin="updatingLabels"
-            :disabled="!labelsAreDirty"
-          >
-            Update Labels
-          </action-button>
-        </div>
-      </div>
-    </div>
+          <div class="text-right mt-8">
+            <action-button
+              class="btn btn-blue"
+              id="btn-submit"
+              @click="updateLabels"
+              :spin="updatingLabels"
+              :disabled="!labelsAreDirty"
+              prevent
+            >
+              Update Labels
+            </action-button>
+          </div>
+        </form>
+      </section>
+    </article>
   </main>
 </template>
 
