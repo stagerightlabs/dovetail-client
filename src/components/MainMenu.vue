@@ -10,20 +10,29 @@
       <nav>
         <router-link to="#">{{ orgNotebooksLabel }}</router-link>
         <router-link :to="{name: 'categories'}">Categories</router-link>
+        <template v-if="isAuthenticated && isAdministrator">
+           <router-link :to="{name: 'members'}">
+            Members
+            <icon name="shield" class="text-grey-dark" />
+          </router-link>
+          <router-link to="#">
+            Teams
+            <icon name="shield" class="text-grey-dark" />
+          </router-link>
+          <router-link :to="{ name: 'invitations' }">
+            Invitations
+            <icon name="shield" class="text-grey-dark" />
+          </router-link>
+          <router-link :to="{ name: 'settings' }">
+            Settings
+            <icon name="shield" class="text-grey-dark" />
+          </router-link>
+        </template>
         <router-link to="/logout" class="nav-button">
           <icon name="lock-closed" />
           Logout
         </router-link>
       </nav>
-      <div v-if="isAuthenticated && isAdministrator">
-        <h5 class="text-center mb-4">Administration</h5>
-        <nav>
-          <router-link :to="{name: 'members'}">Members</router-link>
-          <router-link to="#">Teams</router-link>
-          <router-link :to="{ name: 'invitations' }">Invitations</router-link>
-          <router-link :to="{ name: 'settings' }">Settings</router-link>
-        </nav>
-      </div>
     </div>
     <footer>
       <div class="session-footer" v-if="isAuthenticated">
