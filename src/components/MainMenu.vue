@@ -15,7 +15,7 @@
             Members
             <icon name="shield" class="text-grey-dark" />
           </router-link>
-          <router-link to="#">
+          <router-link :to="{name: 'teams'}">
             Teams
             <icon name="shield" class="text-grey-dark" />
           </router-link>

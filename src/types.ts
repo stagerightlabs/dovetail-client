@@ -72,6 +72,7 @@ export interface Team {
   hashid: string;
   name: string;
   members?: Member[];
+  members_count?: number;
 }
 
 export interface Category {

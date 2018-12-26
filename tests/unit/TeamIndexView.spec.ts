@@ -31,6 +31,7 @@ config.logModifiedComponents = false;
 const fakeTeam: Team = {
   hashid: 'wy5dn36',
   name: 'Red Team',
+  members: [],
 };
 
 describe('Teams.vue', () => {

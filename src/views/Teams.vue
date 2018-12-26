@@ -1,56 +1,73 @@
 <template>
-  <div v-if="loading" class="center-xy">
-    <icon name="refresh" width="128" height="128" class="text-grey-light" spin></icon>
-  </div>
-  <main v-else role="main" class="page">
-    <div class="page-header flex justify-between items-center ">
+  <main role="main" class="page">
+    <header>
       <h1>Teams</h1>
-      <div>
+      <aside>
         <button @click="showTeamForm" class="text-grey-light" id="btn-show-create-form">
           <icon name="add-outline" />
         </button>
         <button @click="refresh" class="text-grey-light ml-4" id="btn-refresh">
           <icon name="refresh" />
         </button>
-      </div>
-    </div>
-    <div v-if="creationFormVisible" class="content flex items-start">
-      <button id="hello">dd</button>
-      <label for="new-team-name" class="pt-2">Name:</label>
-      <div class="ml-2 flex-grow">
-        <input
-          type="text"
-          name="name"
-          class="leading-none"
-          id="new-team-name"
-          v-model="newTeamName"
-          ref="newTeamInput"
-          @keydown.esc="cancelNewTeam"
-          @keydown.enter="create"
-          required
-          v-validate
-        >
-        <div class="input-error flex-none">{{ errors.first('name') }}</div>
-      </div>
-      <action-button
-        id="btn-create"
-        class="btn btn-green ml-2"
-        @click="createTeam"
-        :spin="creatingTeam"
-      >
-        Send
-      </action-button>
-      <button
-        class="btn btn-red ml-2"
-        @click="cancelTeamCreation"
-      >
-        Cancel
-      </button>
-    </div>
-    <div v-for="team in teams" :key="team.hashid">
-      <h3>{{ team.name }}</h3>
-      <button id="btn-show" @click="view(team)">View</button>
-    </div>
+      </aside>
+    </header>
+    <article v-if="creationFormVisible" class="mt-4">
+      <section>
+        <form class="flex items-start">
+          <label for="new-team-name" class="pt-2">Name:</label>
+          <div class="ml-2 flex-grow">
+            <input
+              type="text"
+              name="name"
+              class="leading-none"
+              id="new-team-name"
+              v-model="newTeamName"
+              ref="newTeamInput"
+              @keydown.esc="cancelTeamCreation"
+              @keydown.enter="createTeam"
+              required
+              v-validate
+            >
+            <div class="input-error flex-none">{{ errors.first('name') }}</div>
+          </div>
+          <action-button
+            id="btn-create"
+            class="btn btn-green ml-2"
+            @click="createTeam"
+            :spin="creatingTeam"
+            prevent
+          >
+            Send
+          </action-button>
+          <button
+            class="btn btn-red ml-2"
+            @click.prevent="cancelTeamCreation"
+          >
+            Cancel
+          </button>
+        </form>
+      </section>
+    </article>
+    <article >
+      <section v-if="teams.length">
+        <div v-for="team in teams" :key="team.hashid" class="faux-row flex justify-between items-center">
+          <div class="text-2xl">{{ team.name }}</div>
+          <div class="text-grey-darker">
+            {{ team.members.length }} Team Members
+          </div>
+          <div>
+            <button
+              id="btn-show"
+              @click="view(team)"
+              class="btn btn-blue"
+            >View</button>
+          </div>
+        </div>
+      </section>
+      <section v-else>
+        <p class="text-center py-8">There are no teams.</p>
+      </section>
+    </article>
   </main>
 </template>
 
@@ -163,11 +180,13 @@ export default class TeamsView extends mixins(BaseView) {
   private submitNewTeam() {
     teams.create(String(this.newTeamName))
       .then((response) => {
-        // this.addOrUpdate(this.)
+        this.addOrUpdateModel(this.teams, response.data.data);
+        this.creatingTeam = false;
       })
       .catch((error) => {
         this.handleResponseErrors(error);
-      })
+        this.creatingTeam = false;
+      });
   }
 }
 </script>
