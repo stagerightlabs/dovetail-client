@@ -71,6 +71,7 @@ export interface Invitation {
 export interface Team {
   hashid: string;
   name: string;
+  slug: string;
   members?: Member[];
   members_count?: number;
 }

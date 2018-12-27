@@ -15,8 +15,8 @@ export default {
     return axios.get(`/teams/${hashid}`);
   },
 
-  update(team: Team): AxiosPromise<any> {
-    return axios.put(`/teams/${team.hashid}`);
+  update(team: Team, name: string): AxiosPromise<any> {
+    return axios.put(`/teams/${team.hashid}`, { name });
   },
 
   delete(team: Team): AxiosPromise<any> {

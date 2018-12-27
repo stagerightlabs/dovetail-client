@@ -70,7 +70,7 @@ const router =  new Router({
           meta: { requiresAuth: true, requireAdmin: true },
         },
         {
-          path: '/teams/:hashid',
+          path: '/teams/:hashid/:slug',
           name: 'team',
           component: () => import(/* webpackChunkName: "teams" */ './views/Team.vue'),
           meta: { requiresAuth: true, requireAdmin: true },

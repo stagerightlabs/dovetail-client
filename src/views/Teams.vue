@@ -24,7 +24,7 @@
               v-model="newTeamName"
               ref="newTeamInput"
               @keydown.esc="cancelTeamCreation"
-              @keydown.enter="createTeam"
+              @keydown.enter.prevent="createTeam"
               required
               v-validate
             >
@@ -50,7 +50,7 @@
     </article>
     <article >
       <section v-if="teams.length">
-        <div v-for="team in teams" :key="team.hashid" class="faux-row flex justify-between items-center">
+        <div v-for="team in sortedTeams" :key="team.hashid" class="faux-row flex justify-between items-center">
           <div class="text-2xl">{{ team.name }}</div>
           <div class="text-grey-darker">
             {{ team.members.length }} Team Members
@@ -104,7 +104,7 @@ export default class TeamsView extends mixins(BaseView) {
    */
   view(team: Team) {
     const hashid = team.hashid;
-    this.$router.push({name: 'team', params: { hashid }});
+    this.$router.push({name: 'team', params: { hashid, slug: team.slug }});
   }
 
   /**
@@ -180,13 +180,36 @@ export default class TeamsView extends mixins(BaseView) {
   private submitNewTeam() {
     teams.create(String(this.newTeamName))
       .then((response) => {
+        this.newTeamName = '';
         this.addOrUpdateModel(this.teams, response.data.data);
         this.creatingTeam = false;
+        this.$validator.reset();
+        this.toast({
+          message: `Team '${response.data.data.name}' has been created.`,
+          level: 'success'
+        });
       })
       .catch((error) => {
         this.handleResponseErrors(error);
         this.creatingTeam = false;
       });
+  }
+
+  /**
+   * Sort the team list alphabetically
+   */
+  get sortedTeams() {
+    return this.teams.sort((a: Team, b: Team) => {
+      const nameA = a.name.toUpperCase();
+      const nameB = b.name.toUpperCase();
+      if (nameA < nameB) {
+        return -1;
+      }
+      if (nameA > nameB) {
+        return 1;
+      }
+      return 0;
+    })
   }
 }
 </script>

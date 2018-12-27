@@ -25,6 +25,7 @@ jest.mock('@/repositories/members', () => ({
 }));
 
 import { mount, createLocalVue, RouterLinkStub } from '@vue/test-utils';
+import TypeAheadSelect from '@/components/TypeAheadSelect.vue';
 import flushPromises from 'flush-promises';
 import teams from '@/repositories/teams';
 import cloneDeep from 'lodash.clonedeep';
@@ -40,6 +41,7 @@ const localVue = createLocalVue();
 localVue.use(VeeValidate, { inject: false, delay: 500, validity: true });
 localVue.use(VueRouter);
 localVue.component('icon', Icon);
+localVue.component('type-ahead-select', TypeAheadSelect);
 config.logModifiedComponents = false;
 
 const fakeMember: Member = {
@@ -56,6 +58,7 @@ const fakeMember: Member = {
 const fakeTeam: Team = {
   hashid: 'wy5dn36',
   name: 'Red Team',
+  slug: 'red-team',
   members: [fakeMember],
 };
 
@@ -110,7 +113,7 @@ describe('Teams.vue', () => {
     wrapper.find('#btn-update').trigger('click');
     await flushPromises();
 
-    expect(teams.update).toHaveBeenCalledWith(updatedTeam);
+    expect(teams.update).toHaveBeenCalledWith(fakeTeam, updatedTeam.name);
     expect(wrapper.vm.$data.team).toEqual(updatedTeam);
   });
 
@@ -150,11 +153,9 @@ describe('Teams.vue', () => {
     wrapper.setData({ editFormVisible: false, loading: false, team: memberlessTeam });
     await flushPromises();
 
-    // wrapper.findAll('button').wrappers.forEach((button) => {
-    //   console.log(button.attributes());
-    // })
+    wrapper.find('#select-add-member').setValue('Gr');
+    wrapper.find('li').trigger('click');
 
-    wrapper.find('#btn-add-member').trigger('click');
     await flushPromises();
 
     expect(teams.addMember).toHaveBeenCalledWith(fakeTeam, fakeMember);
