@@ -51,11 +51,11 @@
     <article >
       <section v-if="teams.length">
         <div v-for="team in sortedTeams" :key="team.hashid" class="faux-row flex justify-between items-center">
-          <div class="text-2xl">{{ team.name }}</div>
-          <div class="text-grey-darker">
+          <div class="text-2xl w-1/3">{{ team.name }}</div>
+          <div class="text-grey-darker w-1/3">
             {{ team.members.length }} Team Members
           </div>
-          <div>
+          <div class="">
             <button
               id="btn-show"
               @click="view(team)"
