@@ -31,86 +31,84 @@
   </div>
 </template>
 
-<script>
-export default {
-  props: {
-    options: {
-      type: Array,
-      required: true,
-    },
-    allowNew: {
-      type: Boolean,
-      default: false,
-    },
-    placeholder: {
-      type: String,
-      default: 'Select...',
-    },
-    display: {
-      type: String,
-      default: 'searchable',
-    },
-    inputClass: {
-      type: String,
-      default: 'block appearance-none w-full border border-grey-dark text-grey-darkest py-3 px-4 pr-8 rounded',
-    },
-    id: {
-      type: String|null,
-      default: null
+<script lang="ts">
+import { Vue, Component, Prop } from 'vue-property-decorator'
+
+@Component({})
+export default class TypeAheadSelect extends Vue {
+
+  @Prop({ required: true, type: Array }) options!: any[];
+  @Prop({ default: false, type: Boolean }) allowNew!: boolean;
+  @Prop({ default: 'Select...', type: String }) placeholder!: string;
+  @Prop({ default: 'searchable', type: String }) display!: string;
+  @Prop({ default: '', type: String }) inputClass!: string;
+  @Prop({ default: null, type: String }) id!: string|null;
+
+  keyword: string = '';
+  isOpen: boolean = false;
+  selectedOption: any = {};
+  highlightedPosition: number = 0;
+
+  /**
+   * The user has added input to the <input>
+   */
+  onInput(value: any) {
+    this.isOpen = !!value;
+    this.highlightedPosition = 0;
+  }
+
+  /**
+   * Move the highlighted position down
+   */
+  moveDown() {
+    if (!this.isOpen) {
+      return;
     }
-  },
-  data() {
-    return {
-      keyword: '',
-      isOpen: false,
-      selectedOption: {},
-      highlightedPosition: 0,
-    };
-  },
-  methods: {
-    onInput(value) {
-      this.isOpen = !!value;
-      this.highlightedPosition = 0;
-    },
-    moveDown() {
-      if (!this.isOpen) {
-        return;
-      }
-      this.highlightedPosition = (this.highlightedPosition + 1) % this.filteredOptions.length;
-    },
-    moveUp() {
-      if (!this.isOpen) {
-        return;
-      }
-      this.highlightedPosition = this.highlightedPosition - 1 < 0
-        ? this.filteredOptions.length - 1
-        : this.highlightedPosition - 1;
-    },
-    select() {
-      this.selectedOption = this.filteredOptions[this.highlightedPosition];
+    this.highlightedPosition = (this.highlightedPosition + 1) % this.filteredOptions.length;
+  }
 
-      if (!this.selectedOption && this.allowNew) {
-        // We are adding an existing author
-        this.selectedOption = { [this.display]: this.keyword };
-      }
+  /**
+   * Move the highlighted position up
+   */
+  moveUp() {
+    if (!this.isOpen) {
+      return;
+    }
+    this.highlightedPosition = this.highlightedPosition - 1 < 0
+      ? this.filteredOptions.length - 1
+      : this.highlightedPosition - 1;
+  }
 
-      if (!this.selectedOption) {
-        this.$emit('invalid-selection', this.keyword);
-        this.keyword = '';
-        this.isOpen = false;
-        return;
-      }
+  /**
+   * The user wants to select an option
+   */
+  select() {
+    this.selectedOption = this.filteredOptions[this.highlightedPosition];
 
-      this.$emit('select', this.selectedOption);
+    if (!this.selectedOption && this.allowNew) {
+      // We are adding an existing author
+      this.selectedOption = { [this.display]: this.keyword };
+    }
+
+    if (!this.selectedOption) {
+      this.$emit('invalid-selection', this.keyword);
       this.keyword = '';
       this.isOpen = false;
-    },
-  },
-  computed: {
-    filteredOptions() {
-      const re = new RegExp(this.keyword, 'i');
-      return this.options.filter(o => o[this.display].match(re));
-    },
-  },
+      return;
+    }
+
+    this.$emit('select', this.selectedOption);
+    this.keyword = '';
+    this.isOpen = false;
+  };
+
+  /**
+   * Filter the available options based on the user's input
+   */
+  get filteredOptions() {
+    const re = new RegExp(this.keyword, 'i');
+    return this.options.filter(o => o[this.display].match(re));
+  };
+
 };
 </script>
