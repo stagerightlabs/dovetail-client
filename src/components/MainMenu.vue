@@ -8,7 +8,7 @@
         </router-link>
       </header>
       <nav>
-        <router-link to="#">{{ orgNotebooksLabel }}</router-link>
+        <router-link :to="{name: 'notebooks'}">{{ orgNotebooksLabel }}</router-link>
         <router-link :to="{name: 'categories'}">Categories</router-link>
         <template v-if="isAuthenticated && isAdministrator">
            <router-link :to="{name: 'members'}">

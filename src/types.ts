@@ -86,6 +86,7 @@ export interface Notebook {
   name: string;
   category: string|null;
   category_id: string|null;
+  owner_name: string;
   comments_enabled: boolean;
   current_user_is_following: boolean;
 }

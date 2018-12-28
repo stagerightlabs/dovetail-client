@@ -1,67 +1,134 @@
 <template>
-  <div v-if="loading" class="center-xy">
-    <icon name="refresh" width="128" height="128" class="text-grey-light" spin></icon>
-  </div>
-  <main v-else role="main" class="page">
-    <div class="page-header flex justify-between items-center ">
-      <h1>Notebooks</h1>
-      <div>
+  <main role="main" class="page">
+    <header>
+      <h1>{{ orgNotebooksLabel }}</h1>
+      <aside>
         <button @click="showNotebookForm" class="text-grey-light" id="btn-show-create-form">
           <icon name="add-outline" />
         </button>
         <button @click="refresh" class="text-grey-light ml-4" id="btn-refresh">
           <icon name="refresh" />
         </button>
-      </div>
-    </div>
-    <div v-if="creationFormVisible" class="content flex items-start">
-      <button id="hello">dd</button>
-      <label for="new-notebook-name" class="pt-2">Name:</label>
-      <div class="ml-2 flex-grow">
-        <input
-          type="text"
-          name="name"
-          class="leading-none"
-          id="new-notebook-name"
-          v-model="newNotebookName"
-          ref="newNotebookInput"
-          @keydown.esc="cancelNewNotebook"
-          @keydown.enter="create"
-          required
-          v-validate
-        >
-        <div class="input-error flex-none">{{ errors.first('name') }}</div>
-      </div>
-      <action-button
-        id="btn-create"
-        class="btn btn-green ml-2"
-        @click="createNotebook"
-        :spin="creatingNotebook"
-      >
-        Send
-      </action-button>
-      <button
-        class="btn btn-red ml-2"
-        @click="cancelNotebookCreation"
-      >
-        Cancel
-      </button>
-    </div>
-    <div v-for="notebook in notebooks" :key="notebook.hashid">
-      <h3>{{ notebook.name }}</h3>
-      <button id="btn-show" @click="view(notebook)">View</button>
-    </div>
+      </aside>
+    </header>
+    <article v-if="creationFormVisible">
+      <header>
+        <h3>Create New {{ singularNotebooksLabel }}</h3>
+      </header>
+      <section>
+        <form class="max-w-sm mx-auto">
+          <div class="input-group">
+            <label for="new-notebook-name" class="pt-2">Name:</label>
+            <input
+              type="text"
+              name="name"
+              class="leading-none"
+              id="new-notebook-name"
+              v-model="newNotebookName"
+              ref="newNotebookInput"
+              @keydown.esc="cancelNotebookCreation"
+              @keydown.enter.prevent="create"
+              required
+              v-validate
+            >
+            <div class="input-error flex-none">{{ errors.first('name') }}</div>
+          </div>
+          <div class="input-group">
+            <label for="new-notebook-category">Category:</label>
+            <select name="category" v-model="newNotebookCategory" id="new-notebook-category">
+              <option selected></option>
+              <option v-for="category in categories" :key="category.hashid" :value="category.hashid">
+                {{ category.name }}
+              </option>
+            </select>
+          </div>
+          <div class="input-group">
+            <label for="new-notebook-owner">Owner</label>
+            <select
+              name="owner"
+              v-model="newNoteBookOwner"
+              id="new-notebook-owner"
+              required
+              v-validate
+            >
+              <option value="user" selected>{{ user.name }}</option>
+              <option v-for="team in userTeams" :key="team.hashid" :value="team.hashid">
+                Team: {{ team.name }}
+              </option>
+              <option value="organization">{{ organization.name }}</option>
+            </select>
+          </div>
+          <div class="input-group text-right">
+            <action-button
+              id="btn-create"
+              class="btn btn-green ml-2"
+              @click="createNotebook"
+              :spin="creatingNotebook"
+              prevent
+            >
+              Create
+            </action-button>
+            <button
+              class="btn btn-red ml-2"
+              @click.prevent="cancelNotebookCreation"
+            >
+              Cancel
+            </button>
+          </div>
+        </form>
+      </section>
+    </article>
+    <article>
+      <header>
+        <h3>&nbsp;</h3>
+        <aside>
+          <input
+            type="text"
+            placeholder="Filter..."
+            v-model="filterString"
+            ref='filterStringInput'
+            @keydown.esc="clearFilterString"
+          >
+        </aside>
+      </header>
+      <section v-if="notebooks.length">
+        <div class="flex justify-between items-center font-bold text-sm">
+          <div class="w-1/3">Name</div>
+          <div class="w-1/3">Category</div>
+          <div class="w-1/3">Owner</div>
+        </div>
+        <div v-for="notebook in filteredNotebooks" :key="notebook.hashid" class="faux-row flex justify-between items-center">
+          <div class="text-2xl w-1/3">
+            <a href="#">{{ notebook.name }}</a>
+          </div>
+          <div class="w-1/3">{{ notebook.category }}</div>
+          <div class="w-1/3">{{ notebook.owner_name }}</div>
+          <!-- <div class="w-1/4 text-right">
+            <button
+              id="btn-show"
+              @click="view(notebook)"
+              class="btn btn-blue"
+            >View</button>
+          </div> -->
+        </div>
+      </section>
+      <section v-else>
+        <p class="text-center py-8">There are no {{ orgNotebooksLabel.toLowerCase() }}.</p>
+      </section>
+    </article>
   </main>
 </template>
 
 <script lang="ts">
-import { Notebook, Member } from '@/types';
 import cloneDeep from 'lodash.clonedeep';
-import notebooks from '@/repositories/notebooks';
 import BaseView from '@/mixins/BaseView.ts';
+import profile from '@/repositories/profile';
+import notebooks from '@/repositories/notebooks';
+import categories from '@/repositories/categories';
 import { Action, Getter, Mutation } from 'vuex-class';
 import Component, { mixins } from 'vue-class-component';
 import ActionButton from '@/components/ActionButton.vue';
+import { Notebook, Member, Category, User, Team } from '@/types';
 
 @Component({
   $_veeValidate: { validator: "new" },
@@ -69,17 +136,27 @@ import ActionButton from '@/components/ActionButton.vue';
 })
 export default class NotebooksView extends mixins(BaseView) {
 
+  @Getter('orgNotebooksLabel', {namespace: 'session'}) orgNotebooksLabel! : string;
+  @Getter('organization', {namespace: 'session'}) organization! : User;
+  @Getter('user', {namespace: 'session'}) user! : User;
+
   notebooks: Notebook[] = [];
+  categories: Category[] = [];
+  userTeams: Team[] = [];
   loading: boolean = true;
   creationFormVisible: boolean = false;
   newNotebookName: string|null = null;
+  newNotebookCategory: string|null = null;
+  newNoteBookOwner: string = 'user';
   creatingNotebook: boolean = false;
+  filterString: string = '';
 
   /**
    * Element refs
    */
   $refs!: {
-    newNotebookInput: HTMLFormElement
+    newNotebookInput: HTMLFormElement,
+    filterStringInput: HTMLFormElement,
   }
 
   /**
@@ -96,6 +173,8 @@ export default class NotebooksView extends mixins(BaseView) {
   refresh() {
     this.loading = true;
     this.fetchNotebooks();
+    this.fetchCategories();
+    this.fetchUserTeams();
   }
 
   /**
@@ -113,8 +192,7 @@ export default class NotebooksView extends mixins(BaseView) {
     this.$validator.validateAll()
       .then((valid) => {
         if (valid) {
-        this.submitNewNotebook();
-        this.creatingNotebook = true;
+          this.submitNewNotebook();
         }
       })
   }
@@ -132,7 +210,9 @@ export default class NotebooksView extends mixins(BaseView) {
    */
   resetNotebookForm() {
     this.newNotebookName = null;
+    this.newNoteBookOwner = 'user';
     this.creatingNotebook = false;
+    this.newNotebookCategory = null;
     this.$nextTick(() => this.$validator.errors.clear());
   }
 
@@ -151,23 +231,111 @@ export default class NotebooksView extends mixins(BaseView) {
   }
 
   /**
+   * Fetch the available categories
+   */
+  fetchCategories() {
+    categories.index()
+      .then((response) => {
+        this.categories = response.data.data;
+      })
+      .catch((error) => {
+        this.handleResponseErrors(error);
+      })
+  }
+
+  /**
+   * Fetch the teams that this user has joined
+   */
+  fetchUserTeams() {
+    profile.teams()
+      .then((response) => {
+        this.userTeams = response.data.data;
+      })
+      .catch((error) => {
+        this.handleResponseErrors(error);
+      })
+  }
+
+  /**
    * The mounted lifecycle hook
    */
   mounted() {
     this.fetchNotebooks();
+    this.fetchCategories();
+    this.fetchUserTeams();
+  }
+
+  /**
+   * Filter our list of notebooks by fuzzy matching against a search string
+   */
+  get filteredNotebooks() {
+    if (this.filterString.length === 0) {
+      return this.notebooks;
+    }
+
+    const re = new RegExp(this.filterString, 'i');
+    return this.notebooks.filter(n => {
+      return n.name.match(re)
+        || String(n.category).match(re)
+        || n.owner_name.match(re);
+    });
+  }
+
+  /**
+   * Clear the filter query string
+   */
+  clearFilterString() {
+    this.filterString = '';
+    this.$refs.filterStringInput.blur();
   }
 
   /**
    * Ask the server to create a new notebook
    */
   private submitNewNotebook() {
-    notebooks.create(String(this.newNotebookName))
+
+    this.creatingNotebook = true;
+
+    // Build the parameter set
+    let parameters: any = {
+      name: String(this.newNotebookName),
+      category_id: String(this.newNotebookCategory),
+    }
+
+    // Determine an appropriate owner ID
+    if (this.newNoteBookOwner == 'user') {
+      parameters.owner_id = this.user.hashid;
+    } else if (this.newNoteBookOwner == 'organization') {
+      // Do nothing
+    } else {
+      parameters.team_id = this.newNoteBookOwner;
+    }
+
+    // Create the new notebook
+    notebooks.create(parameters)
       .then((response) => {
-        // this.addOrUpdate(this.)
+        this.addOrUpdateModel(this.notebooks, response.data.data)
+        this.cancelNotebookCreation();
+        this.toast({
+          message: `Notebook '${response.data.data.name}'`,
+          level: 'success'
+        });
+        this.creatingNotebook = false;
       })
       .catch((error) => {
         this.handleResponseErrors(error);
+        this.creatingNotebook = false;
       })
+  }
+
+  /**
+   * Convert the org notebook label string to singular
+   */
+  get singularNotebooksLabel() {
+    if (this.orgNotebooksLabel.endsWith('s')) {
+      return this.orgNotebooksLabel.slice(0, -1);
+    }
+    return this.orgNotebooksLabel;
   }
 }
 </script>

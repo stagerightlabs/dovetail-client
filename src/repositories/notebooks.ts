@@ -7,8 +7,8 @@ export default {
     return axios.get(`/notebooks`);
   },
 
-  create(name: string): AxiosPromise<any> {
-    return axios.post(`/notebooks`, { name });
+  create(parameters: any): AxiosPromise<any> {
+    return axios.post(`/notebooks`, parameters);
   },
 
   show(hashid: string): AxiosPromise<any> {

@@ -19,4 +19,8 @@ export default {
       // phone: profile.phone || '',
     });
   },
+
+  teams(): AxiosPromise<any> {
+    return axios.get(`/user/teams`);
+  },
 };

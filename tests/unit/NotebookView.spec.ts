@@ -34,6 +34,7 @@ const fakeNotebook: Notebook = {
   name: 'Experiment 24601',
   category: 'Experiments',
   category_id: 'wy5dn36',
+  owner_name: 'Hopper Labs',
   comments_enabled: true,
   current_user_is_following: true,
 };
