@@ -84,6 +84,7 @@ export interface Category {
 export interface Notebook {
   hashid: string;
   name: string;
+  slug: string;
   category: string|null;
   category_id: string|null;
   owner_name: string;

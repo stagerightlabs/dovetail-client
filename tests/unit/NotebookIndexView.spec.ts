@@ -45,6 +45,7 @@ config.logModifiedComponents = false;
 const fakeNotebook: Notebook = {
   hashid: 'wy5dn36',
   name: 'Experiment 24601',
+  slug: 'experiment-24601',
   category: 'Experiments',
   category_id: 'wy5dn36',
   owner_name: 'Hopper Labs',
@@ -61,7 +62,7 @@ const fakeOrganization: Organization = {
     {
       key: 'label.notebooks',
       value: 'Notebooks',
-    }
+    },
   ],
 };
 
@@ -112,8 +113,9 @@ describe('Notebooks.vue', () => {
             name: 'notebooks',
           },
           {
-            path: '/notebooks/:hashid',
+            path: '/notebooks/:hashid/:slug',
             name: 'notebook',
+            props: true,
           },
         ],
       }),
@@ -137,9 +139,10 @@ describe('Notebooks.vue', () => {
     const wrapper = createWrapper({});
     await flushPromises();
 
-    wrapper.find('#btn-show').trigger('click');
-
-    expect(wrapper.vm.$route.path).toEqual(`/notebooks/${fakeNotebook.hashid}`);
+    expect(wrapper.find(RouterLinkStub).props().to.params).toEqual({
+      hashid: fakeNotebook.hashid,
+      slug: fakeNotebook.slug,
+    });
   });
 
   test('a new notebook can be created', async () => {

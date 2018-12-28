@@ -32,6 +32,7 @@ config.logModifiedComponents = false;
 const fakeNotebook: Notebook = {
   hashid: 'wy5dn36',
   name: 'Experiment 24601',
+  slug: 'experiment-24601',
   category: 'Experiments',
   category_id: 'wy5dn36',
   owner_name: 'Hopper Labs',

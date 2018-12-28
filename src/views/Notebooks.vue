@@ -99,7 +99,9 @@
         </div>
         <div v-for="notebook in filteredNotebooks" :key="notebook.hashid" class="faux-row flex justify-between items-center">
           <div class="text-2xl w-1/3">
-            <a href="#">{{ notebook.name }}</a>
+            <router-link
+              :to="{name: 'notebook', params: { hashid: notebook.hashid, slug: notebook.slug }}"
+            >{{ notebook.name }}</router-link>
           </div>
           <div class="w-1/3">{{ notebook.category }}</div>
           <div class="w-1/3">{{ notebook.owner_name }}</div>

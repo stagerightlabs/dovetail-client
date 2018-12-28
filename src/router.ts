@@ -82,6 +82,13 @@ const router =  new Router({
           component: () => import(/* webpackChunkName: "notebooks" */ './views/Notebooks.vue'),
           meta: { requiresAuth: true },
         },
+        {
+          path: '/notebooks/:hashid/:slug',
+          name: 'notebook',
+          component: () => import(/* webpackChunkName: "notebook" */ './views/Notebook.vue'),
+          meta: { requiresAuth: true },
+          props: true,
+        }
       ],
     },
     {
