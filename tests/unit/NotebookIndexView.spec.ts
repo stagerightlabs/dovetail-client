@@ -21,12 +21,18 @@ jest.mock('@/repositories/profile', () => ({
   teams: jest.fn(() => Promise.resolve({
     data: [],
   })),
+  notebooks: jest.fn(() => Promise.resolve({
+    data: {
+      data: [fakeNotebook],
+    },
+  })),
 }));
 
 import { mount, createLocalVue, RouterLinkStub } from '@vue/test-utils';
 import { Notebook, User, Organization, Category } from '@/types';
 import NotebookIndexView from '@/views/Notebooks.vue';
 import notebooks from '@/repositories/notebooks';
+import profile from '@/repositories/profile';
 import flushPromises from 'flush-promises';
 import Icon from '@/components/Icon.vue';
 import { config } from '@vue/test-utils';
@@ -91,6 +97,7 @@ describe('Notebooks.vue', () => {
           organization: jest.fn(() => fakeOrganization),
           user: jest.fn(() => fakeUser),
           orgNotebooksLabel: jest.fn(() => fakeOrganization.settings![0].value),
+          isAdministrator: () => false,
         },
       },
     },
@@ -127,7 +134,25 @@ describe('Notebooks.vue', () => {
     return mount(NotebookIndexView, merge(defaultMountingOptions, overrides));
   }
 
-  test('the notebooks index can be viewed', async () => {
+  test('the notebooks index can be viewed by regular users', async () => {
+    const wrapper = createWrapper({});
+
+    await flushPromises();
+    expect(profile.notebooks).toHaveBeenCalled();
+    expect(wrapper.vm.$data.notebooks.length).toBe(1);
+  });
+
+  test('the notebooks index can be viewed by administrators', async () => {
+    const store = createStore({
+      modules: {
+        session: {
+          namespaced: true,
+          getters: {
+            isAdministrator: () => true,
+          },
+        },
+      },
+    });
     const wrapper = createWrapper({});
 
     await flushPromises();

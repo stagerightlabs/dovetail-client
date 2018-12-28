@@ -139,6 +139,7 @@ import { Notebook, Member, Category, User, Team } from '@/types';
 export default class NotebooksView extends mixins(BaseView) {
 
   @Getter('orgNotebooksLabel', {namespace: 'session'}) orgNotebooksLabel! : string;
+  @Getter('isAdministrator', {namespace: 'session'}) isAdministrator! : boolean;
   @Getter('organization', {namespace: 'session'}) organization! : User;
   @Getter('user', {namespace: 'session'}) user! : User;
 
@@ -219,10 +220,11 @@ export default class NotebooksView extends mixins(BaseView) {
   }
 
   /**
-   * Request all available notebooks from the server
+   * Request all available notebooks from the server. Administrators will see all notebooks,
+   * regular users will only see notebooks that are available to them.
    */
   fetchNotebooks() {
-    notebooks.index()
+    (this.isAdministrator ? notebooks.index() : profile.notebooks())
       .then((response) => {
         this.notebooks = response.data.data;
         this.loading = false;

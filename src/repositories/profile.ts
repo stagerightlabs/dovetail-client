@@ -23,4 +23,8 @@ export default {
   teams(): AxiosPromise<any> {
     return axios.get(`/user/teams`);
   },
+
+  notebooks(): AxiosPromise<any> {
+    return axios.get(`/user/notebooks`);
+  },
 };
