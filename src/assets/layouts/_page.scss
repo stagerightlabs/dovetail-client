@@ -10,7 +10,15 @@
   }
 
   header {
-    @apply .text-grey-light .flex .justify-between .items-center;
+    @apply .text-grey-light;
+
+    @screen sm {
+      @apply .flex .justify-between .items-center;
+    }
+
+    aside {
+      @apply .text-right;
+    }
   }
 
   article header {
@@ -18,7 +26,7 @@
     margin-top: 1.5rem;
   }
 
-  article section {
+  article section.content {
     width: 100%;
     @apply .p-2 .mt-2 .bg-white rounded;
 
@@ -34,13 +42,105 @@
       @apply .text-slate-lighter;
     }
 
-    .faux-row {
-      border-bottom: 1px dashed #ccc;
-      @apply .py-2
+  }
+
+  article.notebook {
+    @apply .rounded .mt-4;
+
+    section.notebook-page:first-child {
+      @apply .rounded-t;
+
+      .content {
+        @apply .pt-4;
+      }
+
+      aside {
+        @apply rounded-tr;
+      }
     }
 
-    .faux-row:last-child {
-      border-bottom: none;
+    section.notebook-page:last-child {
+      @apply .rounded-b;
+
+      .content {
+        @apply .pb-4;
+      }
+
+      aside {
+        @apply .rounded-br;
+      }
+    }
+
+    section.notebook-page {
+      // width: 100%;
+      @apply .p-0 .mt-0 .bg-white rounded-none flex flex-col .max-w-2xl;
+
+      @screen sm {
+        @apply .p-0 .mt-0;
+      }
+
+      @screen md {
+        @apply .justify-between .flex-row;
+      }
+
+      a, a:visited {
+        @apply .text-slate-light .cursor-pointer;
+      }
+
+      a:hover {
+        @apply .text-slate-lighter;
+      }
+
+      .content {
+        @apply px-4 py-2 .mb-2;
+      }
+
+      aside {
+        @apply .bg-grey-lighter w-full;
+
+        @screen md {
+          @apply border-b flex-none;
+          width: 16rem;
+        }
+
+        .options {
+          @apply .flex .justify-around border-b;
+
+          button {
+            @apply .text-grey-dark .w-full .h-full .py-2 ;
+          }
+        }
+
+        .conversation {
+          max-height: 16rem;
+          overflow: scroll;
+          @apply .text-grey-darkest;
+
+          button.add-comment {
+            @apply .text-center .p-2 .text-sm .w-full .text-grey-darker;
+          }
+        }
+
+        .conversation .comment {
+          @apply flex text-sm .justify-start .p-2;
+        }
+
+        .attachments {
+          max-height: 16rem;
+          overflow: scroll;
+          @apply .text-grey-darkest;
+
+          button.add-attachment {
+            @apply .text-center .p-2 .text-sm .w-full .text-grey-darker;
+          }
+        }
+
+        .attachments .attachment {
+          @apply flex text-sm .justify-start .items-center .p-2 .truncate;
+        }
+      }
+
+
     }
   }
 
@@ -55,5 +155,9 @@
     a:hover {
       @apply .text-slate-dark;
     }
+  }
+
+  form {
+    @apply
   }
 }

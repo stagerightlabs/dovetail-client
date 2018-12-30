@@ -1,63 +1,213 @@
 <template>
-  <div v-if="loading" class="center-xy">
-    <icon name="refresh" width="128" height="128" class="text-grey-light" spin></icon>
-  </div>
-  <main v-else role="main" class="page">
-    <div class="page-header flex justify-between items-center ">
+  <main role="main" class="page">
+    <header>
       <h1>{{ notebook.name }}</h1>
-      <div>
+      <aside>
         <button @click="showEditForm" class="text-grey-light" id="btn-show-create-form">
           <icon name="edit-pencil" />
         </button>
         <button @click="refresh" class="text-grey-light ml-4" id="btn-refresh">
           <icon name="refresh" />
         </button>
-      </div>
-    </div>
-    <div v-if="editFormVisible" class="content flex items-start">
-      <label for="edit-notebook-name" class="pt-2">Name:</label>
-      <div class="ml-2 flex-grow">
-        <input
-          type="text"
-          name="name"
-          class="leading-none"
-          id="edit-notebook-name"
-          v-model="editedNotebookName"
-          ref="editedNotebookNameInput"
-          @keydown.esc="cancelNewNotebook"
-          @keydown.enter="create"
-          required
-          v-validate
-        >
-        <div class="input-error flex-none">{{ errors.first('name') }}</div>
-      </div>
-      <action-button
-        id="btn-update"
-        class="btn btn-green ml-2"
-        @click="update"
-        :spin="updatingNotebook"
-      >
-        Send
-      </action-button>
-      <button
-        class="btn btn-red ml-2"
-        @click="cancelEditing"
-      >
-        Cancel
-      </button>
-    </div>
-    <div>
-      <div class="member-header flex justify-between items-center">
-        <h3>Members</h3>
-        <div>
-          <button id="btn-add-member" @click="addMember(allMembers[0])">Add Member</button>
+      </aside>
+    </header>
+    <article v-if="editFormVisible">
+      <section>
+        <form class="flex items-start">
+          <label for="edit-notebook-name" class="pt-2">Name:</label>
+          <div class="ml-2 flex-grow">
+            <input
+              type="text"
+              name="name"
+              class="leading-none"
+              id="edit-notebook-name"
+              v-model="editedNotebookName"
+              ref="editedNotebookNameInput"
+              @keydown.esc="cancelNewNotebook"
+              @keydown.enter.prevent="create"
+              required
+              v-validate
+            >
+            <div class="input-error flex-none">{{ errors.first('name') }}</div>
+          </div>
+          <action-button
+            id="btn-update"
+            class="btn btn-green ml-2"
+            @click="update"
+            :spin="updatingNotebook"
+            prevent
+          >
+            Send
+          </action-button>
+          <button
+            class="btn btn-red ml-2"
+            @click.prevent="cancelEditing"
+          >
+            Cancel
+          </button>
+        </form>
+      </section>
+    </article>
+    <article class="notebook">
+      <section class="notebook-page">
+        <div class="content">
+          <h2>hello world</h2>
+          <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Saepe quos eos nisi ut illo consectetur libero voluptates ducimus quidem! Nisi odit odio illum, esse amet adipisci obcaecati tempore pariatur consectetur.</p>
         </div>
-      </div>
-      <div v-if="hasMembers" v-for="member in notebook.members" :key="member.hashid">
-        <p>{{ member.name }}</p>
-        <button id="btn-remove-member" @click="removeNotebookMember(member)">Remove</button>
-      </div>
-    </div>
+        <aside>
+          <section class="options">
+            <button title="Edit">
+              <icon name="edit-pencil"/>
+            </button>
+            <button title="Conversation">
+              <icon name="conversation"/>
+              (12)
+            </button>
+            <button title="Add Attachment">
+              <icon name="attachment" />
+            </button>
+            <button title="Remove Page">
+              <icon name="trash" />
+            </button>
+          </section>
+          <section class="conversation hidden">
+            <button class="add-comment">
+              <icon name="add-outline" width="12" height="12" />
+              Add Comment
+            </button>
+          </section>
+        </aside>
+      </section>
+      <section class="notebook-page">
+        <div class="content">
+          <h2>hello world</h2>
+          <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Saepe quos eos nisi ut illo consectetur libero voluptates ducimus quidem! Nisi odit odio illum, esse amet adipisci obcaecati tempore pariatur consectetur.</p>
+        </div>
+        <aside>
+          <section class="options">
+            <button title="Edit">
+              <icon name="edit-pencil"/>
+            </button>
+            <button title="Conversation">
+              <icon name="conversation" class="text-blue" />
+              (12)
+            </button>
+            <button title="Add Attachment">
+              <icon name="attachment" />
+            </button>
+            <button title="Remove Page">
+              <icon name="trash" />
+            </button>
+          </section>
+          <section class="conversation">
+            <div class="comment">
+              <p class="px-2 pt-1">
+                <icon name="user-solid-circle" width="24" height="24" />
+              </p>
+              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda aspernatur fugit rerum cum neque porro cumque vel est, deserunt amet dolore praesentium quidem ratione temporibus unde culpa perferendis dolor. Eius!</p>
+            </div>
+            <div class="comment">
+              <p class="px-2 pt-1">
+                <icon name="user-solid-circle" width="24" height="24" />
+              </p>
+              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda aspernatur fugit rerum cum neque porro cumque vel est, deserunt amet dolore praesentium quidem ratione temporibus unde culpa perferendis dolor. Eius!</p>
+            </div>
+            <div class="comment">
+              <p class="px-2 pt-1">
+                <icon name="user-solid-circle" width="24" height="24" />
+              </p>
+              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda aspernatur fugit rerum cum neque porro cumque vel est, deserunt amet dolore praesentium quidem ratione temporibus unde culpa perferendis dolor. Eius!</p>
+            </div>
+            <button class="add-comment">
+              <icon name="add-outline" width="12" height="12" />
+              Add Comment
+            </button>
+          </section>
+        </aside>
+      </section>
+       <section class="notebook-page">
+        <div class="content">
+          <h2>hello world</h2>
+          <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Saepe quos eos nisi ut illo consectetur libero voluptates ducimus quidem! Nisi odit odio illum, esse amet adipisci obcaecati tempore pariatur consectetur.</p>
+          <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Saepe quos eos nisi ut illo consectetur libero voluptates ducimus quidem! Nisi odit odio illum, esse amet adipisci obcaecati tempore pariatur consectetur.</p>
+          <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Saepe quos eos nisi ut illo consectetur libero voluptates ducimus quidem! Nisi odit odio illum, esse amet adipisci obcaecati tempore pariatur consectetur.</p>
+          <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Saepe quos eos nisi ut illo consectetur libero voluptates ducimus quidem! Nisi odit odio illum, esse amet adipisci obcaecati tempore pariatur consectetur.</p>
+        </div>
+        <aside>
+          <section class="options">
+            <button title="Edit">
+              <icon name="edit-pencil"/>
+            </button>
+            <button title="Conversation">
+              <icon name="conversation" />
+              (12)
+            </button>
+            <button title="Add Attachment">
+              <icon name="attachment" class="text-blue" />
+              (3)
+            </button>
+            <button title="Remove Page">
+              <icon name="trash" />
+            </button>
+          </section>
+          <section class="conversation hidden">
+            <div class="comment">
+              <p class="px-2">
+                <icon name="user-solid-circle" width="24" height="24" />
+              </p>
+              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda aspernatur fugit rerum cum neque porro cumque vel est, deserunt amet dolore praesentium quidem ratione temporibus unde culpa perferendis dolor. Eius!</p>
+            </div>
+            <div class="comment">
+              <p class="px-2">
+                <icon name="user-solid-circle" width="24" height="24" />
+              </p>
+              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda aspernatur fugit rerum cum neque porro cumque vel est, deserunt amet dolore praesentium quidem ratione temporibus unde culpa perferendis dolor. Eius!</p>
+            </div>
+            <div class="comment">
+              <p class="px-2">
+                <icon name="user-solid-circle" width="24" height="24" />
+              </p>
+              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda aspernatur fugit rerum cum neque porro cumque vel est, deserunt amet dolore praesentium quidem ratione temporibus unde culpa perferendis dolor. Eius!</p>
+            </div>
+            <button class="add-comment">
+              <icon name="add-outline" width="12" height="12" />
+              Add Comment
+            </button>
+          </section>
+          <section class="attachments">
+            <div class="attachment">
+              <p class="px-2">
+                <icon name="attachment" width="24" height="24" />
+              </p>
+              <p><a href="#">really_long_filename.pdf</a></p>
+            </div>
+            <div class="attachment">
+              <p class="px-2">
+                <icon name="attachment" width="24" height="24" />
+              </p>
+              <p><a href="#">really_long_filename.pdf</a></p>
+            </div>
+            <div class="attachment">
+              <p class="px-2">
+                <icon name="attachment" width="24" height="24" />
+              </p>
+              <p><a href="#">really_long_filename.pdf</a></p>
+            </div>
+            <button class="add-attachment">
+              <icon name="add-outline" width="12" height="12" />
+              Add Attachment
+            </button>
+          </section>
+        </aside>
+      </section>
+
+    </article>
+    <section class="max-w-2xl mt-2 p-4 rounded bg-grey-light text-center text-grey-darkest border-2 border-grey border-dashed">
+      <p>
+        <icon name="add-outline" />
+        Add a page to this notebook
+      </p>
+    </section>
   </main>
 </template>
 
@@ -81,7 +231,7 @@ export default class NotebookView extends mixins(BaseView) {
 
   notebook: Notebook|null = null;
   loading: boolean = true;
-  editFormVisible: boolean = true;
+  editFormVisible: boolean = false;
   editedNotebookName: string = '';
   updatingNotebook: boolean = false;
 

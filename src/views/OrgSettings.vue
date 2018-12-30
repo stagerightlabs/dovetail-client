@@ -7,7 +7,7 @@
       <header>
         <h3>Labels</h3>
       </header>
-      <section>
+      <section class="content">
         <form class="max-w-sm m-auto">
           <div class="input-group flex items-center mt-8">
             <label>Notebooks:</label>

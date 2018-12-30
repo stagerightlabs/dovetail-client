@@ -49,10 +49,10 @@
       </section>
     </article>
     <article >
-      <section v-if="teams.length">
-        <div v-for="team in sortedTeams" :key="team.hashid" class="faux-row flex justify-between items-center">
-          <div class="text-2xl w-1/3">{{ team.name }}</div>
-          <div class="text-grey-darker w-1/3">
+      <section v-if="teams.length" class="content">
+        <div v-for="team in sortedTeams" :key="team.hashid" class="faux-row">
+          <div class="text-2xl sm:w-1/3">{{ team.name }}</div>
+          <div class="text-grey-darker sm:w-1/3">
             {{ team.members_count }} Team Members
           </div>
           <div class="">

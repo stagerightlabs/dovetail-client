@@ -68,7 +68,7 @@
           <icon name="add-outline" class="ml-4" />
         </aside>
       </header>
-      <section v-if="hasMembers">
+      <section v-if="hasMembers" class="content">
         <div
           v-for="member in team.members"
           :key="member.hashid"
@@ -82,7 +82,7 @@
           >Remove</button>
         </div>
       </section>
-      <section v-else>
+      <section v-else class="content">
         <p class="text-center py-8">This team has no members.</p>
       </section>
     </article>
@@ -90,7 +90,7 @@
       <header>
         <h3>Danger Zone</h3>
       </header>
-      <section class="">
+      <section class="content">
         <p class="flex justify-between max-w-sm mx-auto items-baseline">
           Remove this team
           <action-button

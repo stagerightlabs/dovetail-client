@@ -47,13 +47,13 @@
   </article>
 
   <article>
-    <section v-if="categories.length">
+    <section v-if="categories.length" class="content">
       <div
         v-for="category in categories"
         :key="category.hashid"
         class="faux-row"
       >
-        <div v-if="isEditing(category)" class="flex justify-between">
+        <template v-if="isEditing(category)" >
           <div class="inline-flex items-center ">
             <label>Name:</label>
             <div>
@@ -85,8 +85,8 @@
               @click="cancelUpdate"
             >Cancel</button>
           </div>
-        </div>
-        <div v-else class="flex justify-between items-center">
+        </template>
+        <template v-else >
           <div class="text-2xl">{{ category.name }}</div>
           <div>
             <button
@@ -107,7 +107,7 @@
               <icon name="trash" />
             </action-button>
           </div>
-        </div>
+        </template>
       </div>
     </section>
     <section v-else class="text-center py-24">

@@ -91,20 +91,20 @@
           >
         </aside>
       </header>
-      <section v-if="notebooks.length">
-        <div class="flex justify-between items-center font-bold text-sm">
-          <div class="w-1/3">Name</div>
-          <div class="w-1/3">Category</div>
-          <div class="w-1/3">Owner</div>
+      <section v-if="notebooks.length" class="content">
+        <div class="sm:flex justify-between items-center font-bold text-sm hidden">
+          <div class="sm:w-1/3">Name</div>
+          <div class="sm:w-1/3">Category</div>
+          <div class="sm:w-1/3">Owner</div>
         </div>
-        <div v-for="notebook in filteredNotebooks" :key="notebook.hashid" class="faux-row flex justify-between items-center">
-          <div class="text-2xl w-1/3">
+        <div v-for="notebook in filteredNotebooks" :key="notebook.hashid" class="faux-row">
+          <div class="text-2xl sm:w-1/3">
             <router-link
               :to="{name: 'notebook', params: { hashid: notebook.hashid, slug: notebook.slug }}"
             >{{ notebook.name }}</router-link>
           </div>
-          <div class="w-1/3">{{ notebook.category }}</div>
-          <div class="w-1/3">{{ notebook.owner_name }}</div>
+          <div class="sm:w-1/3">{{ notebook.category }}</div>
+          <div class="sm:w-1/3">{{ notebook.owner_name }}</div>
           <!-- <div class="w-1/4 text-right">
             <button
               id="btn-show"

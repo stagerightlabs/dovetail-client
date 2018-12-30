@@ -9,16 +9,15 @@
       </aside>
     </header>
     <article>
-      <section>
+      <section class="content">
         <div v-if="loading" class="flex h-32 items-center justify-center">
           <icon name="refresh" width="32" height="32" spin />
         </div>
         <div v-else v-for="member in members" :key="member.hashid" class="faux-row">
           <form
             v-if="isEditing(member)"
-            class="p-4 bg-grey-lighter rounded"
-            @keydown.esc="cancelUpdate"
-          >
+            class="p-4 bg-grey-lighter rounded w-full"
+            @keydown.esc="cancelUpdate">
             <div class="input-group">
               <label>Name:</label>
               <input
@@ -68,14 +67,14 @@
               >Cancel</button>
             </div>
           </form>
-          <div v-else class="flex justify-between items-baseline">
-            <p class="w-1/4">
+          <template v-else>
+            <p class="md:w-1/4">
               {{ member.name }}
               <icon name="shield" class="text-grey-darker" title="Administrator" v-if="memberIsAdmin(member)"></icon>
             </p>
-            <p class="w-1/4">{{ member.title }}</p>
-            <p class="w-1/4">{{ member.email }}</p>
-            <p class="w-1/4 text-right">
+            <p class="md:w-1/4">{{ member.title }}</p>
+            <p class="md:w-1/4">{{ member.email }}</p>
+            <p class="md:w-1/4">
               <action-button
                 id="btn-edit"
                 @click="edit(member)"
@@ -92,7 +91,7 @@
                 :message="`Are you sure you want to remove ${member.name}?`"
               >Remove</action-button>
             </p>
-          </div>
+          </template>
         </div>
       </section>
     </article>

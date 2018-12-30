@@ -23,6 +23,8 @@ import Checkmark from '@/icons/Checkmark.vue';
 import AddOutline from '@/icons/AddOutline.vue';
 import EditPencil from '@/icons/EditPencil.vue';
 import LockClosed from '@/icons/LockClosed.vue';
+import Attachment from '@/icons/Attachment.vue';
+import Conversation from '@/icons/Conversation.vue';
 import ArrowThickLeft from '@/icons/ArrowThickLeft.vue';
 import UserSolidCircle from '@/icons/UserSolidCircle.vue';
 import { Vue, Component, Prop } from 'vue-property-decorator'
@@ -31,8 +33,10 @@ import ExclamationOutline from '@/icons/ExclamationOutline.vue';
 @Component({components: {
   AddOutline,
   ArrowThickLeft,
+  Attachment,
   Close,
   Checkmark,
+  Conversation,
   EditPencil,
   ExclamationOutline,
   LockClosed,
@@ -58,8 +62,10 @@ export default class Icon extends Vue {
   names: any = {
     'add-outline': 'AddOutline',
     'arrow-thick-left': 'ArrowThickLeft',
+    'attachment': 'Attachment',
     'close': 'Close',
     'checkmark': 'Checkmark',
+    'conversation': 'Conversation',
     'edit-pencil': 'EditPencil',
     'exclamation-outline': 'ExclamationOutline',
     'lock-closed': 'LockClosed',

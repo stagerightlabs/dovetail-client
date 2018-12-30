@@ -43,9 +43,8 @@
         </form>
       </section>
     </article>
-
     <article>
-      <section>
+      <section class="content">
         <table class="mt-2" v-if="invitations.length">
           <thead>
             <tr>

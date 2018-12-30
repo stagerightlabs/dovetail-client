@@ -1,0 +1,22 @@
+.faux-row {
+  border-bottom: 1px dashed #ccc;
+  @apply .py-2;
+
+  @apply .text-center;
+
+  button, a {
+    @apply my-2;
+  }
+
+  @screen sm {
+    @apply .flex .justify-between .items-center .text-left;
+
+    button, a {
+      @apply my-0;
+    }
+  }
+}
+
+.faux-row:last-child {
+  border-bottom: none;
+}
