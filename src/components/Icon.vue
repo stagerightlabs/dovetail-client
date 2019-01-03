@@ -13,6 +13,7 @@
 </template>
 
 <script lang="ts">
+import Cog from '@/icons/Cog.vue';
 import Menu from '@/icons/Menu.vue';
 import Close from '@/icons/Close.vue';
 import Trash from '@/icons/Trash.vue';
@@ -35,6 +36,7 @@ import ExclamationOutline from '@/icons/ExclamationOutline.vue';
   ArrowThickLeft,
   Attachment,
   Close,
+  Cog,
   Checkmark,
   Conversation,
   EditPencil,
@@ -64,6 +66,7 @@ export default class Icon extends Vue {
     'arrow-thick-left': 'ArrowThickLeft',
     'attachment': 'Attachment',
     'close': 'Close',
+    'cog': 'Cog',
     'checkmark': 'Checkmark',
     'conversation': 'Conversation',
     'edit-pencil': 'EditPencil',
