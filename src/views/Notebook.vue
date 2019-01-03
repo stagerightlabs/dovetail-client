@@ -67,7 +67,7 @@
               <icon name="attachment" />
             </button>
             <button title="Remove Page">
-              <icon name="trash" />
+              <icon name="cog" />
             </button>
           </section>
           <section class="conversation hidden">
@@ -96,7 +96,7 @@
               <icon name="attachment" />
             </button>
             <button title="Remove Page">
-              <icon name="trash" />
+              <icon name="cog" />
             </button>
           </section>
           <section class="conversation">
@@ -146,8 +146,8 @@
               <icon name="attachment" class="text-blue" />
               (3)
             </button>
-            <button title="Remove Page">
-              <icon name="trash" />
+            <button>
+              <icon name="cog" />
             </button>
           </section>
           <section class="conversation hidden">
@@ -202,29 +202,35 @@
       </section>
 
     </article>
-    <section class="max-w-2xl mt-2 p-4 rounded bg-grey-light text-center text-grey-darkest border-2 border-grey border-dashed">
-      <p>
-        <icon name="add-outline" />
-        Add a page to this notebook
-      </p>
-    </section>
+
+    <article>
+      <header>
+        <h3>Add Page</h3>
+      </header>
+      <section class="content">
+        <div class="content">
+          <markdown-editor></markdown-editor>
+        </div>
+      </section>
+    </article>
   </main>
 </template>
 
 <script lang="ts">
-import { Notebook, Member } from '@/types';
 import cloneDeep from 'lodash.clonedeep';
-import notebooks from '@/repositories/notebooks';
+import { Notebook, Member } from '@/types';
 import BaseView from '@/mixins/BaseView.ts';
 import members from '@/repositories/members';
 import { mixins } from 'vue-class-component';
+import notebooks from '@/repositories/notebooks';
 import { Action, Getter, Mutation } from 'vuex-class';
 import { Prop, Component } from 'vue-property-decorator'
 import ActionButton from '@/components/ActionButton.vue';
+import MarkdownEditor from '@/components/MarkdownEditor.vue';
 
 @Component({
   $_veeValidate: { validator: "new" },
-  components: { ActionButton }
+  components: { ActionButton, MarkdownEditor }
 })
 export default class NotebookView extends mixins(BaseView) {
   @Prop({ required: true }) hashid!: string;
