@@ -1,5 +1,8 @@
 <template>
-  <main role="main" class="page">
+  <div v-if="loading" class="center-xy">
+    <icon name="reload" width="48px"></icon>
+  </div>
+  <main v-else role="main" class="page">
     <header>
       <h1>{{ notebook.name }}</h1>
       <aside>
@@ -49,35 +52,15 @@
       </section>
     </article>
     <article class="notebook">
-      <section class="notebook-page">
-        <div class="content">
-          <h2>hello world</h2>
-          <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Saepe quos eos nisi ut illo consectetur libero voluptates ducimus quidem! Nisi odit odio illum, esse amet adipisci obcaecati tempore pariatur consectetur.</p>
-        </div>
-        <aside>
-          <section class="options">
-            <button title="Edit">
-              <icon name="edit-pencil"/>
-            </button>
-            <button title="Conversation">
-              <icon name="conversation"/>
-              (12)
-            </button>
-            <button title="Add Attachment">
-              <icon name="attachment" />
-            </button>
-            <button title="Remove Page">
-              <icon name="cog" />
-            </button>
-          </section>
-          <section class="conversation hidden">
-            <button class="add-comment">
-              <icon name="add-outline" width="12" height="12" />
-              Add Comment
-            </button>
-          </section>
-        </aside>
-      </section>
+      <notebook-page :page="page" v-for="page in notebook.pages" :key="page.hashid" />
+    </article>
+
+
+
+
+
+    <article class="notebook">
+
       <section class="notebook-page">
         <div class="content">
           <h2>hello world</h2>
@@ -125,7 +108,7 @@
           </section>
         </aside>
       </section>
-       <section class="notebook-page">
+      <section class="notebook-page">
         <div class="content">
           <h2>hello world</h2>
           <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Saepe quos eos nisi ut illo consectetur libero voluptates ducimus quidem! Nisi odit odio illum, esse amet adipisci obcaecati tempore pariatur consectetur.</p>
@@ -207,9 +190,9 @@
       <header>
         <h3>Add Page</h3>
       </header>
-      <section class="content">
+      <section class="content max-w-2xl">
         <div class="content">
-          <markdown-editor></markdown-editor>
+          <markdown-editor @saved="create" v-model="newNotebookPageContent"></markdown-editor>
         </div>
       </section>
     </article>
@@ -217,6 +200,7 @@
 </template>
 
 <script lang="ts">
+import pages from '@/repositories/pages';
 import cloneDeep from 'lodash.clonedeep';
 import { Notebook, Member } from '@/types';
 import BaseView from '@/mixins/BaseView.ts';
@@ -226,11 +210,12 @@ import notebooks from '@/repositories/notebooks';
 import { Action, Getter, Mutation } from 'vuex-class';
 import { Prop, Component } from 'vue-property-decorator'
 import ActionButton from '@/components/ActionButton.vue';
+import NotebookPage from '@/components/NotebookPage.vue';
 import MarkdownEditor from '@/components/MarkdownEditor.vue';
 
 @Component({
   $_veeValidate: { validator: "new" },
-  components: { ActionButton, MarkdownEditor }
+  components: { ActionButton, MarkdownEditor, NotebookPage }
 })
 export default class NotebookView extends mixins(BaseView) {
   @Prop({ required: true }) hashid!: string;
@@ -240,6 +225,7 @@ export default class NotebookView extends mixins(BaseView) {
   editFormVisible: boolean = false;
   editedNotebookName: string = '';
   updatingNotebook: boolean = false;
+  newNotebookPageContent: string = '';
 
   /**
    * Element refs
@@ -321,6 +307,41 @@ export default class NotebookView extends mixins(BaseView) {
         this.updatingNotebook = true;
         }
       });
+  }
+
+  /**
+   * Ask the server to create a new notebook page
+   */
+  create(content: string) {
+    if (content.length === 0) {
+      this.toast({
+        message: "No content provided",
+        level: 'danger'
+      });
+      return;
+    }
+
+    if (!this.notebook) {
+      return;
+    }
+
+    pages.create(this.notebook.hashid, content)
+      .then((response) => {
+
+        if (!this.notebook) {
+          return;
+        }
+
+        if (!this.notebook.pages) {
+          this.notebook.pages = [];
+        }
+
+        this.notebook.pages.push(response.data.data);
+        this.newNotebookPageContent = '';
+      })
+      .catch((error) => {
+        this.handleResponseErrors(error);
+      })
   }
 }
 </script>

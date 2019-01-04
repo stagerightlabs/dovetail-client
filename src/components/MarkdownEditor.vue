@@ -9,6 +9,7 @@
         rows="10"
         class="w-full border font-mono"
         v-model="plainText"
+        @input="input"
       ></textarea>
     </div>
     <div class="flex justify-between">
@@ -20,7 +21,7 @@
           <span v-if="showPreview">Edit</span>
           <span v-else>Preview</span>
         </button>
-        <button class="btn btn-blue ml-2">Save</button>
+        <button class="btn btn-blue ml-2" @click="save">Save</button>
       </div>
     </div>
   </div>
@@ -29,19 +30,31 @@
 <script lang="ts">
 import Emoji from 'markdown-it-emoji';
 import MarkdownIt from 'markdown-it';
-import { Prop, Component, Vue } from 'vue-property-decorator';
+import { Prop, Component, Vue, Watch } from 'vue-property-decorator';
 
 @Component({})
 export default class MarkdownEditor extends Vue {
 
-  showPreview: boolean = false;
-  plainText: string = '';
+  @Prop({ required: true }) value!: string;
 
+  showPreview: boolean = false;
+  plainText: string = this.value;
+
+  @Watch('value')
+  onPropertyChanged(value: string, oldValue: string) {
+    this.plainText = value;
+  }
+
+  /**
+   * Toggle the markdown preview panel
+   */
   togglePreview() {
     this.showPreview = !this.showPreview;
   }
 
-  // Render the markdown preview
+  /**
+   * Render the markdown preview
+   */
   get compiledMarkdown() {
     const md = new MarkdownIt();
     md.set({
@@ -54,6 +67,20 @@ export default class MarkdownEditor extends Vue {
       .use(Emoji);
 
     return md.render(this.plainText);
+  }
+
+  /**
+   * The user wants to save their content
+   */
+  save() {
+    this.$emit('saved', this.plainText);
+  }
+
+  /**
+   * Sync the
+   */
+  input() {
+    this.$emit('input', this.plainText)
   }
 }
 </script>

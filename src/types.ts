@@ -90,4 +90,12 @@ export interface Notebook {
   owner_name: string;
   comments_enabled: boolean;
   current_user_is_following: boolean;
+  pages?: NotebookPage[];
+}
+
+export interface NotebookPage {
+  hashid: string;
+  notebook_id: string;
+  content: string;
+  sort_order: number;
 }
