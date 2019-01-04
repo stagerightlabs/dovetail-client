@@ -52,7 +52,12 @@
       </section>
     </article>
     <article class="notebook">
-      <notebook-page :page="page" v-for="page in notebook.pages" :key="page.hashid" />
+      <notebook-page
+        :page="page"
+        :notebook-id="notebook.hashid"
+        v-for="page in notebook.pages"
+        :key="page.hashid"
+      />
     </article>
 
 
@@ -192,7 +197,10 @@
       </header>
       <section class="content max-w-2xl">
         <div class="content">
-          <markdown-editor @saved="create" v-model="newNotebookPageContent"></markdown-editor>
+          <markdown-editor
+            @saved="create"
+            v-model="newNotebookPageContent"
+          ></markdown-editor>
         </div>
       </section>
     </article>

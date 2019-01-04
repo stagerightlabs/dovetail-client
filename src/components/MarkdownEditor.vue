@@ -22,20 +22,25 @@
           <span v-else>Preview</span>
         </button>
         <button class="btn btn-blue ml-2" @click="save">Save</button>
+        <button
+          v-if="allowCancel"
+          class="btn btn-red ml-2"
+          @click="cancel"
+        >Cancel</button>
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import Emoji from 'markdown-it-emoji';
-import MarkdownIt from 'markdown-it';
+import { markdown } from '@/markdown';
 import { Prop, Component, Vue, Watch } from 'vue-property-decorator';
 
 @Component({})
 export default class MarkdownEditor extends Vue {
 
   @Prop({ required: true }) value!: string;
+  @Prop({ default: false, type: Boolean }) allowCancel!: boolean;
 
   showPreview: boolean = false;
   plainText: string = this.value;
@@ -56,17 +61,7 @@ export default class MarkdownEditor extends Vue {
    * Render the markdown preview
    */
   get compiledMarkdown() {
-    const md = new MarkdownIt();
-    md.set({
-      html: true,
-      breaks: true,
-      typographer: true,
-      linkify: true,
-    }).enable('replacements')
-      .enable('smartquotes')
-      .use(Emoji);
-
-    return md.render(this.plainText);
+    return markdown.render(this.plainText);
   }
 
   /**
@@ -77,10 +72,17 @@ export default class MarkdownEditor extends Vue {
   }
 
   /**
-   * Sync the
+   * Sync the input value; used for v-model compatibility
    */
   input() {
     this.$emit('input', this.plainText)
+  }
+
+  /**
+   *
+   */
+  cancel() {
+    this.$emit('cancelled');
   }
 }
 </script>

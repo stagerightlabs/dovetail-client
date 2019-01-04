@@ -15,9 +15,9 @@ export default {
 //     return axios.get(`/notebooks/${hashid}`);
 //   },
 
-//   update(notebook: Notebook): AxiosPromise<any> {
-//     return axios.put(`/notebooks/${notebook.hashid}`, notebook);
-//   },
+  update(notebookId: string, pageId: string, content: string): AxiosPromise<any> {
+    return axios.put(`/notebooks/${notebookId}/pages/${pageId}`, { content });
+  },
 
 //   delete(notebook: Notebook): AxiosPromise<any> {
 //     return axios.delete(`/notebooks/${notebook.hashid}`);
