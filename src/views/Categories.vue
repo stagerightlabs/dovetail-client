@@ -13,7 +13,7 @@
   </header>
 
   <article v-if="creationFormVisible">
-    <section>
+    <section class="content">
       <form class="flex items-start">
         <label for="new-category-name" class="pt-2">Name:</label>
         <div class="ml-2 flex-grow">

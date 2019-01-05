@@ -57,6 +57,7 @@
         :notebook-id="notebook.hashid"
         v-for="page in notebook.pages"
         :key="page.hashid"
+        @removed="removePage(page)"
       />
     </article>
 
@@ -201,6 +202,8 @@
             id="textarea-markdown"
             @saved="create"
             v-model="newNotebookPageContent"
+            @cancelled="cancelCreation"
+            allow-cancel
           ></markdown-editor>
         </div>
       </section>
@@ -211,7 +214,7 @@
 <script lang="ts">
 import pages from '@/repositories/pages';
 import cloneDeep from 'lodash.clonedeep';
-import { Notebook, Member } from '@/types';
+import { Notebook, Member, NotebookPage as Page } from '@/types';
 import BaseView from '@/mixins/BaseView.ts';
 import members from '@/repositories/members';
 import { mixins } from 'vue-class-component';
@@ -351,6 +354,22 @@ export default class NotebookView extends mixins(BaseView) {
       .catch((error) => {
         this.handleResponseErrors(error);
       })
+  }
+
+  /**
+   * Cancel new page creation and reset the markdown form
+   */
+  cancelCreation() {
+    this.newNotebookPageContent = '';
+  }
+
+  /**
+   * Remove a page from this notebook
+   */
+  removePage(page: Page) {
+    if (this.notebook && this.notebook.pages) {
+      this.removeModel(this.notebook.pages, page);
+    }
   }
 }
 </script>

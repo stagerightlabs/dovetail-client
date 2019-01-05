@@ -19,7 +19,7 @@ export default {
     return axios.put(`/notebooks/${notebookId}/pages/${pageId}`, { content });
   },
 
-//   delete(notebook: Notebook): AxiosPromise<any> {
-//     return axios.delete(`/notebooks/${notebook.hashid}`);
-//   },
+  delete(notebookId: string, pageId: string): AxiosPromise<any> {
+    return axios.delete(`/notebooks/${notebookId}/pages/${pageId}`);
+  },
 };

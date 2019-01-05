@@ -2,7 +2,7 @@
   <button
     :class="{'disabled': spin}"
     @click="handleClick"
-    :style="[spin ? {width: `${clientWidth}px`, height: `${clientHeight}px`} : {}]"
+    :style="[spin && autoSizing ? {width: `${clientWidth}px`, height: `${clientHeight}px`} : {}]"
     :id="id"
     :disabled="disabled"
   >
@@ -48,6 +48,7 @@ export default class ActionButton extends Vue {
   @Prop({ default: false, type: Boolean}) prevent!: boolean;
   @Prop({ default: false, type: Boolean }) confirm!: boolean;
   @Prop({ default: false, type: Boolean }) disabled!: boolean;
+  @Prop({ default: true, type: Boolean }) autoSizing!: boolean;
   @Prop({ default: 'Are you sure you want to do that?' }) message!: string;
 
   @Watch('spin')
