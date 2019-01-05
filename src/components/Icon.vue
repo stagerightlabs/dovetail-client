@@ -13,13 +13,14 @@
 </template>
 
 <script lang="ts">
-import Cog from '@/icons/Cog.vue';
+// import Cog from '@/icons/Cog.vue';
 import Menu from '@/icons/Menu.vue';
 import Close from '@/icons/Close.vue';
 import Trash from '@/icons/Trash.vue';
 import Reload from '@/icons/Reload.vue';
 import Shield from '@/icons/Shield.vue';
 import Refresh from '@/icons/Refresh.vue';
+import LockOpen from '@/icons/LockOpen.vue';
 import Checkmark from '@/icons/Checkmark.vue';
 import AddOutline from '@/icons/AddOutline.vue';
 import EditPencil from '@/icons/EditPencil.vue';
@@ -30,18 +31,21 @@ import ArrowThickLeft from '@/icons/ArrowThickLeft.vue';
 import UserSolidCircle from '@/icons/UserSolidCircle.vue';
 import { Vue, Component, Prop } from 'vue-property-decorator'
 import ExclamationOutline from '@/icons/ExclamationOutline.vue';
+import InformationOutline from '@/icons/InformationOutline.vue';
 
 @Component({components: {
   AddOutline,
   ArrowThickLeft,
   Attachment,
   Close,
-  Cog,
+  // Cog,
   Checkmark,
   Conversation,
   EditPencil,
   ExclamationOutline,
+  InformationOutline,
   LockClosed,
+  LockOpen,
   Menu,
   Reload,
   Refresh,
@@ -66,12 +70,14 @@ export default class Icon extends Vue {
     'arrow-thick-left': 'ArrowThickLeft',
     'attachment': 'Attachment',
     'close': 'Close',
-    'cog': 'Cog',
+    // 'cog': 'Cog',
     'checkmark': 'Checkmark',
     'conversation': 'Conversation',
     'edit-pencil': 'EditPencil',
     'exclamation-outline': 'ExclamationOutline',
+    'information-outline': 'InformationOutline',
     'lock-closed': 'LockClosed',
+    'lock-open': 'LockOpen',
     'menu': 'Menu',
     'reload': 'Reload',
     'refresh': 'Refresh',
