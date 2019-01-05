@@ -25,11 +25,9 @@
   @apply .bg-blue;
 }
 
-.markdown-preview {
-  height: 12.9rem;
-
+.markdown {
   p, h1, h2, h3, h4, h5, h6, ul, ol {
-    margin-bottom: 0.75rem;
+    margin-bottom: 0.5rem;
   }
 
   pre {
