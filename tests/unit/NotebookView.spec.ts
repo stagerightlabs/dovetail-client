@@ -10,12 +10,25 @@ jest.mock('@/repositories/notebooks', () => ({
     },
   })),
 }));
+jest.mock('@/repositories/pages', () => ({
+  create: jest.fn((notebookId: string, content: string) => Promise.resolve({
+    data: {
+      data: {
+        hashid: 'x737zq8',
+        notebook_id: 'x737zq8',
+        content,
+        sort_order: 0,
+      },
+    },
+  })),
+}));
 
 import { mount, createLocalVue, RouterLinkStub } from '@vue/test-utils';
 import notebooks from '@/repositories/notebooks';
 import NotebookView from '@/views/Notebook.vue';
 import flushPromises from 'flush-promises';
 import { Notebook, Member } from '@/types';
+import pages from '@/repositories/pages';
 import cloneDeep from 'lodash.clonedeep';
 import { config } from '@vue/test-utils';
 import Icon from '@/components/Icon.vue';
@@ -109,6 +122,19 @@ describe('Notebooks.vue', () => {
     expect(notebooks.update).not.toHaveBeenCalled();
     expect(wrapper.vm.$validator.errors.items).toHaveLength(1);
     wrapper.vm.$validator.errors.clear();
+  });
+
+  test('a notebook page can be added', async () => {
+    jest.clearAllMocks();
+    const wrapper = createWrapper({});
+    await flushPromises();
+
+    const markdownInput = wrapper.find('#textarea-markdown');
+    markdownInput.setValue('#hello world');
+    wrapper.find('#btn-save-markdown').trigger('click');
+    await flushPromises();
+
+    expect(pages.create).toHaveBeenCalledWith(fakeNotebook.hashid, '#hello world');
   });
 
 });

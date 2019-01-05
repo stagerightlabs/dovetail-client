@@ -198,6 +198,7 @@
       <section class="content max-w-2xl">
         <div class="content">
           <markdown-editor
+            id="textarea-markdown"
             @saved="create"
             v-model="newNotebookPageContent"
           ></markdown-editor>

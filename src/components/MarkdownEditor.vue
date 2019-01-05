@@ -4,7 +4,7 @@
     <div class="input-group" v-else>
       <textarea
         name=""
-        id=""
+        id="textarea-markdown"
         cols="30"
         rows="10"
         class="w-full border font-mono"
@@ -17,11 +17,19 @@
         <a class="btn btn-link text-sm" href="https://commonmark.org/help/" target="_blank">Markdown</a>
       </div>
       <div>
-        <button class="btn" :class="{'btn-slate': showPreview, 'btn-link': !showPreview}" @click="togglePreview">
+        <button
+          class="btn"
+          :class="{'btn-slate': showPreview, 'btn-link': !showPreview}"
+          @click="togglePreview"
+        >
           <span v-if="showPreview">Edit</span>
           <span v-else>Preview</span>
         </button>
-        <button class="btn btn-blue ml-2" @click="save">Save</button>
+        <button
+          id="btn-save-markdown"
+          class="btn btn-blue ml-2"
+          @click="save"
+        >Save</button>
         <button
           v-if="allowCancel"
           class="btn btn-red ml-2"
@@ -41,6 +49,7 @@ export default class MarkdownEditor extends Vue {
 
   @Prop({ required: true }) value!: string;
   @Prop({ default: false, type: Boolean }) allowCancel!: boolean;
+  @Prop({ default: '' }) id!: string;
 
   showPreview: boolean = false;
   plainText: string = this.value;
