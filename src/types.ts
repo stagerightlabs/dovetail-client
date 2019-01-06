@@ -98,4 +98,16 @@ export interface NotebookPage {
   notebook_id: string;
   content: string;
   sort_order: number;
+  comments?: NotebookPageComment[];
+}
+
+export interface NotebookPageComment {
+  hashid: string;
+  content: string;
+  commentator: string;
+  commentator_id: string;
+  edited: boolean;
+  created_at: string;
+  created_at_date?: Date;
+  since_created: string;
 }

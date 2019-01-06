@@ -1,6 +1,11 @@
 <template>
   <div>
-    <div v-if="showPreview" class="markdown-preview p-2 border-b mb-4 overflow-scroll" v-html="compiledMarkdown"></div>
+    <div
+      v-if="showPreview"
+      class="markdown p-2 border-b mb-4 overflow-scroll"
+      v-html="compiledMarkdown"
+      style="height: 12.9rem"
+    ></div>
     <div class="input-group" v-else>
       <textarea
         name=""
@@ -48,7 +53,7 @@ import { Prop, Component, Vue, Watch } from 'vue-property-decorator';
 export default class MarkdownEditor extends Vue {
 
   @Prop({ required: true }) value!: string;
-  @Prop({ default: false, type: Boolean }) allowCancel!: boolean;
+  @Prop({ default: true, type: Boolean }) allowCancel!: boolean;
   @Prop({ default: '' }) id!: string;
 
   showPreview: boolean = false;
@@ -78,6 +83,7 @@ export default class MarkdownEditor extends Vue {
    */
   save() {
     this.$emit('saved', this.plainText);
+    this.showPreview = false;
   }
 
   /**
@@ -91,6 +97,7 @@ export default class MarkdownEditor extends Vue {
    *
    */
   cancel() {
+    this.showPreview = false;
     this.$emit('cancelled');
   }
 }

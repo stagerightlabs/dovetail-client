@@ -11,18 +11,18 @@
     />
     <aside>
       <section class="options">
-        <button title="Edit" @click="edit" class="flex justify-center">
+        <button title="Edit" @click="edit" @keydown.esc="read" class="flex justify-center">
           <icon name="edit-pencil" :class="{'text-blue': isEditing}" />
         </button>
-        <button title="Conversation" @click="conversation" class="flex justify-center">
+        <button title="Conversation" @click="conversation" @keydown.esc="read" class="flex justify-center">
           <icon name="conversation"  :class="{'text-blue': isConversation}"/>
-          <span class="text-xs ml-1">(12)</span>
+          <span class="text-xs ml-1" v-if="page.comments && page.comments.length > 0">({{ page.comments.length }})</span>
         </button>
-        <button title="Add Attachment" class="flex justify-center">
+        <button title="Add Attachment" @keydown.esc="read" class="flex justify-center">
           <icon name="attachment" />
           <span class="text-xs ml-1">(12)</span>
         </button>
-        <button title="Information" class="flex justify-center">
+        <button title="Information" @keydown.esc="read" class="flex justify-center">
           <icon name="information-outline" />
         </button>
         <action-button
@@ -37,34 +37,30 @@
           <icon name="trash" />
         </action-button>
       </section>
-      <section class="conversation" :class="{'hidden': !isConversation}">
-        <button class="add-comment">
-          <icon name="add-outline" width="12" height="12" />
-          Add Comment
-        </button>
-        <notebook-page-comments
-          :notebookId="notebookId"
-          :pageId="page.hashid"
-          :comments="page.comments"
-        />
-      </section>
+      <notebook-page-conversation :class="{'hidden': !isConversation}"
+        :notebookId="notebookId"
+        :pageId="page.hashid"
+        :comments="page.comments ? page.comments : []"
+        @comment="receiveComment"
+      />
     </aside>
   </section>
 </template>
 
 <script lang="ts">
+import { format } from 'date-fns';
 import { markdown } from '@/markdown';
 import pages from '@/repositories/pages';
 import BaseView from '@/mixins/BaseView.ts';
 import { mixins } from 'vue-class-component';
-import { NotebookPage as Page } from '@/types';
+import { NotebookPage as Page, NotebookPageComment } from '@/types';
 import ActionButton from '@/components/ActionButton.vue';
 import MarkdownEditor from '@/components/MarkdownEditor.vue';
 import { Prop, Component, Watch } from 'vue-property-decorator';
-import NotebookPageComments from '@/components/NotebookPageComments.vue';
+import NotebookPageConversation from '@/components/NotebookPageConversation.vue';
 
 @Component({
-  components: { MarkdownEditor, ActionButton, NotebookPageComments }
+  components: { MarkdownEditor, ActionButton, NotebookPageConversation }
 })
 export default class NotebookPage extends mixins(BaseView) {
 
@@ -171,6 +167,30 @@ export default class NotebookPage extends mixins(BaseView) {
       .catch((error) => {
         this.handleResponseErrors(error);
       });
+  }
+
+  /**
+   * Receive a new comment
+   */
+  receiveComment(comment: NotebookPageComment) {
+    if (!this.page.comments) {
+      this.page.comments = [];
+    }
+
+    this.addOrUpdateModel(this.page.comments, comment);
+  }
+
+  /**
+   * The mounted lifecycle hook
+   */
+  mounted() {
+    // If a specific comment has been requested via query parameter, display it
+    if (this.$route.query.comment
+        && this.page.comments
+        && this.page.comments.find((c) => this.$route.query.comment === c.hashid)
+      ) {
+      this.conversation();
+    }
   }
 }
 </script>

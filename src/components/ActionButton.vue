@@ -13,7 +13,7 @@
       <slot></slot>
     </span>
     <portal to="modal" v-if="modalVisible">
-      <div class="absolute fixed pin w-full h-full flex">
+      <div class="fixed pin w-full h-full flex">
         <div class="center-xy bg-smoke">
             <div class="modal">
               <div class="text-black font-bold text-xl mb-8">{{ message }}</div>
@@ -64,6 +64,8 @@ export default class ActionButton extends Vue {
    * Process a click event
    */
   handleClick(e: any) {
+    console.log('clicked', this.confirm)
+
     this.captureClientSize();
 
     if (this.prevent) {

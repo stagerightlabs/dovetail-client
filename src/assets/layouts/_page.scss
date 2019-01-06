@@ -114,6 +114,7 @@
         .conversation {
           max-height: 16rem;
           overflow: scroll;
+          overflow-wrap: break-word;
           @apply .text-grey-darkest;
 
           button.add-comment {

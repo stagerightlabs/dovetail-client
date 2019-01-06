@@ -26,8 +26,8 @@
               id="edit-notebook-name"
               v-model="editedNotebookName"
               ref="editedNotebookNameInput"
-              @keydown.esc="cancelNewNotebook"
-              @keydown.enter.prevent="create"
+              @keydown.esc="cancelEditing"
+              @keydown.enter.prevent="update"
               required
               v-validate
             >
@@ -57,6 +57,8 @@
         :notebook-id="notebook.hashid"
         v-for="page in notebook.pages"
         :key="page.hashid"
+        :id="`notebook-page-${page.hashid}`"
+        :ref="`notebook-page-${page.hashid}`"
         @removed="removePage(page)"
       />
     </article>
@@ -66,54 +68,6 @@
 
 
     <article class="notebook">
-
-      <section class="notebook-page">
-        <div class="content">
-          <h2>hello world</h2>
-          <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Saepe quos eos nisi ut illo consectetur libero voluptates ducimus quidem! Nisi odit odio illum, esse amet adipisci obcaecati tempore pariatur consectetur.</p>
-        </div>
-        <aside>
-          <section class="options">
-            <button title="Edit">
-              <icon name="edit-pencil"/>
-            </button>
-            <button title="Conversation">
-              <icon name="conversation" class="text-blue" />
-              (12)
-            </button>
-            <button title="Add Attachment">
-              <icon name="attachment" />
-            </button>
-            <button title="Remove Page">
-              <icon name="cog" />
-            </button>
-          </section>
-          <section class="conversation">
-            <div class="comment">
-              <p class="px-2 pt-1">
-                <icon name="user-solid-circle" width="24" height="24" />
-              </p>
-              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda aspernatur fugit rerum cum neque porro cumque vel est, deserunt amet dolore praesentium quidem ratione temporibus unde culpa perferendis dolor. Eius!</p>
-            </div>
-            <div class="comment">
-              <p class="px-2 pt-1">
-                <icon name="user-solid-circle" width="24" height="24" />
-              </p>
-              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda aspernatur fugit rerum cum neque porro cumque vel est, deserunt amet dolore praesentium quidem ratione temporibus unde culpa perferendis dolor. Eius!</p>
-            </div>
-            <div class="comment">
-              <p class="px-2 pt-1">
-                <icon name="user-solid-circle" width="24" height="24" />
-              </p>
-              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda aspernatur fugit rerum cum neque porro cumque vel est, deserunt amet dolore praesentium quidem ratione temporibus unde culpa perferendis dolor. Eius!</p>
-            </div>
-            <button class="add-comment">
-              <icon name="add-outline" width="12" height="12" />
-              Add Comment
-            </button>
-          </section>
-        </aside>
-      </section>
       <section class="notebook-page">
         <div class="content">
           <h2>hello world</h2>
@@ -189,7 +143,6 @@
           </section>
         </aside>
       </section>
-
     </article>
 
     <article>
@@ -200,7 +153,7 @@
         <div class="content">
           <markdown-editor
             id="textarea-markdown"
-            @saved="create"
+            @saved="createPage"
             v-model="newNotebookPageContent"
             @cancelled="cancelCreation"
             allow-cancel
@@ -242,7 +195,7 @@ export default class NotebookView extends mixins(BaseView) {
   /**
    * Element refs
    */
-  $refs!: {
+  $refs: any = {
     editedNotebookNameInput: HTMLFormElement
   }
 
@@ -273,6 +226,7 @@ export default class NotebookView extends mixins(BaseView) {
    */
   mounted() {
     this.fetchNotebook();
+    this.processQueryParameters();
   }
 
   /**
@@ -289,6 +243,19 @@ export default class NotebookView extends mixins(BaseView) {
   showEditForm() {
     this.editedNotebookName = this.notebook ? this.notebook.name : '';
     this.editFormVisible = true;
+  }
+
+  /**
+   * Validate new notebook name before updating
+   */
+  update() {
+    this.$validator.validateAll()
+      .then((valid) => {
+        if (valid) {
+        this.submitNotebookEdits();
+        this.updatingNotebook = true;
+        }
+      });
   }
 
   /**
@@ -309,22 +276,9 @@ export default class NotebookView extends mixins(BaseView) {
   }
 
   /**
-   * Validate new notebook name before updating
-   */
-  update() {
-    this.$validator.validateAll()
-      .then((valid) => {
-        if (valid) {
-        this.submitNotebookEdits();
-        this.updatingNotebook = true;
-        }
-      });
-  }
-
-  /**
    * Ask the server to create a new notebook page
    */
-  create(content: string) {
+  createPage(content: string) {
     if (content.length === 0) {
       this.toast({
         message: "No content provided",
@@ -369,6 +323,56 @@ export default class NotebookView extends mixins(BaseView) {
   removePage(page: Page) {
     if (this.notebook && this.notebook.pages) {
       this.removeModel(this.notebook.pages, page);
+    }
+  }
+
+  /**
+   * Scroll the window to a specific page
+   */
+  scrollToPage(pageId: string) {
+    const ref = `notebook-page-${pageId}`;
+    if (this.$refs[ref]) {
+      this.$nextTick(() => {
+        this.$refs[ref][0].$el.scrollIntoView();
+      });
+    }
+  }
+
+  /**
+   * Handle query parameters
+   */
+  processQueryParameters() {
+    // Has a specific page been specified?
+    if (this.$route.query.page) {
+      this.$nextTick(() => {
+        // Unfortunately we need to wait a bit more before we can access the DOM
+        setTimeout(() => {
+          this.scrollToPage(String(this.$route.query.page));
+        }, 500);
+      });
+    }
+    // How about a specific comment?
+    else if (this.$route.query.comment) {
+      this.$nextTick(() => {
+        setTimeout(() => {
+          if (!this.notebook || !this.notebook.pages) {
+            return;
+          }
+
+          const page = this.notebook.pages.find((page: any) => {
+            if (!page) {
+              return;
+            }
+
+            return page.comments && page.comments.filter((comment: any) => {
+              return comment.hashid == this.$route.query.comment;
+            }).length;
+          });
+          if (page) {
+            this.scrollToPage(page.hashid);
+          }
+        }, 500);
+      });
     }
   }
 }
