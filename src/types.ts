@@ -99,6 +99,7 @@ export interface NotebookPage {
   content: string;
   sort_order: number;
   comments?: NotebookPageComment[];
+  activity?: ActivityLog[];
 }
 
 export interface NotebookPageComment {
@@ -109,5 +110,14 @@ export interface NotebookPageComment {
   edited: boolean;
   created_at: string;
   created_at_date?: Date;
+  since_created: string;
+}
+
+export interface ActivityLog {
+  hashid: string;
+  user_id: string;
+  user_name: string;
+  description: string;
+  created_at: string;
   since_created: string;
 }

@@ -64,8 +64,6 @@ export default class ActionButton extends Vue {
    * Process a click event
    */
   handleClick(e: any) {
-    console.log('clicked', this.confirm)
-
     this.captureClientSize();
 
     if (this.prevent) {

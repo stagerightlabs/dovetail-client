@@ -49,7 +49,6 @@
         <input
           type="text"
           v-model="newComment"
-          @keydown.enter.prevent="addComment"
         >
       </div>
       <action-button
@@ -96,8 +95,8 @@ export default class NotebookPageComments extends mixins(BaseView) {
    * Element refs
    */
   $refs!: {
-    conversationContainer: HTMLFormElement
-    commentEditingInput: HTMLFormElement
+    conversationContainer: HTMLElement,
+    commentEditingInput: HTMLFormElement[]
   }
 
   /**
@@ -129,7 +128,7 @@ export default class NotebookPageComments extends mixins(BaseView) {
     this.editedCommentText = comment.content;
     this.editing = comment;
     this.$nextTick(() => {
-      const el = <HTMLFormElement>this.$refs.commentEditingInput[0];
+      const el = this.$refs.commentEditingInput[0];
       if (el) {
         el.focus();
       }

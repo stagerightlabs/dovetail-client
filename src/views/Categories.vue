@@ -209,7 +209,6 @@ export default class Categories extends mixins(BaseView) {
    */
   edit(category: Category) {
     this.editing = cloneDeep(category);
-    // this.$refs.categoryEditInput[0].focus();
     this.$nextTick(() => {
       this.$refs.editCategoryInput[0].focus()
     })

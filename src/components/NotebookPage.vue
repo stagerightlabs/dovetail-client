@@ -22,8 +22,8 @@
           <icon name="attachment" />
           <span class="text-xs ml-1">(12)</span>
         </button>
-        <button title="Information" @keydown.esc="read" class="flex justify-center">
-          <icon name="information-outline" />
+        <button title="Information" @keydown.esc="read" @click="activity" class="flex justify-center">
+          <icon name="information-outline" :class="{'text-blue': isActivity}" />
         </button>
         <action-button
           title="Remove"
@@ -43,6 +43,24 @@
         :comments="page.comments ? page.comments : []"
         @comment="receiveComment"
       />
+      <section :class="{'hidden': !isActivity}">
+        <div class="p-2 overflow-scroll" style="max-height: 16rem">
+          <div
+            v-for="activity in reversedActivity"
+            :key="activity.hashid"
+            class="w-full text-sm text-grey-dark border-t p-1 mb-1"
+
+          >
+            <p>
+              {{ activity.description }}
+            </p>
+            <p class="flex justify-between items-center text-xs">
+              <span>{{ activity.since_created }}</span>
+              <span>{{ activity.user_name }}</span>
+            </p>
+          </div>
+        </div>
+      </section>
     </aside>
   </section>
 </template>
@@ -107,6 +125,7 @@ export default class NotebookPage extends mixins(BaseView) {
         this.page.content = response.data.data.content;
         this.originalContent = response.data.data.content;
         this.read();
+        this.refreshActivityLog();
       })
       .catch((error) => {
         this.handleResponseErrors(error);
@@ -125,12 +144,23 @@ export default class NotebookPage extends mixins(BaseView) {
    */
   conversation() {
       if (this.mode === 'conversation') {
-      // this.cancelConversation();
         this.read();
       return;
     }
 
     this.mode = 'conversation';
+  }
+
+  /**
+   * Enter comments mode
+   */
+  activity() {
+      if (this.mode === 'activity') {
+        this.read();
+      return;
+    }
+
+    this.mode = 'activity';
   }
 
   /**
@@ -151,8 +181,16 @@ export default class NotebookPage extends mixins(BaseView) {
    * Are we in comment mode?
    */
   get isConversation() {
-    return this.mode === 'conversation'
+    return this.mode === 'conversation';
   }
+
+  /**
+   * Are we in comment mode?
+   */
+  get isActivity() {
+    return this.mode === 'activity';
+  }
+
 
   /**
    * Ask the server to delete this notebook page
@@ -177,6 +215,7 @@ export default class NotebookPage extends mixins(BaseView) {
       this.page.comments = [];
     }
 
+    this.refreshActivityLog();
     this.addOrUpdateModel(this.page.comments, comment);
   }
 
@@ -191,6 +230,31 @@ export default class NotebookPage extends mixins(BaseView) {
       ) {
       this.conversation();
     }
+  }
+
+  /**
+   * Fetch the page activity again
+   */
+  refreshActivityLog() {
+    console.log('hello');
+    pages.fetchActivity(this.notebookId, this.page.hashid)
+      .then((response) => {
+        this.page.activity = response.data.data;
+      })
+      .catch((error) => {
+        this.handleResponseErrors(error);
+      })
+  }
+
+  /**
+   * Return the activity list in reverse order
+   */
+  get reversedActivity() {
+    if (!this.page.activity) {
+      return [];
+    }
+
+    return this.page.activity.reverse();
   }
 }
 </script>

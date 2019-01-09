@@ -167,7 +167,6 @@
 <script lang="ts">
 import pages from '@/repositories/pages';
 import cloneDeep from 'lodash.clonedeep';
-import { Notebook, Member, NotebookPage as Page } from '@/types';
 import BaseView from '@/mixins/BaseView.ts';
 import members from '@/repositories/members';
 import { mixins } from 'vue-class-component';
@@ -177,6 +176,7 @@ import { Prop, Component } from 'vue-property-decorator'
 import ActionButton from '@/components/ActionButton.vue';
 import NotebookPage from '@/components/NotebookPage.vue';
 import MarkdownEditor from '@/components/MarkdownEditor.vue';
+import { Notebook, Member, NotebookPage as Page } from '@/types';
 
 @Component({
   $_veeValidate: { validator: "new" },
