@@ -12,7 +12,7 @@
       </aside>
     </header>
     <article v-if="creationFormVisible" class="mt-4">
-      <section>
+      <section class="content">
         <form class="flex items-start">
           <label for="new-team-name" class="pt-2">Name:</label>
           <div class="ml-2 flex-grow">

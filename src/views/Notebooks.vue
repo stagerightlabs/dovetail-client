@@ -15,67 +15,70 @@
       <header>
         <h3>Create New {{ singularNotebooksLabel }}</h3>
       </header>
-      <section>
-        <form class="max-w-sm mx-auto">
-          <div class="input-group">
-            <label for="new-notebook-name" class="pt-2">Name:</label>
-            <input
-              type="text"
-              name="name"
-              class="leading-none"
-              id="new-notebook-name"
-              v-model="newNotebookName"
-              ref="newNotebookInput"
-              @keydown.esc="cancelNotebookCreation"
-              @keydown.enter.prevent="create"
-              required
-              v-validate
-            >
-            <div class="input-error flex-none">{{ errors.first('name') }}</div>
-          </div>
-          <div class="input-group">
-            <label for="new-notebook-category">Category:</label>
-            <select name="category" v-model="newNotebookCategory" id="new-notebook-category">
-              <option selected></option>
-              <option v-for="category in categories" :key="category.hashid" :value="category.hashid">
-                {{ category.name }}
-              </option>
-            </select>
-          </div>
-          <div class="input-group">
-            <label for="new-notebook-owner">Owner</label>
-            <select
-              name="owner"
-              v-model="newNoteBookOwner"
-              id="new-notebook-owner"
-              required
-              v-validate
-            >
-              <option value="user" selected>{{ user.name }}</option>
-              <option v-for="team in userTeams" :key="team.hashid" :value="team.hashid">
-                Team: {{ team.name }}
-              </option>
-              <option value="organization">{{ organization.name }}</option>
-            </select>
-          </div>
-          <div class="input-group text-right">
-            <action-button
-              id="btn-create"
-              class="btn btn-green ml-2"
-              @click="createNotebook"
-              :spin="creatingNotebook"
-              prevent
-            >
-              Create
-            </action-button>
-            <button
-              class="btn btn-red ml-2"
-              @click.prevent="cancelNotebookCreation"
-            >
-              Cancel
-            </button>
-          </div>
-        </form>
+      <section class="content">
+        <div class="bg-grey-lighter rounded w-full">
+          <form class="max-w-sm mx-auto p-4">
+            <div class="input-group">
+              <label for="new-notebook-name" class="pt-2">Name:</label>
+              <input
+                type="text"
+                name="name"
+                class="leading-none"
+                id="new-notebook-name"
+                v-model="newNotebookName"
+                ref="newNotebookInput"
+                @keydown.esc="cancelNotebookCreation"
+                @keydown.enter.prevent="create"
+                required
+                v-validate
+              >
+              <div class="input-error flex-none">{{ errors.first('name') }}</div>
+            </div>
+            <div class="input-group">
+              <label for="new-notebook-category">Category:</label>
+              <select name="category" v-model="newNotebookCategory" id="new-notebook-category">
+                <option selected></option>
+                <option v-for="category in categories" :key="category.hashid" :value="category.hashid">
+                  {{ category.name }}
+                </option>
+              </select>
+            </div>
+            <div class="input-group">
+              <label for="new-notebook-owner">Owner</label>
+              <select
+                name="owner"
+                v-model="newNoteBookOwner"
+                id="new-notebook-owner"
+                required
+                v-validate
+              >
+                <option value="user" selected>{{ user.name }}</option>
+                <option v-for="team in userTeams" :key="team.hashid" :value="team.hashid">
+                  Team: {{ team.name }}
+                </option>
+                <option value="organization">{{ organization.name }}</option>
+              </select>
+            </div>
+            <div class="input-group text-right">
+              <action-button
+                id="btn-create"
+                class="btn btn-green ml-2"
+                @click="createNotebook"
+                :spin="creatingNotebook"
+                prevent
+              >
+                Create
+              </action-button>
+              <button
+                class="btn btn-red ml-2"
+                @click.prevent="cancelNotebookCreation"
+              >
+                Cancel
+              </button>
+            </div>
+          </form>
+        </div>
+
       </section>
     </article>
     <article>
@@ -130,7 +133,7 @@ import categories from '@/repositories/categories';
 import { Action, Getter, Mutation } from 'vuex-class';
 import Component, { mixins } from 'vue-class-component';
 import ActionButton from '@/components/ActionButton.vue';
-import { Notebook, Member, Category, User, Team } from '@/types';
+import { Notebook, Member, Category, User, Team, Organization } from '@/types';
 
 @Component({
   $_veeValidate: { validator: "new" },
@@ -140,7 +143,7 @@ export default class NotebooksView extends mixins(BaseView) {
 
   @Getter('orgNotebooksLabel', {namespace: 'session'}) orgNotebooksLabel! : string;
   @Getter('isAdministrator', {namespace: 'session'}) isAdministrator! : boolean;
-  @Getter('organization', {namespace: 'session'}) organization! : User;
+  @Getter('organization', {namespace: 'session'}) organization! : Organization;
   @Getter('user', {namespace: 'session'}) user! : User;
 
   notebooks: Notebook[] = [];

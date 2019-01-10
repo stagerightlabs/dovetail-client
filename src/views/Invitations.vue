@@ -12,7 +12,7 @@
       </aside>
     </header>
     <article v-if="creationFormVisible">
-      <section>
+      <section class="content">
         <form class="sm:flex items-start">
           <label for="new-invitation-email" class="pt-2 sm:ml-0">Invite:</label>
           <div class="sm:ml-2 flex-grow">

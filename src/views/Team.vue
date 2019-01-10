@@ -18,7 +18,7 @@
       </aside>
     </header>
     <article v-if="editFormVisible">
-      <section>
+      <section class="content">
         <form class="content flex items-start">
           <label for="edit-team-name" class="pt-2">Name:</label>
           <div class="ml-2 flex-grow">
@@ -30,7 +30,7 @@
               v-model="editedTeamName"
               ref="editedTeamNameInput"
               @keydown.esc="cancelEditing"
-              @keydown.enter="create"
+              @keydown.enter="update"
               required
               v-validate
             >
@@ -299,8 +299,9 @@ export default class TeamView extends mixins(BaseView) {
     this.$validator.validateAll()
       .then((valid) => {
         if (valid) {
-        this.submitTeamEdits();
-        this.updatingTeam = true;
+          this.submitTeamEdits();
+          this.updatingTeam = true;
+          this.cancelEditing();
         }
       });
   }
