@@ -162,3 +162,8 @@
     @apply
   }
 }
+
+.category-label {
+  @apply .bg-slate-lighter .p-1 .rounded;
+  font-size: 0.6em;
+}
