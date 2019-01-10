@@ -3,8 +3,11 @@
     <icon name="reload" width="48px"></icon>
   </div>
   <main v-else role="main" class="page">
-    <header>
-      <h1>{{ notebook.name }}</h1>
+    <header class="max-w-2xl">
+      <h1>
+        {{ notebook.name }}
+        <span v-if="notebook.category" class="category-label">{{ notebook.category }}</span>
+      </h1>
       <aside>
         <button @click="showEditForm" class="text-grey-light" id="btn-show-create-form">
           <icon name="edit-pencil" />
@@ -14,41 +17,61 @@
         </button>
       </aside>
     </header>
-    <article v-if="editFormVisible">
-      <section>
-        <form class="flex items-start">
-          <label for="edit-notebook-name" class="pt-2">Name:</label>
-          <div class="ml-2 flex-grow">
-            <input
-              type="text"
-              name="name"
-              class="leading-none"
-              id="edit-notebook-name"
-              v-model="editedNotebookName"
-              ref="editedNotebookNameInput"
-              @keydown.esc="cancelEditing"
-              @keydown.enter.prevent="update"
-              required
-              v-validate
-            >
-            <div class="input-error flex-none">{{ errors.first('name') }}</div>
-          </div>
-          <action-button
-            id="btn-update"
-            class="btn btn-green ml-2"
-            @click="update"
-            :spin="updatingNotebook"
-            prevent
-          >
-            Send
-          </action-button>
-          <button
-            class="btn btn-red ml-2"
-            @click.prevent="cancelEditing"
-          >
-            Cancel
-          </button>
-        </form>
+    <article v-if="editFormVisible" class="max-w-2xl">
+      <section class="content">
+        <div class="bg-grey-lighter rounded w-full">
+          <form class="max-w-sm mx-auto p-4">
+            <label for="edit-notebook-name" class="pt-2">Name:</label>
+            <div class="input-group">
+              <input
+                type="text"
+                name="name"
+                class="leading-none"
+                id="edit-notebook-name"
+                v-model="editedNotebookName"
+                ref="editedNotebookNameInput"
+                @keydown.esc="cancelEditing"
+                @keydown.enter.prevent="update"
+                required
+                v-validate
+              >
+              <div class="input-error flex-none">{{ errors.first('name') }}</div>
+            </div>
+              <div class="input-group">
+              <label for="new-notebook-category">Category:</label>
+              <select
+                name="category"
+                v-model="editedNotebookCategory"
+                id="edit-notebook-category"
+                @keydown.esc="cancelEditing"
+              >
+                <option selected></option>
+                <option v-for="category in categories" :key="category.hashid" :value="category.hashid">
+                  {{ category.name }}
+                </option>
+              </select>
+            </div>
+            <div class="text-right">
+              <action-button
+                id="btn-update"
+                class="btn btn-green ml-2"
+                @click="update"
+                @keydown.esc="cancelEditing"
+                :spin="updatingNotebook"
+                prevent
+              >
+                Update
+              </action-button>
+              <button
+                class="btn btn-red ml-2"
+                @keydown.esc="cancelEditing"
+                @click.prevent="cancelEditing"
+              >
+                Cancel
+              </button>
+            </div>
+          </form>
+        </div>
       </section>
     </article>
     <article class="notebook">
@@ -155,7 +178,7 @@
             id="textarea-markdown"
             @saved="createPage"
             v-model="newNotebookPageContent"
-            @cancelled="cancelCreation"
+            @cancelled="cancelNewPageCreation"
             allow-cancel
           ></markdown-editor>
         </div>
@@ -171,26 +194,30 @@ import BaseView from '@/mixins/BaseView.ts';
 import members from '@/repositories/members';
 import { mixins } from 'vue-class-component';
 import notebooks from '@/repositories/notebooks';
+import categories from '@/repositories/categories';
 import { Action, Getter, Mutation } from 'vuex-class';
 import { Prop, Component } from 'vue-property-decorator'
 import ActionButton from '@/components/ActionButton.vue';
 import NotebookPage from '@/components/NotebookPage.vue';
 import MarkdownEditor from '@/components/MarkdownEditor.vue';
-import { Notebook, Member, NotebookPage as Page } from '@/types';
+import { Notebook, Member, NotebookPage as Page, Category } from '@/types';
 
 @Component({
   $_veeValidate: { validator: "new" },
   components: { ActionButton, MarkdownEditor, NotebookPage }
 })
 export default class NotebookView extends mixins(BaseView) {
+
   @Prop({ required: true }) hashid!: string;
 
   notebook: Notebook|null = null;
   loading: boolean = true;
   editFormVisible: boolean = false;
   editedNotebookName: string = '';
+  editedNotebookCategory: string = '';
   updatingNotebook: boolean = false;
   newNotebookPageContent: string = '';
+  categories: Category[] = [];
 
   /**
    * Element refs
@@ -205,6 +232,7 @@ export default class NotebookView extends mixins(BaseView) {
   cancelEditing() {
     this.editFormVisible = false;
     this.editedNotebookName = '';
+    this.editedNotebookCategory = '';
   }
 
   /**
@@ -227,6 +255,7 @@ export default class NotebookView extends mixins(BaseView) {
   mounted() {
     this.fetchNotebook();
     this.processQueryParameters();
+    this.fetchCategories();
   }
 
   /**
@@ -242,7 +271,11 @@ export default class NotebookView extends mixins(BaseView) {
    */
   showEditForm() {
     this.editedNotebookName = this.notebook ? this.notebook.name : '';
+    this.editedNotebookCategory = this.notebook ? String(this.notebook.category_id) : '';
     this.editFormVisible = true;
+    this.$nextTick(() => {
+      this.$refs.editedNotebookNameInput.focus();
+    })
   }
 
   /**
@@ -252,8 +285,8 @@ export default class NotebookView extends mixins(BaseView) {
     this.$validator.validateAll()
       .then((valid) => {
         if (valid) {
-        this.submitNotebookEdits();
-        this.updatingNotebook = true;
+          this.submitNotebookEdits();
+          this.updatingNotebook = true;
         }
       });
   }
@@ -264,10 +297,12 @@ export default class NotebookView extends mixins(BaseView) {
   submitNotebookEdits() {
     if (this.notebook) {
       this.notebook.name = this.editedNotebookName;
+      this.notebook.category_id = this.editedNotebookCategory;
       notebooks.update(this.notebook)
         .then((response) => {
           this.notebook = response.data.data;
           this.updatingNotebook = false;
+          this.cancelEditing();
         })
         .catch((error) => {
           this.handleResponseErrors(error);
@@ -313,7 +348,7 @@ export default class NotebookView extends mixins(BaseView) {
   /**
    * Cancel new page creation and reset the markdown form
    */
-  cancelCreation() {
+  cancelNewPageCreation() {
     this.newNotebookPageContent = '';
   }
 
@@ -374,6 +409,19 @@ export default class NotebookView extends mixins(BaseView) {
         }, 500);
       });
     }
+  }
+
+  /**
+   * Fetch the available categories
+   */
+  private fetchCategories() {
+    categories.index()
+      .then((response) => {
+        this.categories = response.data.data;
+      })
+      .catch((error) => {
+        this.handleResponseErrors(error);
+      })
   }
 }
 </script>

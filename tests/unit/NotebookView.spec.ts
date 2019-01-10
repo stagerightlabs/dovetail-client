@@ -22,12 +22,20 @@ jest.mock('@/repositories/pages', () => ({
     },
   })),
 }));
+jest.mock('@/repositories/categories', () => ({
+  index: jest.fn(() => Promise.resolve({
+    data: {
+      data: [fakeCategory],
+    },
+  })),
+}));
 
 import { mount, createLocalVue, RouterLinkStub } from '@vue/test-utils';
+import categories from '@/repositories/categories';
 import notebooks from '@/repositories/notebooks';
 import NotebookView from '@/views/Notebook.vue';
+import { Notebook, Category } from '@/types';
 import flushPromises from 'flush-promises';
-import { Notebook, Member } from '@/types';
 import pages from '@/repositories/pages';
 import cloneDeep from 'lodash.clonedeep';
 import { config } from '@vue/test-utils';
@@ -46,12 +54,18 @@ const fakeNotebook: Notebook = {
   hashid: 'wy5dn36',
   name: 'Experiment 24601',
   slug: 'experiment-24601',
-  category: 'Experiments',
+  category: 'Polymerase',
   category_id: 'wy5dn36',
   owner_name: 'Hopper Labs',
   comments_enabled: true,
   current_user_is_following: true,
 };
+
+const fakeCategory: Category = {
+  hashid: 'wy5dn36',
+  name: 'Polymerase',
+};
+
 
 describe('Notebooks.vue', () => {
 
@@ -100,6 +114,8 @@ describe('Notebooks.vue', () => {
 
     const nameInput = wrapper.find('#edit-notebook-name');
     nameInput.setValue(updatedNotebook.name);
+    const categorySelect = wrapper.find('#edit-notebook-category');
+    categorySelect.setValue(fakeCategory.hashid);
     wrapper.find('#btn-update').trigger('click');
     await flushPromises();
 

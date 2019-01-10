@@ -16,7 +16,10 @@ export default {
   },
 
   update(notebook: Notebook): AxiosPromise<any> {
-    return axios.put(`/notebooks/${notebook.hashid}`, notebook);
+    return axios.put(`/notebooks/${notebook.hashid}`, {
+      name: notebook.name,
+      category_id: notebook.category_id,
+    });
   },
 
   delete(notebook: Notebook): AxiosPromise<any> {
