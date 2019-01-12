@@ -99,6 +99,7 @@ export interface NotebookPage {
   content: string;
   sort_order: number;
   comments?: NotebookPageComment[];
+  documents?: Document[];
   activity?: ActivityLog[];
 }
 
@@ -120,4 +121,13 @@ export interface ActivityLog {
   description: string;
   created_at: string;
   since_created: string;
+}
+
+export interface Document {
+  hashid: string;
+  original: string;
+  large: string;
+  small: string;
+  mimetype: string;
+  filename: string;
 }

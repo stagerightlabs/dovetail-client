@@ -4,7 +4,7 @@
     @click="handleClick"
     :style="[spin && autoSizing ? {width: `${clientWidth}px`, height: `${clientHeight}px`} : {}]"
     :id="id"
-    :disabled="disabled"
+    :disabled="disabled || spin"
   >
     <span v-if="spin">
       <icon name="refresh" width="20" height="20" spin></icon>

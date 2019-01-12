@@ -18,9 +18,9 @@
           <icon name="conversation"  :class="{'text-blue': isConversation}"/>
           <span class="text-xs ml-1" v-if="page.comments && page.comments.length > 0">({{ page.comments.length }})</span>
         </button>
-        <button title="Add Attachment" @keydown.esc="read" class="flex justify-center">
-          <icon name="attachment" />
-          <span class="text-xs ml-1">(12)</span>
+        <button title="Add Attachment" @click="attachments" @keydown.esc="read" class="flex justify-center">
+          <icon name="attachment" :class="{'text-blue': isAttachments}" />
+          <span class="text-xs ml-1" v-if="page.documents && page.documents.length > 0">({{ page.documents.length }})</span>
         </button>
         <button title="Information" @keydown.esc="read" @click="activity" class="flex justify-center">
           <icon name="information-outline" :class="{'text-blue': isActivity}" />
@@ -43,18 +43,26 @@
         :comments="page.comments ? page.comments : []"
         @comment="receiveComment"
       />
+      <notebook-page-attachments
+        :notebookId="notebookId"
+        :pageId="page.hashid"
+        :documents="page.documents ? page.documents : []"
+        :class="{'hidden': !isAttachments}"
+        @document="receiveDocument"
+        @removed="removeDocument"
+      />
       <section :class="{'hidden': !isActivity}">
         <div class="p-2 overflow-scroll" style="max-height: 16rem">
           <div
             v-for="activity in reversedActivity"
             :key="activity.hashid"
-            class="w-full text-sm text-grey-dark border-t p-1 mb-1"
+            class="w-full text-sm text-grey-dark border-t p-1 mb-1 break-words"
 
           >
             <p>
               {{ activity.description }}
             </p>
-            <p class="flex justify-between items-center text-xs">
+            <p class="flex justify-between items-center text-xs mt-1">
               <span>{{ activity.since_created }}</span>
               <span>{{ activity.user_name }}</span>
             </p>
@@ -71,14 +79,15 @@ import { markdown } from '@/markdown';
 import pages from '@/repositories/pages';
 import BaseView from '@/mixins/BaseView.ts';
 import { mixins } from 'vue-class-component';
-import { NotebookPage as Page, NotebookPageComment } from '@/types';
 import ActionButton from '@/components/ActionButton.vue';
 import MarkdownEditor from '@/components/MarkdownEditor.vue';
 import { Prop, Component, Watch } from 'vue-property-decorator';
+import { NotebookPage as Page, NotebookPageComment, Document } from '@/types';
+import NotebookPageAttachments from '@/components/NotebookPageAttachments.vue';
 import NotebookPageConversation from '@/components/NotebookPageConversation.vue';
 
 @Component({
-  components: { MarkdownEditor, ActionButton, NotebookPageConversation }
+  components: { MarkdownEditor, ActionButton, NotebookPageConversation, NotebookPageAttachments }
 })
 export default class NotebookPage extends mixins(BaseView) {
 
@@ -164,6 +173,18 @@ export default class NotebookPage extends mixins(BaseView) {
   }
 
   /**
+   * Enter attachments mode
+   */
+  attachments() {
+    if (this.mode === 'attachments') {
+      this.read();
+      return;
+    }
+
+    this.mode = 'attachments';
+  }
+
+  /**
    * Are we in edit mode?
    */
   get isEditing() {
@@ -185,12 +206,18 @@ export default class NotebookPage extends mixins(BaseView) {
   }
 
   /**
-   * Are we in comment mode?
+   * Are we in conversation mode?
    */
   get isActivity() {
     return this.mode === 'activity';
   }
 
+  /**
+   * Are we in attachments mode?
+   */
+  get isAttachments() {
+    return this.mode === 'attachments';
+  }
 
   /**
    * Ask the server to delete this notebook page
@@ -217,6 +244,30 @@ export default class NotebookPage extends mixins(BaseView) {
 
     this.refreshActivityLog();
     this.addOrUpdateModel(this.page.comments, comment);
+  }
+
+  /**
+   * Receive a new document attachment
+   */
+  receiveDocument(attachment: Document) {
+    if (!this.page.documents) {
+      this.page.documents = [];
+    }
+
+    this.refreshActivityLog();
+    this.addOrUpdateModel(this.page.documents, attachment);
+  }
+
+  /**
+   * Remove a delete document from the page's document list
+   */
+  removeDocument(attachment: Document) {
+     if (!this.page.documents) {
+      return;
+    }
+
+    this.refreshActivityLog();
+    this.removeModel(this.page.documents, attachment);
   }
 
   /**

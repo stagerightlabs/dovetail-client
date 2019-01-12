@@ -71,8 +71,8 @@ import BaseView from '@/mixins/BaseView.ts';
 import { mixins } from 'vue-class-component';
 import pageComments from '@/repositories/pageComments';
 import ActionButton from '@/components/ActionButton.vue';
+import { Prop, Component } from 'vue-property-decorator';
 import MarkdownEditor from '@/components/MarkdownEditor.vue';
-import { Prop, Component, Watch } from 'vue-property-decorator';
 import { NotebookPage as Page, NotebookPageComment, User } from '@/types';
 
 @Component({

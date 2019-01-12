@@ -22,7 +22,7 @@
   @apply bg-blue-light text-blue-lightest
 }
 
-.btn-blue:disabled {
+.btn-blue[disabled] {
   @apply .bg-blue-lighter .cursor-not-allowed;
 }
 
@@ -34,7 +34,7 @@
   @apply bg-slate-lighter
 }
 
-.btn-slate:disabled {
+.btn-slate[disabled] {
   @apply .bg-slate-lighter .cursor-not-allowed;
 }
 
@@ -54,7 +54,7 @@
   @apply .bg-green .text-green-darkest;
 }
 
-.btn-green:disabled {
+.btn-green[disabled] {
   @apply .bg-green-lightest .text-green-lighter .cursor-not-allowed;
 }
 
@@ -66,6 +66,6 @@
   @apply .bg-red .text-red-darkest;
 }
 
-.btn-red:disabled {
+.btn-red[disabled] {
   @apply .bg-red-lightest .text-red-lighter .cursor-not-allowed;
 }
