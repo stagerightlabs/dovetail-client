@@ -6,6 +6,7 @@ import store from './store/index';
 import PortalVue from 'portal-vue';
 import VeeValidate from 'vee-validate';
 import Icon from '@/components/Icon.vue';
+import * as Sentry from '@sentry/browser';
 
 // Register the VeeValidate plugin
 const dictionary = {
@@ -23,6 +24,17 @@ Vue.component('icon', Icon);
 
 // Register the Portal Vue plugin
 Vue.use(PortalVue);
+
+// Initialize Sentry Error tracking
+Sentry.init({
+  dsn: process.env.SENTRY_DSN,
+  integrations(integrations) {
+    if (process.env.NODE_ENV === 'production') {
+      integrations.push(new Sentry.Integrations.Vue({ Vue }));
+    }
+    return integrations;
+  },
+});
 
 // Install vue a11y helper when not in production
 // if (process.env.NODE_ENV !== 'production') {
