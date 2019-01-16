@@ -13,23 +13,23 @@ module.exports = {
   lintOnSave: false,
   configureWebpack: {
     plugins: [
-      new PurgecssPlugin({
-        paths: glob.sync([
-          path.join(__dirname, './src/index.html'),
-          path.join(__dirname, './**/*.vue'),
-          path.join(__dirname, './src/**/*.js'),
-        ]),
-        whitelist: [],
-        extractors: [
-          {
-            extractor: TailwindExtractor,
+      // new PurgecssPlugin({
+      //   paths: glob.sync([
+      //     path.join(__dirname, './src/index.html'),
+      //     path.join(__dirname, './**/*.vue'),
+      //     path.join(__dirname, './src/**/*.js'),
+      //   ]),
+      //   whitelist: [],
+      //   extractors: [
+      //     {
+      //       extractor: TailwindExtractor,
 
-            // Specify the file extensions to include when scanning for
-            // class names.
-            extensions: ['html', 'js', 'php', 'vue'],
-          },
-        ],
-      }),
+      //       // Specify the file extensions to include when scanning for
+      //       // class names.
+      //       extensions: ['html', 'js', 'php', 'vue'],
+      //     },
+      //   ],
+      // }),
     ],
   },
 };
