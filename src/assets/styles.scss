@@ -15,4 +15,8 @@
 @import "layouts/faux-row";
 @import "layouts/main-menu";
 
+body {
+  @apply .bg-blue-darkest;
+}
+
 @tailwind utilities;
