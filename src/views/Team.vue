@@ -10,7 +10,7 @@
           <icon name="edit-pencil"  />
         </button>
         <button @click="refresh" class="text-grey-light ml-4" title="Refresh" id="btn-refresh">
-          <icon name="refresh" />
+          <icon name="refresh" :spin="refreshing" />
         </button>
         <router-link :to="{name: 'teams'}" class="text-grey-light  ml-4" title="Back">
           <icon name="arrow-thick-left" />
@@ -131,6 +131,7 @@ export default class TeamView extends mixins(BaseView) {
   team: Team|null = null;
   allMembers: Member[] = [];
   loading: boolean = true;
+  refreshing: boolean = false;
   editFormVisible: boolean = false;
   editedTeamName: string = '';
   updatingTeam: boolean = false;
@@ -193,6 +194,7 @@ export default class TeamView extends mixins(BaseView) {
     teams.show(this.hashid)
       .then((response) => {
         this.loading = false;
+        this.refreshing = false;
         this.team = response.data.data;
       })
       .catch((error) => {
@@ -232,7 +234,7 @@ export default class TeamView extends mixins(BaseView) {
    * The user wants to fetch a new copy of the invitation list
    */
   refresh() {
-    this.loading = true;
+    this.refreshing = true;
     this.fetchTeam();
   }
 

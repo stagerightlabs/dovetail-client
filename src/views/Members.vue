@@ -4,7 +4,7 @@
       <h1>Members</h1>
       <aside>
         <button @click="refresh" class="text-grey-light ml-4" id="btn-refresh">
-          <icon name="refresh"></icon>
+          <icon name="refresh" :spin="refreshing"></icon>
         </button>
       </aside>
     </header>
@@ -146,6 +146,7 @@ export default class Members extends mixins(BaseView) {
   members: Member[] = [];
   deletedMembers: Member[] = [];
   loading: boolean = true;
+  refreshing: boolean = false;
   editing: Member|null = null;
   deleting: Member|null = null;
   restoring: Member|null = null;
@@ -270,12 +271,12 @@ export default class Members extends mixins(BaseView) {
    * Refresh the member listings
    */
   refresh() {
-    this.loading = true;
+    this.refreshing = true;
     const p1 = this.fetchMembers();
     const p2 = this.requestDeletedMembers();
 
     Promise.all([p1, p2]).finally(() => {
-      this.loading = false;
+      this.refreshing = false;
     })
   }
 

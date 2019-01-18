@@ -7,7 +7,7 @@
           <icon name="add-outline" />
         </button>
         <button @click="refresh" class="text-grey-light ml-4" id="btn-refresh">
-          <icon name="refresh" />
+          <icon name="refresh" :spin="loading" />
         </button>
       </aside>
     </header>

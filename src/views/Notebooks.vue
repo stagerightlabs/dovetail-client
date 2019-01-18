@@ -7,7 +7,7 @@
           <icon name="add-outline" />
         </button>
         <button @click="refresh" class="text-grey-light ml-4" id="btn-refresh">
-          <icon name="refresh" />
+          <icon name="refresh" :spin="refreshing" />
         </button>
       </aside>
     </header>
@@ -149,6 +149,7 @@ export default class NotebooksView extends mixins(BaseView) {
   categories: Category[] = [];
   userTeams: Team[] = [];
   loading: boolean = true;
+  refreshing: boolean = false;
   creationFormVisible: boolean = false;
   newNotebookName: string|null = null;
   newNotebookCategory: string|null = null;
@@ -230,6 +231,7 @@ export default class NotebooksView extends mixins(BaseView) {
       .then((response) => {
         this.notebooks = response.data.data;
         this.loading = false;
+        this.refreshing = false;
       })
       .catch((error) => {
         this.handleResponseErrors(error);
