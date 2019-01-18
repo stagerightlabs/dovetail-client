@@ -59,6 +59,7 @@ const fakeNotebook: Notebook = {
   owner_name: 'Hopper Labs',
   comments_enabled: true,
   current_user_is_following: true,
+  pages: []
 };
 
 const fakeCategory: Category = {

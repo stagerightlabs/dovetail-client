@@ -34,7 +34,7 @@ const fakeOrganization: Organization = {
     {
       key: 'label.notebooks',
       value: 'Notebooks',
-    }
+    },
   ],
 };
 
