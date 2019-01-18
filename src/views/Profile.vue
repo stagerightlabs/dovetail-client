@@ -3,63 +3,68 @@
     <icon name="refresh" width="128" height="128" class="text-grey-light" spin></icon>
   </div>
   <main v-else role="main" class="page">
-    <div class="page-header flex justify-between items-center ">
+    <header>
       <h1>Profile</h1>
-    </div>
-    <div class="content">
-      <div class="max-w-sm m-auto">
-      <div class="input-group">
-        <label>Name:</label>
-        <input
-          type="text"
-          v-model="user.name"
-          name="name"
-          id="input-name"
-          required
-          v-validate
-        >
-        <div class="input-error">{{ errors.first('name') }}</div>
-      </div>
-      <div class="input-group">
-        <label>Email:</label>
-        <input
-          type="email"
-          v-model="user.email"
-          name="email"
-          id="input-email"
-          required
-          v-validate
-        >
-        <div class="input-error">{{ errors.first('email') }}</div>
-      </div>
-      <div class="text-right">
-        <action-button
-          @click="updateProfile"
-          id="btn-submit"
-          class="btn btn-blue"
-          :spin="updating"
-        >Update Profile</action-button>
-      </div>
-      </div>
-    </div>
-    <div class="content">
-      <p v-if="user.email_verified_at" class="text-lg">
-        <icon name="checkmark" class="text-green-dark" />
-        Your E-Mail address has been verified.
-      </p>
-      <p v-else class="text-lg flex justify-between items-baseline">
-        <span>
-          <icon name="exclamation-outline" class="text-red-dark" />
-          Your email address has not been verified.
-        </span>
-        <action-button
-          id="link-resend-email"
-          @click="sendVerificationEmail"
-          class="btn btn-blue"
-          :spin="sendingVerification"
-        >Send Verification Email</action-button>
-      </p>
-    </div>
+    </header>
+
+    <article>
+      <section class="content">
+        <div class="max-w-sm m-auto">
+          <div class="input-group">
+            <label>Name:</label>
+            <input
+              type="text"
+              v-model="user.name"
+              name="name"
+              id="input-name"
+              required
+              v-validate
+            >
+            <div class="input-error">{{ errors.first('name') }}</div>
+          </div>
+          <div class="input-group">
+            <label>Email:</label>
+            <input
+              type="email"
+              v-model="user.email"
+              name="email"
+              id="input-email"
+              required
+              v-validate
+            >
+            <div class="input-error">{{ errors.first('email') }}</div>
+          </div>
+          <div class="text-right">
+            <action-button
+              @click="updateProfile"
+              id="btn-submit"
+              class="btn btn-blue"
+              :spin="updating"
+            >Update Profile</action-button>
+          </div>
+        </div>
+      </section>
+    </article>
+    <article>
+      <section class="content">
+        <p v-if="user.email_verified_at" class="text-lg">
+          <icon name="checkmark" class="text-green-dark" />
+          Your E-Mail address has been verified.
+        </p>
+        <p v-else class="text-lg flex justify-between items-baseline">
+          <span>
+            <icon name="exclamation-outline" class="text-red-dark" />
+            Your email address has not been verified.
+          </span>
+          <action-button
+            id="link-resend-email"
+            @click="sendVerificationEmail"
+            class="btn btn-blue"
+            :spin="sendingVerification"
+          >Send Verification Email</action-button>
+        </p>
+      </section>
+    </article>
   </main>
 </template>
 
