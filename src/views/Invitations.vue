@@ -107,10 +107,12 @@
             </tr>
           </tbody>
         </table>
-        <div v-else class="text-center py-24">
-          <p class="mb-4">You have not sent any invitations.</p>
-          <p v-if="!creationFormVisible">
-            <a @click.prevent="showInvitationForm">Send One Now</a>
+        <div v-else class="text-center py-8">
+          <p class="mb-4">
+            You have not sent any invitations.
+            <span v-if="!creationFormVisible">
+              <button @click.prevent="showInvitationForm">Would you like to send one now?</button>
+            </span>
           </p>
         </div>
       </section>

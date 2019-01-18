@@ -74,7 +74,7 @@
         </div>
       </section>
     </article>
-    <article class="notebook">
+    <article class="notebook" v-if="notebook.pages.length">
       <notebook-page
         :page="page"
         :notebook-id="notebook.hashid"
@@ -84,6 +84,11 @@
         :ref="`notebook-page-${page.hashid}`"
         @removed="removePage(page)"
       />
+    </article>
+    <article v-else>
+      <section class="content">
+        <p class="text-center py-8">There are no pages to display.</p>
+      </section>
     </article>
 
     <article>

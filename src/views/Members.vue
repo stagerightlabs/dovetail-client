@@ -118,8 +118,8 @@
     </article>
 
     <footer>
-      <p>
-        Want to add members?
+      <p class="text-center">
+        Want to add more members?
         <router-link :to="{name: 'invitations'}">
           Send invitations
         </router-link>

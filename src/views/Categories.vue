@@ -110,10 +110,12 @@
         </template>
       </div>
     </section>
-    <section v-else class="text-center py-24">
-      <p class="mb-4">There are no categories available.</p>
-      <p v-if="!creationFormVisible">
-        <a @click.prevent="showCreationForm">Create One Now</a>
+    <section v-else class="content text-center">
+      <p>
+        There are no categories available.
+        <span v-if="!creationFormVisible">
+          <a @click.prevent="showCreationForm">Would you like to add one?</a>
+        </span>
       </p>
     </section>
   </article>

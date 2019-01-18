@@ -64,8 +64,8 @@
           </div>
         </div>
       </section>
-      <section v-else>
-        <p class="text-center py-8">There are no teams.</p>
+      <section v-else class="content">
+        <p class="text-center py-8">There are no teams yet. <button v-if="!creationFormVisible" @click.prevent="showTeamForm">Would you like to add one?</button></p>
       </section>
     </article>
   </main>

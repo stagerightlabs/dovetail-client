@@ -117,8 +117,8 @@
           </div> -->
         </div>
       </section>
-      <section v-else>
-        <p class="text-center py-8">There are no {{ orgNotebooksLabel.toLowerCase() }}.</p>
+      <section v-else class="content">
+        <p class="text-center py-8">There are no {{ orgNotebooksLabel.toLowerCase() }} yet. <button @click.prevent="showNotebookForm">Would you like to create one?</button></p>
       </section>
     </article>
   </main>
@@ -323,7 +323,7 @@ export default class NotebooksView extends mixins(BaseView) {
         this.addOrUpdateModel(this.notebooks, response.data.data)
         this.cancelNotebookCreation();
         this.toast({
-          message: `Notebook '${response.data.data.name}'`,
+          message: `${this.singularNotebooksLabel} '${response.data.data.name}' has been created.`,
           level: 'success'
         });
         this.creatingNotebook = false;
