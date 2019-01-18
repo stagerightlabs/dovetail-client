@@ -125,7 +125,6 @@
 </template>
 
 <script lang="ts">
-import cloneDeep from 'lodash.clonedeep';
 import BaseView from '@/mixins/BaseView.ts';
 import profile from '@/repositories/profile';
 import notebooks from '@/repositories/notebooks';
