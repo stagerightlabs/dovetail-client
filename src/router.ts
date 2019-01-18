@@ -18,9 +18,25 @@ const router =  new Router({
   routes: [
     {
       path: '/',
-      name: 'home',
       component: () => import(/* webpackChunkName: "console " */ './views/Console.vue'),
       children: [
+        {
+          path: '',
+          name: 'home',
+          beforeEnter: (to, from, next) => {
+            if (!store.getters['session/isAuthenticated']) {
+              // If there is no active session, redirect to the welcome page
+              next({
+                path: '/welcome',
+              });
+            } else {
+              // Otherwise redirect to the dashboard
+              next({
+                path: '/dashboard'
+              });
+            }
+          },
+        },
         {
           path: '/dashboard',
           name: 'dashboard',
@@ -135,6 +151,11 @@ const router =  new Router({
       component: () => import(/* webpackChunkName: "accept-invitation" */ './views/session/AcceptInvitation.vue'),
       props: true,
       meta: { requireGuest: true },
+    },
+    {
+      path: '/welcome',
+      name: 'welcome',
+      component: () => import(/* webpackChunkName: "welcome" */ './views/Welcome.vue'),
     },
     {
       path: '*',
