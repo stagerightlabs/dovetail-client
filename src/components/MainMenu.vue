@@ -3,7 +3,8 @@
     <div id="menu" class="flex flex-column">
       <header class="nav-header">
         <router-link :to="{name: 'dashboard'}">
-          <h1 class="mb-2">dovetail</h1>
+
+          <h1 class="mb-2"><img src="@/assets/dovetail_logo_white.png" class="w-8"> dovetail</h1>
           <h4>{{ this.organization.name }}</h4>
         </router-link>
       </header>
