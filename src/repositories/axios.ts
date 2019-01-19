@@ -22,7 +22,7 @@ axios.interceptors.response.use((response) => response, (error) => {
 
   // A 401 response indicated that are token has been invalidated
   if (error.response.status === 401) {
-    // router.push({ name: 'logout' });
+    router.push({ name: 'logout' });
   }
 
   return Promise.reject(error);

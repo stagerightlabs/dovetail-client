@@ -71,25 +71,25 @@ const router =  new Router({
           path: '/invitations',
           name: 'invitations',
           component: () => import(/* webpackChunkName: "invitations" */ './views/Invitations.vue'),
-          meta: { requiresAuth: true, requireAdmin: true },
+          meta: { requiresAuth: true, requiresAdmin: true },
         },
         {
           path: '/members',
           name: 'members',
           component: () => import(/* webpackChunkName: "members" */ './views/Members.vue'),
-          meta: { requiresAuth: true, requireAdmin: true },
+          meta: { requiresAuth: true, requiresAdmin: true },
         },
         {
           path: '/teams',
           name: 'teams',
           component: () => import(/* webpackChunkName: "teams" */ './views/Teams.vue'),
-          meta: { requiresAuth: true, requireAdmin: true },
+          meta: { requiresAuth: true, requiresAdmin: true },
         },
         {
           path: '/teams/:hashid/:slug',
           name: 'team',
           component: () => import(/* webpackChunkName: "teams" */ './views/Team.vue'),
-          meta: { requiresAuth: true, requireAdmin: true },
+          meta: { requiresAuth: true, requiresAdmin: true },
           props: true,
         },
         {
@@ -104,7 +104,12 @@ const router =  new Router({
           component: () => import(/* webpackChunkName: "notebook" */ './views/Notebook.vue'),
           meta: { requiresAuth: true },
           props: true,
-        }
+        },
+        {
+          path: '/forbidden',
+          name: '403',
+          component: () => import(/* webpackChunkName: "forbidden" */ './views/Forbidden.vue'),
+        },
       ],
     },
     {
@@ -167,20 +172,29 @@ const router =  new Router({
 
 // Set up global navigation guard
 router.beforeEach((to, from, next) => {
-  if (to.matched.some((record) => record.meta.requiresAuth)) {
-    // this route requires auth, check if logged in
-    // if not, redirect to login page.
-    if (!store.getters['session/isAuthenticated']) {
+  // Check to see if the target page is meant for admins only
+  if (to.matched.some((record) => record.meta.requiresAdmin)) {
+    // Check admin status
+    if (store.getters['session/isAuthenticated'] && store.getters['session/isAdministrator']) {
+      next();
+    } else {
+      next({
+        path: '/forbidden',
+      });
+    }
+    // Check to see if the target page requires authorization
+  } else if (to.matched.some((record) => record.meta.requiresAuth)) {
+    // check auth status
+    if (store.getters['session/isAuthenticated']) {
+      next();
+    } else {
       next({
         path: '/login',
         query: { redirect: to.fullPath },
       });
-    } else {
-      next();
     }
+  // Check to see if this route is meant for guests only
   } else if (to.matched.some((record) => record.meta.requiresGuest)) {
-    // we don't want this route to be available to users
-    // with active sessions
     if (store.getters['session/isAuthenticated']) {
       next({
         path: '/login',

@@ -21,8 +21,8 @@ import Vue from 'vue';
 import { Getter } from 'vuex-class';
 import Component from 'vue-class-component';
 
-@Component({})
-export default class DashboardView extends Vue {
+  @Component({})
+  export default class DashboardView extends Vue {
 
   @Getter('orgNotebooksLabel', {namespace: 'session'}) orgNotebooksLabel! : string;
 
