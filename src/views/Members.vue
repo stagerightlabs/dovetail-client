@@ -100,7 +100,7 @@
       <header>
         <h3>Deleted Members</h3>
       </header>
-      <section>
+      <section class="content">
         <div v-for="member in deletedMembers" :key="member.hashid" class="member">
           <div class="flex justify-between items-baseline">
             <p>{{ member.name }}</p>

@@ -59,7 +59,7 @@ const router =  new Router({
           path: '/settings',
           name: 'settings',
           component: () => import(/* webpackChunkName: "settings" */ './views/OrgSettings.vue'),
-          meta: { requiresAuth: true },
+          meta: { requiresAuth: true, requiresAdmin: true },
         },
         {
           path: '/about',
@@ -179,7 +179,7 @@ router.beforeEach((to, from, next) => {
       next();
     } else {
       next({
-        path: '/forbidden',
+        name: '404',
       });
     }
     // Check to see if the target page requires authorization
