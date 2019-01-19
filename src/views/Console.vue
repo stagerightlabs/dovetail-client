@@ -1,6 +1,6 @@
 <template>
   <div v-if="loading" class="center-xy">
-    <icon name="reload" width="48px"></icon>
+    <img src="@/assets/dovetail_logo_blue.png" class="w-32 mt-6">
   </div>
   <div v-else class="flex">
     <main-menu :mobile-nav-hidden="mobileNavHidden" @close="hideMobileNav"></main-menu>
