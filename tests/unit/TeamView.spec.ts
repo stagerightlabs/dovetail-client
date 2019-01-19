@@ -52,6 +52,7 @@ const fakeMember: Member = {
   title: 'Technologist Level III',
   email_verified: true,
   phone_verified: false,
+  blocked: false,
   created_at: '2018-09-14T03:45:26+00:00',
 };
 

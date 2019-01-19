@@ -12,12 +12,19 @@ export default {
   },
 
   update(member: Member): AxiosPromise<any> {
-    console.log(member.title);
     return axios.put(`/members/${member.hashid}`, {
       name: member.name,
       email: member.email,
       title: member.title,
     });
+  },
+
+  block(member: Member): AxiosPromise<any> {
+    return axios.delete(`/members/${member.hashid}/block`);
+  },
+
+  unblock(member: Member): AxiosPromise<any> {
+    return axios.delete(`/members/${member.hashid}/unblock`);
   },
 
   delete(member: Member): AxiosPromise<any> {

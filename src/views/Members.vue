@@ -70,6 +70,10 @@
           <template v-else>
             <p class="md:w-1/4">
               {{ member.name }}
+              <small v-if="member.blocked" class="ml-1 text-grey-darker">
+                <icon name="exclamation-outline" width="12" height="12" />
+                Blocked
+              </small>
               <icon name="shield" class="text-grey-darker" title="Administrator" v-if="memberIsAdmin(member)"></icon>
             </p>
             <p class="md:w-1/4">{{ member.title }}</p>
@@ -81,6 +85,20 @@
                 class="btn btn-blue"
                 :spin="submittingUpdates"
               >Edit</action-button>
+              <action-button
+                v-if="!member.blocked"
+                id="btn-block"
+                class="btn btn-green ml-2"
+                @click="block(member)"
+                :spin="isBlocking(member)"
+              >Block</action-button>
+              <action-button
+                v-if="member.blocked"
+                id="btn-unblock"
+                class="btn btn-red ml-2"
+                @click="unblock(member)"
+                :spin="isBlocking(member)"
+              >Unblock</action-button>
               <action-button
                 id="btn-delete"
                 class="btn btn-red ml-2"
@@ -103,7 +121,13 @@
       <section class="content">
         <div v-for="member in deletedMembers" :key="member.hashid" class="member">
           <div class="flex justify-between items-baseline">
-            <p>{{ member.name }}</p>
+            <p>
+              {{ member.name }}
+              <small v-if="member.blocked" class="ml-1 text-grey-darker">
+                <icon name="exclamation-outline" width="12" height="12" />
+                Blocked
+              </small>
+            </p>
             <p>{{ member.title }}</p>
             <p>{{ member.email }}</p>
             <action-button
@@ -149,6 +173,7 @@ export default class Members extends mixins(BaseView) {
   refreshing: boolean = false;
   editing: Member|null = null;
   deleting: Member|null = null;
+  blocking: Member|null = null;
   restoring: Member|null = null;
   submittingUpdates: boolean = false;
 
@@ -216,6 +241,15 @@ export default class Members extends mixins(BaseView) {
   }
 
   /**
+   * Determine if a member is currently being blocked or unblocked
+   */
+  isBlocking(member: Member) : boolean {
+    return this.blocking
+      ? this.blocking.hashid === member.hashid
+      : false;
+  }
+
+  /**
    * Does a member represent the current user?
    */
   memberIsCurrentUser(member: Member) {
@@ -264,6 +298,38 @@ export default class Members extends mixins(BaseView) {
       .catch((error) => {
         this.handleResponseErrors(error);
         this.deleting = null;
+      })
+  }
+
+  /**
+   * Ask the server to block a member
+   */
+  block(member: Member) {
+    this.blocking = member;
+    members.block(member)
+      .then(() => {
+        member.blocked = true;
+        this.blocking = null;
+        this.toast({
+          message: `${member.name} has been blocked.`,
+          level: 'success'
+        });
+      })
+  }
+
+  /**
+   * Ask the server to block a member
+   */
+  unblock(member: Member) {
+    this.blocking = member;
+    members.unblock(member)
+      .then(() => {
+        member.blocked = false;
+        this.blocking = null;
+        this.toast({
+          message: `${member.name} has been unblocked.`,
+          level: 'success'
+        });
       })
   }
 

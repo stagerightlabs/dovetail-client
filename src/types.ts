@@ -36,6 +36,7 @@ export interface Member {
   rank: string;
   title: string;
   teams?: Team[];
+  blocked: boolean;
   created_at: string;
   created_at_date?: Date;
   deleted_at?: string;

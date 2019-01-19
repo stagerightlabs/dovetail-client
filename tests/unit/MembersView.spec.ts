@@ -17,6 +17,12 @@ jest.mock('@/repositories/members', () => ({
   delete: jest.fn((member) => Promise.resolve({
     data: {},
   })),
+  block: jest.fn((member) => Promise.resolve({
+    data: {},
+  })),
+  unblock: jest.fn((member) => Promise.resolve({
+    data: {},
+  })),
 }));
 
 import { mount, createLocalVue, RouterLinkStub } from '@vue/test-utils';
@@ -47,8 +53,24 @@ const fakeMember: Member = {
     email_verified: true,
     phone_verified: true,
     teams: [],
+    blocked: false,
     created_at: '2018-09-14T03:45:26+00:00',
 };
+
+const fakeBlockedMember: Member = {
+  hashid: 'wy5dn36',
+  name: 'Grace Hopper',
+  email: 'hopper@example.com',
+  rank: 'Admin',
+  title: 'Technologist Level III',
+  phone: '(705) 558-7119 x38444',
+  email_verified: true,
+  phone_verified: true,
+  teams: [],
+  blocked: true,
+  created_at: '2018-09-14T03:45:26+00:00',
+};
+
 
 const fakeDeletedMember: Member = {
   hashid: 'wy5dn36',
@@ -60,6 +82,7 @@ const fakeDeletedMember: Member = {
   email_verified: true,
   phone_verified: true,
   teams: [],
+  blocked: false,
   created_at: '2018-09-14T03:45:26+00:00',
   deleted_at: '2018-09-14T03:45:26+00:00',
 };
@@ -209,6 +232,44 @@ describe('Members.vue', () => {
     await flushPromises();
     expect(members.update).toHaveBeenCalledWith(updatedMember);
     expect(wrapper.vm.$validator.errors.items).toHaveLength(0);
+  });
+
+  // A member can be blocked
+  test('A member can be blocked', async () => {
+    jest.clearAllMocks();
+    const wrapper = createWrapper({});
+    wrapper.setData({
+      members: fakeMembers,
+      loading: false,
+    });
+    await flushPromises();
+
+    expect(wrapper.find('#btn-unblock').exists()).toBe(false);
+
+    wrapper.find('#btn-block').trigger('click');
+
+    await flushPromises();
+
+    expect(members.block).toHaveBeenCalledWith(fakeMember);
+  });
+
+  // A member can be unblocked
+  test('A member can be blocked', async () => {
+    jest.clearAllMocks();
+    const wrapper = createWrapper({});
+    wrapper.setData({
+      members: [fakeBlockedMember],
+      loading: false,
+    });
+    await flushPromises();
+
+    expect(wrapper.find('#btn-block').exists()).toBe(false);
+
+    wrapper.find('#btn-unblock').trigger('click');
+
+    await flushPromises();
+
+    expect(members.unblock).toHaveBeenCalledWith(fakeMember);
   });
 
   // // A member can be deleted

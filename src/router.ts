@@ -32,7 +32,7 @@ const router =  new Router({
             } else {
               // Otherwise redirect to the dashboard
               next({
-                path: '/dashboard'
+                path: '/dashboard',
               });
             }
           },
