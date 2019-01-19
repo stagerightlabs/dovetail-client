@@ -86,7 +86,7 @@
       />
     </article>
     <article v-else>
-      <section class="content">
+      <section class="content max-w-2xl">
         <p class="text-center py-8">There are no pages to display.</p>
       </section>
     </article>
