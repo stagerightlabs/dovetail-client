@@ -172,18 +172,8 @@ const router =  new Router({
 
 // Set up global navigation guard
 router.beforeEach((to, from, next) => {
-  // Check to see if the target page is meant for admins only
-  if (to.matched.some((record) => record.meta.requiresAdmin)) {
-    // Check admin status
-    if (store.getters['session/isAuthenticated'] && store.getters['session/isAdministrator']) {
-      next();
-    } else {
-      next({
-        name: '404',
-      });
-    }
-    // Check to see if the target page requires authorization
-  } else if (to.matched.some((record) => record.meta.requiresAuth)) {
+  // Check to see if the target page requires authorization
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
     // check auth status
     if (store.getters['session/isAuthenticated']) {
       next();

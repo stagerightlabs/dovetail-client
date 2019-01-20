@@ -287,7 +287,6 @@ export default class NotebookPage extends mixins(BaseView) {
    * Fetch the page activity again
    */
   refreshActivityLog() {
-    console.log('hello');
     pages.fetchActivity(this.notebookId, this.page.hashid)
       .then((response) => {
         this.page.activity = response.data.data;

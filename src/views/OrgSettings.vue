@@ -63,6 +63,9 @@ export default class OrgSettings extends mixins(BaseView) {
   updatingLabels: boolean = false;
   labelNotebooks: string = '';
 
+  /**
+   * Validate the labels before saving them
+   */
   updateLabels() {
     this.$validator.validateAll()
       .then((valid) => {
@@ -75,6 +78,9 @@ export default class OrgSettings extends mixins(BaseView) {
     this.$validator.fields
   }
 
+  /**
+   * Ask the server to update the labels
+   */
   private requestLabelUpdate() {
     let promises = [];
 

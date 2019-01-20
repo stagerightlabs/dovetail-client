@@ -1,10 +1,13 @@
 import Vue from 'vue';
 import EventBus from '@/bus';
+import { Getter } from 'vuex-class';
 import { Alert, Model } from '@/types';
 import Component from 'vue-class-component';
 
 @Component
 export default class BaseView extends Vue {
+
+  @Getter('isAdministrator', { namespace: 'session' }) isAdministrator!: boolean;
 
   /**
    * Trigger a toast notification
@@ -82,5 +85,12 @@ export default class BaseView extends Vue {
     } else {
       group.push(model);
     }
+  }
+
+  /**
+   * Is the current route intended for administrators only?
+   */
+  get userIsNotAllowedToSeeThisPage() {
+    return this.$route.meta.requiresAdmin && !this.isAdministrator;
   }
 }

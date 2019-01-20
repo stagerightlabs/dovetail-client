@@ -76,10 +76,6 @@ export default class MainMenu extends Vue {
   @Getter('organization', {namespace: 'session'}) organization! : User;
   @Getter('isAuthenticated', {namespace: 'session'}) isAuthenticated! : boolean;
 
-  terminateSession() {
-    this.logout()
-  }
-
   sendAlert() {
     EventBus.$emit('toast', {message: "hello world", level: "info"});
   }

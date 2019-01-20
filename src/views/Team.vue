@@ -191,6 +191,10 @@ export default class TeamView extends mixins(BaseView) {
    * Request team information from the server
    */
   private fetchTeam() {
+    if (this.userIsNotAllowedToSeeThisPage) {
+      return;
+    }
+
     teams.show(this.hashid)
       .then((response) => {
         this.loading = false;
@@ -206,6 +210,10 @@ export default class TeamView extends mixins(BaseView) {
    * Request all available organization members
    */
   private fetchAllMembers() {
+    if (this.userIsNotAllowedToSeeThisPage) {
+      return;
+    }
+
     members.index()
       .then((response) => {
         this.allMembers = response.data.data;

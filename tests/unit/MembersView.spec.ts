@@ -114,7 +114,11 @@ describe('Members.vue', () => {
     }
 
     const defaultMountingOptions = {
-      mocks: {},
+      mocks: {
+        $route: {
+          meta: {},
+        },
+      },
       stubs: {
         RouterLink: RouterLinkStub,
       },

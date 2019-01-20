@@ -75,6 +75,7 @@ describe('Invitation.vue', () => {
       mocks: {
         $route: {
           params: {},
+          meta: {},
         },
       },
       stubs: {

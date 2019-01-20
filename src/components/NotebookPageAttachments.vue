@@ -121,7 +121,6 @@ export default class NotebookPageAttachments extends mixins(BaseView) {
     this.deleting = attachment;
     attachments.delete(this.notebookId, this.pageId, attachment.hashid)
       .then((response) => {
-        console.log(attachment);
         this.$emit('removed', attachment);
         this.toast({
           message: `${attachment.filename} has been removed.`,

@@ -318,6 +318,11 @@ export default class InvitationView extends mixins(BaseView) {
    * Ask the server for the current list of invitations
    */
   private fetchInvitations() {
+
+    if (this.userIsNotAllowedToSeeThisPage) {
+      return;
+    }
+
     invitations.index()
       .then((response) => {
         this.invitations = response.data.data.map((invitation: Invitation) => this.hydrateInvitation(invitation));

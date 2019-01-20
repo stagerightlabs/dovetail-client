@@ -157,6 +157,10 @@ export default class TeamsView extends mixins(BaseView) {
    * Request all available teams from the server
    */
   fetchTeams() {
+    if (this.userIsNotAllowedToSeeThisPage) {
+      return;
+    }
+
     teams.index()
       .then((response) => {
         this.teams = response.data.data;

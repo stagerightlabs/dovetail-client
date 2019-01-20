@@ -29,10 +29,6 @@ export default class Menu extends Vue {
   @Getter('isAuthenticated', {namespace: 'session'}) isAuthenticated! : boolean;
   @Prop({ default: true }) mobileNavHidden!: boolean
 
-  terminateSession() {
-    this.logout()
-  }
-
   sendAlert() {
     EventBus.$emit('toast', {message: "hello world", level: "info"});
   }

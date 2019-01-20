@@ -183,6 +183,10 @@ export default class Members extends mixins(BaseView) {
    * Request a list of members from the server
    */
   fetchMembers() {
+    if (this.userIsNotAllowedToSeeThisPage) {
+      return;
+    }
+
     return members.index()
       .then((response) => {
         this.members = response.data.data;
@@ -196,7 +200,11 @@ export default class Members extends mixins(BaseView) {
   /**
    * Request a list of deleted users from the server
    */
-  requestDeletedMembers() {
+  fetchDeletedMembers() {
+    if (this.userIsNotAllowedToSeeThisPage) {
+      return;
+    }
+
     return members.deletedMembers()
       .then((response) => {
         this.deletedMembers = response.data.data;
@@ -339,7 +347,7 @@ export default class Members extends mixins(BaseView) {
   refresh() {
     this.refreshing = true;
     const p1 = this.fetchMembers();
-    const p2 = this.requestDeletedMembers();
+    const p2 = this.fetchDeletedMembers();
 
     Promise.all([p1, p2]).finally(() => {
       this.refreshing = false;
@@ -369,7 +377,7 @@ export default class Members extends mixins(BaseView) {
    */
   mounted() {
     this.fetchMembers();
-    this.requestDeletedMembers();
+    this.fetchDeletedMembers();
   }
 
   /**
