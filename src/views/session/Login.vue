@@ -10,6 +10,7 @@
           name="email"
           required
           v-validate
+          ref="emailInput"
         >
         <div class="input-error">{{ errors.first('email') }}</div>
       </div>
@@ -58,6 +59,16 @@ const namespace: string = 'auth';
   password: string = '';
   attemptingLogin: boolean = false;
 
+  /**
+   * Element refs
+   */
+  $refs: any = {
+    emailInput: HTMLFormElement
+  }
+
+  /**
+   * Submit the login request for qualified credentials
+   */
   login() {
     this.$validator.validateAll()
       .then((valid) => {
@@ -67,8 +78,10 @@ const namespace: string = 'auth';
       })
   }
 
+  /**
+   * Ask the server to create a new auth token
+   */
   private submitCredentials() {
-    // Request an auth token from the api
     this.attemptingLogin = true;
     http.login({email: this.email, password: this.password})
       .then((response) => {
@@ -81,6 +94,15 @@ const namespace: string = 'auth';
         this.attemptingLogin = false;
         this.handleResponseErrors(error);
       });
+  }
+
+  /**
+   * The mounted lifecycle hook
+   */
+  mounted() {
+    this.$nextTick(() => {
+      this.$refs.emailInput.focus();
+    });
   }
 
 }

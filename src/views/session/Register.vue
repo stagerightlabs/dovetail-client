@@ -11,6 +11,7 @@ e<template>
           name="organization"
           required
           v-validate
+          ref="organizationInput"
         >
         <div class="input-error">{{ errors.first('organization') }}</div>
       </div>
@@ -101,7 +102,17 @@ export default class RegisterView extends mixins(BaseView) {
   password_confirmation : string = '';
   registration_submitted = false;
 
-  async register() {
+  /**
+   * Element refs
+   */
+  $refs: any = {
+    organizationInput: HTMLFormElement
+  }
+
+  /**
+   * Submit a registration request for qualified form data
+   */
+  register() {
     this.$validator.validateAll()
       .then((valid) => {
         if (valid) {
@@ -111,6 +122,9 @@ export default class RegisterView extends mixins(BaseView) {
       })
   }
 
+  /**
+   * Ask the server to create a new account and auth token
+   */
   private submitRegistration() {
     http.register({
       name: this.name,
@@ -127,6 +141,15 @@ export default class RegisterView extends mixins(BaseView) {
     }).catch((error) => {
       this.handleResponseErrors(error);
       this.registration_submitted = false;
+    })
+  }
+
+  /**
+   * The mounted lifecycle hook
+   */
+  mounted() {
+    this.$nextTick(() => {
+      this.$refs.organizationInput.focus();
     })
   }
 
