@@ -95,7 +95,7 @@ export default class NotebookPageAttachments extends mixins(BaseView) {
    */
   onDragOver(event: DragEvent): void {
     if (!this.enabled) return;
-    if (!this.uploading) return;
+    if (this.uploading) return;
     event.preventDefault();
     this.highlight = true;
   }
