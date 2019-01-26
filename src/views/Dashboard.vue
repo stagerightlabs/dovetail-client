@@ -1,9 +1,8 @@
 <template>
-  <main role="main" class="page">
+  <main role="main" class="page max-w-2xl">
     <header>
       <h1>Dashboard</h1>
     </header>
-
     <article>
       <section class="content">
         <p>

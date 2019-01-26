@@ -2,7 +2,7 @@
   <div v-if="loading" class="center-xy">
     <icon name="refresh" width="128" height="128" class="text-grey-light" spin></icon>
   </div>
-  <main v-else role="main" class="page">
+  <main v-else role="main" class="page max-w-2xl">
     <header>
       <h1>Profile</h1>
     </header>

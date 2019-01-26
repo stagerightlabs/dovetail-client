@@ -1,5 +1,5 @@
 <template>
-  <main role="main" class="page">
+  <main role="main" class="page max-w-2xl">
     <header>
       <h1>{{ orgNotebooksLabel }}</h1>
       <aside>
