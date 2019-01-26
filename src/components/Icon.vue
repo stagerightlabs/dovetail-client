@@ -17,9 +17,11 @@
 import Menu from '@/icons/Menu.vue';
 import Close from '@/icons/Close.vue';
 import Trash from '@/icons/Trash.vue';
+import Photo from '@/icons/Photo.vue';
 import Reload from '@/icons/Reload.vue';
 import Shield from '@/icons/Shield.vue';
 import Refresh from '@/icons/Refresh.vue';
+import Document from '@/icons/Document.vue';
 import LockOpen from '@/icons/LockOpen.vue';
 import Checkmark from '@/icons/Checkmark.vue';
 import AddOutline from '@/icons/AddOutline.vue';
@@ -41,12 +43,14 @@ import InformationOutline from '@/icons/InformationOutline.vue';
   // Cog,
   Checkmark,
   Conversation,
+  Document,
   EditPencil,
   ExclamationOutline,
   InformationOutline,
   LockClosed,
   LockOpen,
   Menu,
+  Photo,
   Reload,
   Refresh,
   Shield,
@@ -73,12 +77,14 @@ export default class Icon extends Vue {
     // 'cog': 'Cog',
     'checkmark': 'Checkmark',
     'conversation': 'Conversation',
+    'document': 'Document',
     'edit-pencil': 'EditPencil',
     'exclamation-outline': 'ExclamationOutline',
     'information-outline': 'InformationOutline',
     'lock-closed': 'LockClosed',
     'lock-open': 'LockOpen',
     'menu': 'Menu',
+    'photo': 'Photo',
     'reload': 'Reload',
     'refresh': 'Refresh',
     'shield': 'Shield',
