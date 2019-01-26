@@ -137,8 +137,14 @@
         }
 
         .attachments .attachment {
-          @apply flex text-sm .justify-start .items-center .p-2 .truncate;
+          @apply flex text-sm .justify-between .items-center .px-2 .py-1 .truncate;
+
+          &:hover {
+            @apply bg-grey-light;
+          }
         }
+
+
       }
 
 

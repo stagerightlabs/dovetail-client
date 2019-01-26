@@ -1,6 +1,6 @@
 <template>
   <div v-if="loading" class="center-xy">
-    <icon name="reload" width="48px"></icon>
+    <img src="@/assets/dovetail_logo_blue.png" class="w-32 mt-6">
   </div>
   <main v-else role="main" class="page">
     <header class="max-w-2xl">

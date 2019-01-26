@@ -6,7 +6,6 @@
     <header>
       <h1>Profile</h1>
     </header>
-
     <article>
       <section class="content">
         <div class="max-w-sm m-auto">

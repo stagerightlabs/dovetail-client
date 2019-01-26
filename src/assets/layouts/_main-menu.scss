@@ -13,6 +13,7 @@
   @screen sm {
     @apply  h-screen .sticky;
     width: 156px ;
+    z-index: auto;
   }
 
   @screen xl {

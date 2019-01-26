@@ -27,12 +27,22 @@
       </div>
     </div>
     <div class="attachments" ref="attachmentsContainer">
-      <div class="attachment flex" v-for="attachment in documents" :key="attachment.hashid">
-        <p :title="attachment.filename">
-          <a :href="attachment.original" target="_blank" class="flex flex-col">
+      <div class="attachment" v-for="attachment in documents" :key="attachment.hashid">
+        <p v-if="isPdf(attachment)" :title="attachment.filename">
+          <a :href="attachment.original" target="_blank" class="flex">
+            <icon name="document" class="mr-1"/>
             {{ attachment.filename }}
-            <img v-if="attachment.large" :src="attachment.large" />
           </a>
+        </p>
+        <p v-else :title="attachment.filename">
+          <light-box
+            class="cursor-pointer"
+            :src="attachment.original"
+            :caption="attachment.filename"
+          >
+            <icon name="photo" class="mr-1"/>
+            <span class="underline">{{ attachment.filename }}</span>
+          </light-box>
         </p>
         <action-button
           class="ml-1 text-grey-darker"
@@ -54,12 +64,13 @@ import { Document } from '@/types';
 import { AxiosPromise } from 'axios';
 import BaseView from '@/mixins/BaseView.ts';
 import { mixins } from 'vue-class-component';
+import LightBox from '@/components/LightBox.vue';
 import attachments from '@/repositories/pageDocuments';
 import ActionButton from '@/components/ActionButton.vue';
-import { Prop, Component, Watch } from 'vue-property-decorator';
+import { Prop, Component } from 'vue-property-decorator';
 
 @Component({
-  components: { ActionButton }
+  components: { ActionButton, LightBox }
 })
 export default class NotebookPageAttachments extends mixins(BaseView) {
 
@@ -142,6 +153,13 @@ export default class NotebookPageAttachments extends mixins(BaseView) {
     }
 
     return this.deleting.hashid === attachment.hashid;
+  }
+
+  /**
+   * Is this document a PDF?
+   */
+  isPdf(attachment: Document) {
+    return attachment.mimetype == 'application/pdf';
   }
 
   /**
