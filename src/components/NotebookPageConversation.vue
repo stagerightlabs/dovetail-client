@@ -8,6 +8,7 @@
               type="text"
               v-model="editedCommentText"
               @keydown.esc="cancelEditing"
+              @keydown.enter="updateComment(comment)"
               ref="commentEditingInput"
             >
           </div>
@@ -21,11 +22,11 @@
           </action-button>
         </template>
         <template v-else>
-          <div class="px-2 pt-1" :title="comment.commentator">
-            <icon name="user-solid-circle" width="24" height="24" />
+          <div class="w-8 h-8 mr-1 bg-grey-light text-grey-darker rounded-full flex flex-no-shrink cursor-default items-center justify-center" :title="comment.commentator">
+            {{ comment.commentator_initials }}
           </div>
           <div class="flex-grow">
-            <p>
+            <p class="mb-1">
               {{ comment.content }}
               <span class="text-xs text-grey" v-if="comment.edited">(edited)</span>
             </p>
@@ -49,6 +50,8 @@
         <input
           type="text"
           v-model="newComment"
+          @keydown.enter="addComment"
+          ref="newCommentInput"
         >
       </div>
       <action-button
@@ -71,8 +74,8 @@ import BaseView from '@/mixins/BaseView.ts';
 import { mixins } from 'vue-class-component';
 import pageComments from '@/repositories/pageComments';
 import ActionButton from '@/components/ActionButton.vue';
-import { Prop, Component } from 'vue-property-decorator';
 import MarkdownEditor from '@/components/MarkdownEditor.vue';
+import { Prop, Component, Watch } from 'vue-property-decorator';
 import { NotebookPage as Page, NotebookPageComment, User } from '@/types';
 
 @Component({
@@ -83,6 +86,7 @@ export default class NotebookPageComments extends mixins(BaseView) {
   @Prop({ required: true }) comments!: NotebookPageComment[];
   @Prop({ required: true }) notebookId!: string;
   @Prop({ required: true }) pageId!: string;
+  @Prop({ required: true, default: false }) visible: boolean = false;
   @Getter('user', {namespace: 'session'}) user! : User;
 
   newComment: string = '';
@@ -96,7 +100,8 @@ export default class NotebookPageComments extends mixins(BaseView) {
    */
   $refs!: {
     conversationContainer: HTMLElement,
-    commentEditingInput: HTMLFormElement[]
+    commentEditingInput: HTMLFormElement[],
+    newCommentInput: HTMLElement,
   }
 
   /**
@@ -142,6 +147,7 @@ export default class NotebookPageComments extends mixins(BaseView) {
         this.$emit('comment', response.data.data);
         this.cancelEditing();
         this.updatingComment = false;
+        this.focusOnMainInput();
       })
       .catch((error) => {
         this.handleResponseErrors(error);
@@ -166,6 +172,25 @@ export default class NotebookPageComments extends mixins(BaseView) {
   cancelEditing() {
     this.editing = null;
     this.editedCommentText = '';
+  }
+
+  /**
+   * Set focus on the main comment input field
+   */
+  focusOnMainInput() {
+    this.$nextTick(() => {
+      this.$refs.newCommentInput.focus();
+    });
+  }
+
+  /**
+   * When the component becomes visible, set focus on the comment input field
+   */
+  @Watch('visible')
+  onPropertyChanged(value: boolean, oldValue: boolean) {
+    if (value && ! oldValue) {
+      this.focusOnMainInput();
+    }
   }
 
   /**

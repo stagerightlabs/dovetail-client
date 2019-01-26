@@ -42,6 +42,7 @@
         :pageId="page.hashid"
         :comments="page.comments ? page.comments : []"
         @comment="receiveComment"
+        :visible="isConversation"
       />
       <notebook-page-attachments
         :notebookId="notebookId"

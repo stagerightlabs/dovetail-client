@@ -108,6 +108,7 @@ export interface NotebookPageComment {
   hashid: string;
   content: string;
   commentator: string;
+  commentator_initials: string;
   commentator_id: string;
   edited: boolean;
   created_at: string;
