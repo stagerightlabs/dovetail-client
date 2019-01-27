@@ -39,7 +39,7 @@
           <button
             class="btn btn-red sm:ml-2 w-full sm:w-auto"
             @click.prevent="cancelNewInvitation"
-          >Cancel></button>
+          >Cancel</button>
         </form>
       </section>
     </article>
