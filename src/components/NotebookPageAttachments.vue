@@ -38,7 +38,7 @@
           <light-box
             class="cursor-pointer"
             :src="attachment.original"
-            :caption="attachment.filename"
+            :caption="`${attachment.filename} - Added by ${attachment.uploaded_by}`"
           >
             <icon name="photo" class="mr-1"/>
             <span class="underline">{{ attachment.filename }}</span>

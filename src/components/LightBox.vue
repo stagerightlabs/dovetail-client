@@ -5,11 +5,11 @@
     </div>
     <portal to="modal" v-if="visible">
       <div class="fixed pin w-full h-full flex" @keydown.esc="hide">
-        <div class="center-xy bg-smoke">
+        <div class="center-xy bg-smoke" @click="hide">
           <div class="fixed pin-t pin-r text-white mr-2 mt-2 cursor-pointer" @click="hide">
             <icon name="close" width="22" height="22" />
           </div>
-          <div class="text-white text-center p-8 max-h-screen">
+          <div class="text-white text-center p-8 max-h-screen" @click.stop>
             <img :src="src" class="max-h-full" />
             <p v-if="caption" class="text-center">{{ caption }}</p>
           </div>
