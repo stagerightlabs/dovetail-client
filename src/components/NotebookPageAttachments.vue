@@ -115,6 +115,7 @@ export default class NotebookPageAttachments extends mixins(BaseView) {
     event.preventDefault();
     if (event.dataTransfer) {
       this.upload(event.dataTransfer.files);
+      this.highlight = false;
     }
   }
 
@@ -203,6 +204,7 @@ export default class NotebookPageAttachments extends mixins(BaseView) {
       })
       .finally(() => {
         this.uploading = false;
+        this.highlight = false;
       })
   }
 }
