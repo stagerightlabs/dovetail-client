@@ -132,4 +132,5 @@ export interface Document {
   small: string;
   mimetype: string;
   filename: string;
+  uploaded_by: string;
 }

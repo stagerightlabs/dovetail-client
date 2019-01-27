@@ -28,13 +28,13 @@
     </div>
     <div class="attachments" ref="attachmentsContainer">
       <div class="attachment" v-for="attachment in documents" :key="attachment.hashid">
-        <p v-if="isPdf(attachment)" :title="attachment.filename">
+        <p v-if="isPdf(attachment)" :title="title(attachment)">
           <a :href="attachment.original" target="_blank" class="flex">
             <icon name="document" class="mr-1"/>
             {{ attachment.filename }}
           </a>
         </p>
-        <p v-else :title="attachment.filename">
+        <p v-else :title="title(attachment)">
           <light-box
             class="cursor-pointer"
             :src="attachment.original"
@@ -160,6 +160,13 @@ export default class NotebookPageAttachments extends mixins(BaseView) {
    */
   isPdf(attachment: Document) {
     return attachment.mimetype == 'application/pdf';
+  }
+
+  /**
+   * Generate a hover title for this attachment
+   */
+  title(attachment: Document) {
+    return attachment.filename + ' - ' + attachment.uploaded_by;
   }
 
   /**
