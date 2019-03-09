@@ -36,6 +36,7 @@ import invitations from '@/repositories/invitations';
 import InvitationView from '@/views/Invitations.vue';
 import flushPromises from 'flush-promises';
 import { config } from '@vue/test-utils';
+import Icon from '@/components/Icon.vue';
 import VeeValidate from 'vee-validate';
 import { Invitation } from '@/types';
 import PortalVue from 'portal-vue';
@@ -65,6 +66,7 @@ const fakeInvitations: Invitation[] = [fakeInvitation];
 const localVue = createLocalVue();
 localVue.use(VeeValidate, { inject: false, delay: 500, validity: true });
 localVue.use(PortalVue);
+localVue.component('icon', Icon);
 config.logModifiedComponents = false;
 
 describe('Invitation.vue', () => {

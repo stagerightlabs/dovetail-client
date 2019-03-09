@@ -63,7 +63,7 @@
               :class="invitationRowClass(invitation)"
             >
               <td>{{ invitation.email }}</td>
-              <td>{{ formattedDate(invitation.created_at) }}</td>
+              <td>{{ formattedDate(invitation.created_at_date) }}</td>
               <td class="text-center">
                 <icon name="checkmark" v-if="invitation.completed_at" />
                 <span v-if="invitation.revoked_at">Revoked</span>
