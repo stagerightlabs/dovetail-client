@@ -1,5 +1,5 @@
 <template>
-<main role="main" class="page max-w-2xl">
+<main role="main" class="page max-w-4xl">
   <header>
     <h1>Categories</h1>
     <aside>

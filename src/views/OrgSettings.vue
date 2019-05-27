@@ -1,5 +1,5 @@
 <template>
-  <main role="main" class="page max-w-2xl">
+  <main role="main" class="page max-w-4xl">
     <header>
       <h1>Organization Settings</h1>
     </header>
@@ -126,6 +126,7 @@ export default class OrgSettings extends mixins(BaseView) {
    * Has a new value been entered?
    */
   get labelsAreDirty() {
+    // @ts-ignore
     return Object.keys(this.fields).some(key => this.fields[key].dirty);
   }
 

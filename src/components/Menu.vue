@@ -10,7 +10,7 @@
     <div>
       <p v-if="isAuthenticated">There is an active session</p>
     </div>
-    <div class="block sm:hidden absolute pin-t pin-r">
+    <div class="block sm:hidden absolute top-0 right-0">
       <button @click="closeMobileNav" class="flex items-center px-3 py-2 border-0 rounded text-blue-lightest">
         <icon name="times"></icon>
       </button>

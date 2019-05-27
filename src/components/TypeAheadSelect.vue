@@ -14,7 +14,7 @@
       :id="id"
     >
     <ul
-      class="flex flex-col w-full absolute list-reset border border-grey bg-white z-40"
+      class="flex flex-col w-full absolute border border-grey bg-white z-40"
       v-show="isOpen">
       <li v-for="(option,index) in filteredOptions"
         class="cursor-pointer w-full p-2 border-b truncate text-grey-darker"

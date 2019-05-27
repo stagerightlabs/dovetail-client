@@ -6,7 +6,7 @@
     <portal to="modal" v-if="visible">
       <div class="fixed pin w-full h-full flex" @keydown.esc="hide">
         <div class="center-xy bg-smoke" @click="hide">
-          <div class="fixed pin-t pin-r text-white mr-2 mt-2 cursor-pointer" @click="hide">
+          <div class="fixed top-0 right-0 text-white mr-2 mt-2 cursor-pointer" @click="hide">
             <icon name="close" width="22" height="22" />
           </div>
           <div class="text-white text-center p-8 max-h-screen" @click.stop>
