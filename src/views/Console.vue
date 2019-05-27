@@ -7,7 +7,7 @@
     <div class="flex-auto">
       <router-view/>
     </div>
-    <div class="block sm:hidden absolute pin-t pin-r">
+    <div class="block sm:hidden absolute top-0 right-0">
       <button @click="showMobileNav" class="flex items-center px-3 py-2 border-0 rounded text-white">
         <icon name="menu"></icon>
       </button>

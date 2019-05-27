@@ -22,7 +22,7 @@
           </action-button>
         </template>
         <template v-else>
-          <div class="w-8 h-8 mr-1 bg-grey-light text-grey-darker rounded-full flex flex-no-shrink cursor-default items-center justify-center" :title="comment.commentator">
+          <div class="w-8 h-8 mr-1 bg-grey-light text-grey-darker rounded-full flex flex-shrink-0 cursor-default items-center justify-center" :title="comment.commentator">
             {{ comment.commentator_initials }}
           </div>
           <div class="flex-grow">

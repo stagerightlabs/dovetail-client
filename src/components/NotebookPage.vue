@@ -32,7 +32,7 @@
           message="Are you sure you want to remove this page?"
           confirm
           :autoSizing="false"
-          class="flex justify-center"
+          class="flex justify-center pt--1"
         >
           <icon name="trash" />
         </action-button>

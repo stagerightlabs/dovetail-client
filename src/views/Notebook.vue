@@ -3,7 +3,7 @@
     <img src="@/assets/dovetail_logo_blue.png" class="w-32 mt-6">
   </div>
   <main v-else role="main" class="page">
-    <header class="max-w-2xl">
+    <header class="max-w-4xl">
       <h1>
         {{ notebook.name }}
         <span v-if="notebook.category" class="category-label">{{ notebook.category }}</span>
@@ -17,7 +17,7 @@
         </button>
       </aside>
     </header>
-    <article v-if="editFormVisible" class="max-w-2xl">
+    <article v-if="editFormVisible" class="max-w-4xl">
       <section class="content">
         <div class="bg-grey-lighter rounded w-full">
           <form class="max-w-sm mx-auto p-4">
@@ -86,7 +86,7 @@
       />
     </article>
     <article v-else>
-      <section class="content max-w-2xl">
+      <section class="content max-w-4xl">
         <p class="text-center py-8">There are no pages to display.</p>
       </section>
     </article>
@@ -95,7 +95,7 @@
       <header>
         <h3>Add Page</h3>
       </header>
-      <section class="content max-w-2xl">
+      <section class="content max-w-4xl">
         <div class="content">
           <markdown-editor
             id="textarea-markdown"

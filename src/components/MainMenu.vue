@@ -3,8 +3,7 @@
     <div id="menu" class="flex flex-column">
       <header class="nav-header">
         <router-link :to="{name: 'dashboard'}">
-
-          <h1 class="mb-2"><img src="@/assets/dovetail_logo_white.png" class="w-8"> dovetail</h1>
+          <h1 class="mb-2"><img src="@/assets/dovetail_logo_white.png" class="w-20 m-auto"> dovetail</h1>
           <h4>{{ this.organization.name }}</h4>
         </router-link>
       </header>
@@ -50,7 +49,7 @@
         </div>
       </div>
     </footer>
-    <div class="block sm:hidden absolute pin-t pin-r">
+    <div class="block sm:hidden absolute top-0 right-0">
       <button @click="closeMobileNav" class="flex items-center px-3 py-2 border-0 rounded text-blue-lightest">
         <icon name="close"></icon>
       </button>

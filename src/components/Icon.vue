@@ -2,7 +2,7 @@
   <svg
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 20 20"
-    class="fill-current"
+    class="fill-current inline"
     :class="{spin: spin}"
     :width="width"
     :height="height"
