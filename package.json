@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@sentry/browser": "^4.6.6",
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "date-fns": "^2.0.0-alpha.27",
     "markdown-it": "^8.4.2",
     "markdown-it-emoji": "^1.4.0",
