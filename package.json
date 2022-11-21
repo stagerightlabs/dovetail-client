@@ -44,7 +44,7 @@
     "purgecss-webpack-plugin": "^1.5.0",
     "purgecss-whitelister": "^2.4.0",
     "sass-loader": "^7.1.0",
-    "tailwindcss": "^1.0.1",
+    "tailwindcss": "^3.2.4",
     "ts-jest": "^23.10.5",
     "typescript": "^3.4.5",
     "vue-axe": "^1.0.7",
