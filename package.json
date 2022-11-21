@@ -15,7 +15,7 @@
     "date-fns": "^2.0.0-alpha.27",
     "markdown-it": "^12.3.2",
     "markdown-it-emoji": "^1.4.0",
-    "npm": "^6.9.0",
+    "npm": "^9.1.2",
     "portal-vue": "^1.5.1",
     "register-service-worker": "^1.6",
     "vee-validate": "^2.2.8",
