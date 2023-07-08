@@ -40,7 +40,7 @@
     "flush-promises": "^1.0.2",
     "lodash.clonedeep": "^4.5.0",
     "lodash.merge": "^4.6.2",
-    "node-sass": "^7.0.3",
+    "node-sass": "^9.0.0",
     "purgecss-webpack-plugin": "^1.5.0",
     "purgecss-whitelister": "^2.4.0",
     "sass-loader": "^13.2.0",
